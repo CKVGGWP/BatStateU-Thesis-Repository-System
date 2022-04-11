@@ -1,6 +1,7 @@
+let url = window.location.href;
+
 $("#login").on("submit", function (e) {
   e.preventDefault();
-
   let email = $("#email").val();
   let password = $("#password").val();
 
@@ -23,6 +24,10 @@ $("#login").on("submit", function (e) {
       password.addClass("is-invalid");
     });
   } else {
+    $("#loginBtn").blur();
+    $("#loginBtn").html(
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Login'
+    );
     $.ajax({
       url: "controllers/loginRegisterController.php",
       method: "POST",
@@ -32,6 +37,7 @@ $("#login").on("submit", function (e) {
         login: true,
       },
       success: function (response) {
+        $("#loginBtn").html("Login");
         if (response == 1) {
           Swal.fire({
             icon: "error",
@@ -53,10 +59,10 @@ $("#login").on("submit", function (e) {
         } else {
           Swal.fire({
             icon: "success",
-            title: response,
+            title: "Success",
             text: "Login Successful!",
           }).then((result) => {
-            window.location.href = "index.php";
+            window.location.href = "dashboardAdmin.php";
           });
         }
       },
@@ -149,23 +155,10 @@ $("#register").on("submit", function (e) {
       password.addClass("is-invalid");
     });
   } else {
-    if (
-      srCode.hasClass("is-invalid") ||
-      email.hasClass("is-invalid") ||
-      firstName.hasClass("is-invalid") ||
-      lastName.hasClass("is-invalid") ||
-      department.hasClass("is-invalid") ||
-      campus.hasClass("is-invalid") ||
-      password.hasClass("is-invalid")
-    ) {
-      srCode.removeClass("is-invalid");
-      email.removeClass("is-invalid");
-      firstName.removeClass("is-invalid");
-      lastName.removeClass("is-invalid");
-      department.removeClass("is-invalid");
-      campus.removeClass("is-invalid");
-      password.removeClass("is-invalid");
-    }
+    $("#createAccBtn").blur();
+    $("#createAccBtn").html(
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating...'
+    );
     $.ajax({
       url: "controllers/loginRegisterController.php",
       method: "POST",
@@ -181,6 +174,8 @@ $("#register").on("submit", function (e) {
         register: true,
       },
       success: function (response) {
+        $("#createAccBtn").html("Create Account");
+        console.log(response);
         if (response == 1) {
           Swal.fire({
             icon: "error",
@@ -204,6 +199,71 @@ $("#register").on("submit", function (e) {
             icon: "success",
             title: "Registration Successful!",
             text: "We've sent you a verification email to your email address!",
+          }).then((result) => {
+            window.location.href = "index.php";
+          });
+        } else if (response == 5) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "SR Code is already taken!",
+          });
+        }
+      },
+    });
+  }
+});
+
+$("#forgotPassForm").on("submit", function (e) {
+  e.preventDefault();
+
+  let email = $("#emailForgot").val();
+
+  if (email == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Email Field is Empty!",
+    }).then((result) => {
+      email.focus();
+      email.addClass("is-invalid");
+    });
+  } else if (emailValidation(email) == false) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Account does not exists!",
+    }).then((result) => {
+      email.focus();
+      email.addClass("is-invalid");
+    });
+  } else {
+    $.ajax({
+      url: "controllers/loginRegisterController.php",
+      method: "POST",
+      data: {
+        email: email,
+        forgotPass: true,
+      },
+      success: function (response) {
+        console.log(response);
+        if (response == 1) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Account does not exist!",
+          });
+        } else if (response == 2) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Something went wrong with the server! Please try again later!",
+          });
+        } else {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "We've sent you a password reset email to your email address!",
           }).then((result) => {
             window.location.href = "index.php";
           });

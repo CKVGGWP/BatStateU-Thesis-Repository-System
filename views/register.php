@@ -1,3 +1,4 @@
+<?php include('controllers/informationController.php'); ?>
 <main>
     <div class="container">
         <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-1">
@@ -6,7 +7,7 @@
                     <div class="col-lg-8 col-md-8 d-flex flex-column align-items-center justify-content-center">
 
                         <div class="py-4 d-flex justify-content-center">
-                            <a href="login.php" class="logo align-items-center text-center w-auto">
+                            <a href="index.php" class="logo align-items-center text-center w-auto">
                                 <img class="" src="./assets/img/BatStateU.png" alt="BatStateU">
                                 <div>
                                     <span>BatStateU Online Thesis Repository and Management System</span>
@@ -47,7 +48,10 @@
                                         <div class="col-md-6 col-12 mt-2">
                                             <label for="campus" class="form-label">Campus</label>
                                             <select class="form-control" name="campus" id="campus" required>
-                                                <option value selected>- Campus -</option>
+                                                <option value selected disabled>- Campus -</option>
+                                                <?php foreach ($campuses as $key => $row) : ?>
+                                                    <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                             <div class="invalid-feedback">Please enter a Campus!</div>
                                         </div>
@@ -55,15 +59,15 @@
                                         <div class="col-md-6 col-12 mt-2">
                                             <label for="department" class="form-label">Department</label>
                                             <select class="form-control" name="department" id="department" required>
-                                                <option value selected>- Department -</option>
+                                                <option value selected disabled>- Department -</option>
                                             </select>
                                             <div class="invalid-feedback">Please enter a Department!</div>
                                         </div>
 
                                     </div>
                                     <div class="col-md-12 col-12 mt-2">
-                                        <label for="yourEmail" class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" id="email" required>
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" name="email" class="form-control" id="email" pattern=".+@g\.batstate-u\.edu\.ph" required>
                                         <div class="invalid-feedback">Please enter your valid Email address!</div>
                                     </div>
 
@@ -77,13 +81,13 @@
                                         </div>
 
                                         <div class="col-md-6 col-12">
-                                            <label for="yourPassword" class="form-label">Password</label>
+                                            <label for="password" class="form-label">Password</label>
                                             <input type="password" name="password" class="form-control" id="password" required>
                                             <div class="invalid-feedback">Please enter your password!</div>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center mt-4">
-                                        <button class="btn btn-danger rounded-pill w-100" type="submit">Create
+                                        <button class="btn btn-danger rounded-pill w-100" type="submit" id="createAccBtn">Create
                                             Account</button>
                                     </div>
                                     <div class="col-12 mt-3 text-center">
