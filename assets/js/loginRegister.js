@@ -175,6 +175,7 @@ $("#register").on("submit", function (e) {
       },
       success: function (response) {
         $("#createAccBtn").html("Create Account");
+        console.log(response);
         if (response == 1) {
           Swal.fire({
             icon: "error",

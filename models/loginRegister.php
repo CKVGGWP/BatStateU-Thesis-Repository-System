@@ -198,13 +198,13 @@ class LoginRegister extends Database
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = '';                     //SMTP username
-            $mail->Password   = '';                               //SMTP password
+            $mail->Username   = 'otrms.batstateu@gmail.com';                     //SMTP username
+            $mail->Password   = 'batstateu12345';                               //SMTP password
             $mail->SMTPSecure = "tls";            //Enable implicit TLS encryption
             $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom('', 'BatStateU-Malvar Thesis Repository System');
+            $mail->setFrom('otrms.batstateu@gmail.com', 'BatStateU-Malvar Thesis Repository System');
             $mail->addAddress($email);     //Add a recipient
 
             //Content
@@ -228,7 +228,7 @@ class LoginRegister extends Database
             if ($mail->send()) {
                 return true;
             } else {
-                return false;
+                return $mail->ErrorInfo;
             }
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
