@@ -48,13 +48,15 @@
                                             Login
                                         </button>
                                     </div>
-                                    <div class="col-12">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPassword">
-                                            <small>
-                                                <p class="text-center">Forgot your Password?</p>
-                                            </small>
-                                        </a>
-                                        <div class="modal fade" id="forgotPassword" tabindex="-1">
+                                </form>
+                                <div class="col-12">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPassword">
+                                        <small>
+                                            <p class="text-center">Forgot your Password?</p>
+                                        </small>
+                                    </a>
+                                    <div class="modal fade" id="forgotPassword" tabindex="-1">
+                                        <form method="POST" id="forgotPassForm">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -65,11 +67,9 @@
                                                         <p class="text-dark">Enter your registered email
                                                             address
                                                             below.</p>
-                                                        <form>
-                                                            <div class="form-group">
-                                                                <input type="email" class="form-control" id="email" placeholder="Email Address">
-                                                            </div>
-                                                        </form>
+                                                        <div class="form-group">
+                                                            <input type="email" class="form-control" id="emailForgot" placeholder="Email Address">
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
@@ -77,15 +77,15 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
-                                    <div class="col-12 text-center">
-                                        <p class="small mb-0">
-                                            Don't have account?
-                                            <a href="register.php">Create an account</a>
-                                        </p>
-                                    </div>
-                                </form>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <p class="small mb-0">
+                                        Don't have account?
+                                        <a href="register.php">Create an account</a>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

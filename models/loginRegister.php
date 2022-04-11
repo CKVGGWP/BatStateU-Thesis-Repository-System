@@ -1,5 +1,10 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require('../assets/vendor/autoload.php');
+
 class LoginRegister extends Database
 {
     public function login($email, $password)
@@ -44,6 +49,16 @@ class LoginRegister extends Database
     public function verify($tokenKey, $srCode)
     {
         return $this->verifyEmail($tokenKey, $srCode);
+    }
+
+    public function resetPassword($email)
+    {
+        if ($this->emailExists($email) != true) {
+            return 1;
+            exit();
+        }
+
+        return $this->insertPassToken($this->getID($email));
     }
 
     private function emailExists($email)
@@ -127,9 +142,9 @@ class LoginRegister extends Database
     private function insertData($data)
     {
         $newPassword = password_hash($data['password'], PASSWORD_DEFAULT);
-        $sql = "INSERT INTO user_details (srCode, email, firstName, middleName, lastName, departmentID, campusID, password, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO user_details (srCode, email, firstName, middleName, lastName, departmentID, campusID, password, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("sssssiiss", $data['srCode'], $data['email'], $data['firstName'], $data['middleName'], $data['lastName'], $data['department'], $data['campus'], $newPassword, '0');
+        $stmt->bind_param("ssssssss", $data['srCode'], $data['email'], $data['firstName'], $data['middleName'], $data['lastName'], $data['department'], $data['campus'], $newPassword);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -149,40 +164,55 @@ class LoginRegister extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return $this->sendEmail($email, $token, $name, $srCode);
+            return $this->sendEmail($email, $token, $name, $srCode, "verify");
         } else {
             return false;
         }
     }
 
-    private function sendEmail($email, $tokenKey, $name, $srCode)
+    private function sendEmail($email, $tokenKey, $name, $srCode = '', $type)
     {
-        $to = $email;
-        $subject = 'Welcome to the Batangas State University JPLPC-Malvar Thesis Repository System';
-        $message = '
-        <html>
-        <head>
-        <title>You have successfully created an account!</title>
-        </head>
-        <body>
-        <p>Hi' . $name . ' ,</p>
-        <p>Please click the link below to verify your email address.</p>
-        <p><a href="http://localhost/BatStateU-Malvar Thesis Repository System/verify.php?tokenKey=' . $tokenKey . '&srCode=' . $srCode . '">Verify</a></p>
-        <p>Thank you.</p>
-        <p>This is a system-generated message. Please do not reply!</p>
-        </body>
-        </html>
-        ';
-        $headers = 'MIME-Version: 1.0' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-        $headers .= 'From:
-        <
-        ';
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail->SMTPDebug = 0; //SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = '';                     //SMTP username
+            $mail->Password   = '';                               //SMTP password
+            $mail->SMTPSecure = "tls";            //Enable implicit TLS encryption
+            $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
-        if (mail($to, $subject, $message, $headers)) {
-            return true;
-        } else {
-            return false;
+            //Recipients
+            $mail->setFrom('', 'BatStateU-Malvar Thesis Repository System');
+            $mail->addAddress($email);     //Add a recipient
+
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            if ($type == "verify") {
+                $mail->Subject = 'Account Verification - BatStateU-Malvar Thesis Repository System';
+                $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
+                $email_text = "<span>You have successfully created an account! Please <a href='http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/verify.php?tokenKey='" . $tokenKey . "&srCode=" . $srCode . ">click here</a> to verify your email address.</span><br><br>";
+                $email_footer = "This is a system generated message. Please do not reply.";
+                $email_template = $email_header . $email_text . $email_footer;
+                $mail->Body = $email_template;
+            } else if ($type == "reset") {
+                $mail->Subject = 'Password Reset - BatStateU-Malvar Thesis Repository System';
+                $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
+                $email_text = "<span>You have requested to reset your password. Please <a href='http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/resetPassword.php?tokenKey='" . $tokenKey . "&srCode=" . $srCode . ">click here</a> to reset your password.</span><br><br>";
+                $email_footer = "This is a system generated message. Please do not reply.";
+                $email_template = $email_header . $email_text . $email_footer;
+                $mail->Body = $email_template;
+            }
+
+            if ($mail->send()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
     }
 
@@ -218,6 +248,68 @@ class LoginRegister extends Database
             return 2;
         } else {
             return 3;
+        }
+    }
+
+    private function getID($email)
+    {
+        $sql = "SELECT id, firstName, lastName, email, srCode FROM user_details WHERE email = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row;
+        }
+    }
+
+    private function checkToken($id, $purpose)
+    {
+        $sql = "SELECT * FROM user_token WHERE userId = ? AND purpose = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("is", $id, $purpose);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function insertPassToken($data)
+    {
+        $purpose = 'Password';
+        $token = bin2hex(random_bytes(32));
+
+        if ($this->checkToken($data['id'], $purpose)) {
+            return $this->updateToken($data, $token, $purpose);
+        } else {
+            $sql = "INSERT INTO user_token (userId, tokenKey, purpose) VALUES (?, ?, ?)";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param("iss", $data['id'], $token, $purpose);
+            $stmt->execute();
+
+            if ($stmt->affected_rows > 0) {
+                return $this->sendEmail($data['email'], $token, $data['firstName'] . $data['lastName'], $data['srCode'], "reset");
+            } else {
+                return 2;
+            }
+        }
+    }
+
+    private function updateToken($data, $token, $purpose)
+    {
+        $sql = "UPDATE user_token SET tokenKey = ? WHERE userID = ? AND purpose = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("sis", $token, $data['id'], $purpose);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return $this->sendEmail($data['email'], $token, $data['firstName'] . $data['lastName'], $data['srCode'], "reset");
+        } else {
+            return 2;
         }
     }
 }
