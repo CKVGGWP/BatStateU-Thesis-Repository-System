@@ -44,7 +44,7 @@
 
 
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-danger rounded-pill w-100">
+                                        <button type="submit" class="btn btn-danger rounded-pill w-100" id="loginBtn">
                                             Login
                                         </button>
                                     </div>

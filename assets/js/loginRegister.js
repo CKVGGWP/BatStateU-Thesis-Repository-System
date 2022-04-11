@@ -2,7 +2,6 @@ let url = window.location.href;
 
 $("#login").on("submit", function (e) {
   e.preventDefault();
-
   let email = $("#email").val();
   let password = $("#password").val();
 
@@ -25,6 +24,8 @@ $("#login").on("submit", function (e) {
       password.addClass("is-invalid");
     });
   } else {
+    $("#loginBtn").blur();
+    $("#loginBtn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Login');
     $.ajax({
       url: "controllers/loginRegisterController.php",
       method: "POST",
@@ -34,6 +35,7 @@ $("#login").on("submit", function (e) {
         login: true,
       },
       success: function (response) {
+        $("#loginBtn").html('Login');
         if (response == 1) {
           Swal.fire({
             icon: "error",
@@ -168,6 +170,9 @@ $("#register").on("submit", function (e) {
       campus.removeClass("is-invalid");
       password.removeClass("is-invalid");
     }
+    $("#createAccBtn").blur();
+    $("#createAccBtn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating...');
+
     $.ajax({
       url: "controllers/loginRegisterController.php",
       method: "POST",
@@ -183,6 +188,7 @@ $("#register").on("submit", function (e) {
         register: true,
       },
       success: function (response) {
+        $("#createAccBtn").html('Create Account');
         if (response == 1) {
           Swal.fire({
             icon: "error",

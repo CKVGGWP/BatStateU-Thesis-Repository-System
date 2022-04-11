@@ -67,7 +67,8 @@
                                     </div>
                                     <div class="col-md-12 col-12 mt-2">
                                         <label for="yourEmail" class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" id="email" required>
+                                        <input type="email" name="email" class="form-control" id="email" 
+                                        pattern=".+@g\.batstate-u\.edu\.ph" required>
                                         <div class="invalid-feedback">Please enter your valid Email address!</div>
                                     </div>
 
@@ -87,7 +88,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center mt-4">
-                                        <button class="btn btn-danger rounded-pill w-100" type="submit">Create
+                                        <button class="btn btn-danger rounded-pill w-100" type="submit" id="createAccBtn">Create
                                             Account</button>
                                     </div>
                                     <div class="col-12 mt-3 text-center">

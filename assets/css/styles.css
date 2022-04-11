@@ -406,7 +406,7 @@ h6 {
   font-size: 32px;
   padding-left: 10px;
   cursor: pointer;
-  color: #012970;
+  color: #6c757d;
 }
 
 .header .search-bar {
@@ -676,7 +676,7 @@ h6 {
 .sidebar-nav .nav-heading {
   font-size: 11px;
   text-transform: uppercase;
-  color: #899bbd;
+  color: #6c757d;
   font-weight: 600;
   margin: 10px 0 5px 15px;
 }
@@ -686,7 +686,7 @@ h6 {
   align-items: center;
   font-size: 15px;
   font-weight: 600;
-  color: #4154f1;
+  color: #6c757d;
   transition: 0.3;
   background: #f6f9ff;
   padding: 10px 15px;
@@ -696,25 +696,25 @@ h6 {
 .sidebar-nav .nav-link i {
   font-size: 16px;
   margin-right: 10px;
-  color: #4154f1;
+  color: #ed4c67;
 }
 
 .sidebar-nav .nav-link.collapsed {
-  color: #012970;
+  color: #6c757d;
   background: #fff;
 }
 
 .sidebar-nav .nav-link.collapsed i {
-  color: #899bbd;
+  color: #ed4c67;
 }
 
 .sidebar-nav .nav-link:hover {
-  color: #4154f1;
+  color: #ed4c67;
   background: #f6f9ff;
 }
 
 .sidebar-nav .nav-link:hover i {
-  color: #4154f1;
+  color: #ed4c67;
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {
@@ -737,7 +737,7 @@ h6 {
   align-items: center;
   font-size: 14px;
   font-weight: 600;
-  color: #012970;
+  color: #6c757d;
   transition: 0.3;
   padding: 10px 0 10px 40px;
   transition: 0.3s;
@@ -752,11 +752,11 @@ h6 {
 
 .sidebar-nav .nav-content a:hover,
 .sidebar-nav .nav-content a.active {
-  color: #4154f1;
+  color: #ed4c67;
 }
 
 .sidebar-nav .nav-content a.active i {
-  background-color: #4154f1;
+  background-color: #ed4c67;
 }
 
 /*--------------------------------------------------------------
