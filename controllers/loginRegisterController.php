@@ -33,3 +33,9 @@ if (isset($_POST['verify'])) {
 
     echo $loginRegister->verify($tokenKey, $srCode);
 }
+
+if (isset($_POST['forgotPass'])) {
+    $email = $_POST['email'];
+
+    echo $loginRegister->resetPassword($email);
+}

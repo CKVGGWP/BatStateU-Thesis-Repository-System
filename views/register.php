@@ -66,14 +66,8 @@
 
                                     </div>
                                     <div class="col-md-12 col-12 mt-2">
-<<<<<<< HEAD
-                                        <label for="yourEmail" class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" id="email" 
-                                        pattern=".+@g\.batstate-u\.edu\.ph" required>
-=======
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" id="email" required>
->>>>>>> 89aba69ec1ae81e15c092268549df4a67e827303
+                                        <input type="email" name="email" class="form-control" id="email" pattern=".+@g\.batstate-u\.edu\.ph" required>
                                         <div class="invalid-feedback">Please enter your valid Email address!</div>
                                     </div>
 
@@ -87,7 +81,7 @@
                                         </div>
 
                                         <div class="col-md-6 col-12">
-                                            <label for="yourPassword" class="form-label">Password</label>
+                                            <label for="password" class="form-label">Password</label>
                                             <input type="password" name="password" class="form-control" id="password" required>
                                             <div class="invalid-feedback">Please enter your password!</div>
                                         </div>
