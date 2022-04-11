@@ -1,7 +1,3 @@
-// $(window).load(function () {
-//     $(".loader").fadeOut(300);
-// });
-
 document.addEventListener('DOMContentLoaded', () => {
   echarts.init(document.querySelector('#trafficChart')).setOption({
     tooltip: {
