@@ -4,9 +4,7 @@
 
 <body>
     <!-- <div class="loader"></div> -->
-    <?php
-    include "views/login.php";
-    ?>
+    <?php include "views/login.php"; ?>
 </body>
 <?php include "views/footer.php"; ?>
 

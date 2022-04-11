@@ -87,7 +87,7 @@
                                             Account</button>
                                     </div>
                                     <div class="col-12 mt-3 text-center">
-                                        <p class="small mb-0">Already have an account? <a href="login.php">Login</a></p>
+                                        <p class="small mb-0">Already have an account? <a href="index.php">Login</a></p>
                                     </div>
                                 </form>
                             </div>
