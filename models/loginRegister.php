@@ -212,7 +212,7 @@ class LoginRegister extends Database
             if ($type == "verify") {
                 $mail->Subject = 'Account Verification - BatStateU-Malvar Thesis Repository System';
                 $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
-                $email_text = "<span>You have successfully created an account! Please <a href='http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/verify.php?tokenKey='" . $tokenKey . "&srCode=" . $srCode . ">click here</a> to verify your email address.</span><br><br>";
+                $email_text = "<span>You have successfully created an account! Please <a href='http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/verify.php?tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to verify your email address.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
                 $mail->Body = $email_template;
