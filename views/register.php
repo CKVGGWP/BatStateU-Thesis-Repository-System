@@ -7,7 +7,7 @@
                     <div class="col-lg-8 col-md-8 d-flex flex-column align-items-center justify-content-center">
 
                         <div class="py-4 d-flex justify-content-center">
-                            <a href="login.php" class="logo align-items-center text-center w-auto">
+                            <a href="index.php" class="logo align-items-center text-center w-auto">
                                 <img class="" src="./assets/img/BatStateU.png" alt="BatStateU">
                                 <div>
                                     <span>BatStateU Online Thesis Repository and Management System</span>
@@ -48,7 +48,7 @@
                                         <div class="col-md-6 col-12 mt-2">
                                             <label for="campus" class="form-label">Campus</label>
                                             <select class="form-control" name="campus" id="campus" required>
-                                                <option value selected>- Campus -</option>
+                                                <option value selected disabled>- Campus -</option>
                                                 <?php foreach ($campuses as $key => $row) : ?>
                                                     <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
                                                 <?php endforeach; ?>
@@ -59,16 +59,21 @@
                                         <div class="col-md-6 col-12 mt-2">
                                             <label for="department" class="form-label">Department</label>
                                             <select class="form-control" name="department" id="department" required>
-                                                <option value selected>- Department -</option>
+                                                <option value selected disabled>- Department -</option>
                                             </select>
                                             <div class="invalid-feedback">Please enter a Department!</div>
                                         </div>
 
                                     </div>
                                     <div class="col-md-12 col-12 mt-2">
+<<<<<<< HEAD
                                         <label for="yourEmail" class="form-label">Email</label>
                                         <input type="email" name="email" class="form-control" id="email" 
                                         pattern=".+@g\.batstate-u\.edu\.ph" required>
+=======
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" name="email" class="form-control" id="email" required>
+>>>>>>> 89aba69ec1ae81e15c092268549df4a67e827303
                                         <div class="invalid-feedback">Please enter your valid Email address!</div>
                                     </div>
 

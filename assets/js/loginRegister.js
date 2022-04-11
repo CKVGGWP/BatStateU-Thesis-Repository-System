@@ -153,6 +153,7 @@ $("#register").on("submit", function (e) {
       password.addClass("is-invalid");
     });
   } else {
+<<<<<<< HEAD
     if (
       srCode.hasClass("is-invalid") ||
       email.hasClass("is-invalid") ||
@@ -173,6 +174,8 @@ $("#register").on("submit", function (e) {
     $("#createAccBtn").blur();
     $("#createAccBtn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating...');
 
+=======
+>>>>>>> 89aba69ec1ae81e15c092268549df4a67e827303
     $.ajax({
       url: "controllers/loginRegisterController.php",
       method: "POST",

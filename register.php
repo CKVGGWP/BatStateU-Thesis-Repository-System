@@ -11,5 +11,6 @@
 <?php include "views/footer.php"; ?>
 
 <script src="./assets/js/loginRegister.js"></script>
+<script src="./assets/js/information.js"></script>
 
 </html>
