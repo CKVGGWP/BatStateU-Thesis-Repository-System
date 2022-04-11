@@ -201,6 +201,12 @@ $("#register").on("submit", function (e) {
           }).then((result) => {
             window.location.href = "index.php";
           });
+        } else if (response == 5) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "SR Code is already taken!",
+          });
         }
       },
     });

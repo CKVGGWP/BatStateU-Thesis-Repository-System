@@ -39,6 +39,11 @@ class LoginRegister extends Database
             exit();
         }
 
+        if ($this->checkSRCode($data['srCode']) == true) {
+            return 5;
+            exit();
+        }
+
         if ($this->insertData($data) == false) {
             return 3;
         } else {
@@ -66,6 +71,20 @@ class LoginRegister extends Database
         $sql = "SELECT * FROM user_details WHERE email = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function checkSRCode($srCode)
+    {
+        $sql = "SELECT * FROM user_details WHERE srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("s", $srCode);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
