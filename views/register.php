@@ -23,7 +23,7 @@
                                     <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
                                 </div>
 
-                                <form method="POST" autocomplete="off" class="needs-validation" novalidate>
+                                <form method="POST" autocomplete="off" class="needs-validation" novalidate id="register">
                                     <div class="row g-2">
                                         <div class="col-md-4 col-12">
                                             <label for="firstName" class="form-label">First Name</label>
@@ -63,7 +63,7 @@
                                     </div>
                                     <div class="col-md-12 col-12 mt-2">
                                         <label for="yourEmail" class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" id="yourEmail" required>
+                                        <input type="email" name="email" class="form-control" id="email" required>
                                         <div class="invalid-feedback">Please enter your valid Email address!</div>
                                     </div>
 
@@ -78,7 +78,7 @@
 
                                         <div class="col-md-6 col-12">
                                             <label for="yourPassword" class="form-label">Password</label>
-                                            <input type="password" name="password" class="form-control" id="yourPassword" required>
+                                            <input type="password" name="password" class="form-control" id="password" required>
                                             <div class="invalid-feedback">Please enter your password!</div>
                                         </div>
                                     </div>

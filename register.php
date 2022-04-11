@@ -10,4 +10,6 @@
 
 <?php include "views/footer.php"; ?>
 
+<script src="./assets/js/loginRegister.js"></script>
+
 </html>

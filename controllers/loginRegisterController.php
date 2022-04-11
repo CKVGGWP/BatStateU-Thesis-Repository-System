@@ -9,7 +9,7 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $loginRegister->login($email, $password);
+    echo $loginRegister->login($email, $password);
 }
 
 if (isset($_POST['register'])) {
@@ -24,12 +24,12 @@ if (isset($_POST['register'])) {
         'campus'        =>     $_POST['campus'],
     );
 
-    $loginRegister->register($data);
+    echo $loginRegister->register($data);
 }
 
 if (isset($_POST['verify'])) {
     $tokenKey = $_POST['tokenKey'];
     $srCode = $_POST['srCode'];
 
-    $loginRegister->verify($tokenKey, $srCode);
+    echo $loginRegister->verify($tokenKey, $srCode);
 }
