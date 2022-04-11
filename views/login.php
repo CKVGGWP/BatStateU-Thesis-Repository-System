@@ -64,9 +64,7 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p class="text-dark">Enter your registered email
-                                                            address
-                                                            below.</p>
+                                                        <p class="text-dark">Enter your registered email address below.</p>
                                                         <div class="form-group">
                                                             <input type="email" class="form-control" id="emailForgot" placeholder="Email Address">
                                                         </div>
