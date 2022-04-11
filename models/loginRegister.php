@@ -141,21 +141,23 @@ class LoginRegister extends Database
 
     private function getSessionID($email)
     {
-        $sql = "SELECT srCode FROM user_details WHERE email = ?";
+        $sql = "SELECT srCode, role FROM user_details WHERE email = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            return $row['srCode'];
+            return $row;
         }
     }
 
     private function setSession($email)
     {
         session_start();
-        $_SESSION['srCode'] = $this->getSessionID($email);
+        $sessionID = $this->getSessionID($email);
+        $_SESSION['srCode'] = $sessionID['srCode'];
+        $_SESSION['role'] = $sessionID['role'];
     }
 
     private function insertData($data)
