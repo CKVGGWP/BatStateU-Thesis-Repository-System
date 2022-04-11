@@ -5,7 +5,7 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
                         <div class="py-4 d-flex justify-content-center">
-                            <a href="login.php" class="logo align-items-center text-center w-auto">
+                            <a href="index.php" class="logo align-items-center text-center w-auto">
                                 <img class="" src="./assets/img/BatStateU.png" alt="BatStateU">
                                 <div>
                                     <span>BatStateU Online Thesis Repository and Management System</span>

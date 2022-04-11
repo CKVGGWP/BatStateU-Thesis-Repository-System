@@ -151,23 +151,6 @@ $("#register").on("submit", function (e) {
       password.addClass("is-invalid");
     });
   } else {
-    if (
-      srCode.hasClass("is-invalid") ||
-      email.hasClass("is-invalid") ||
-      firstName.hasClass("is-invalid") ||
-      lastName.hasClass("is-invalid") ||
-      department.hasClass("is-invalid") ||
-      campus.hasClass("is-invalid") ||
-      password.hasClass("is-invalid")
-    ) {
-      srCode.removeClass("is-invalid");
-      email.removeClass("is-invalid");
-      firstName.removeClass("is-invalid");
-      lastName.removeClass("is-invalid");
-      department.removeClass("is-invalid");
-      campus.removeClass("is-invalid");
-      password.removeClass("is-invalid");
-    }
     $.ajax({
       url: "controllers/loginRegisterController.php",
       method: "POST",
