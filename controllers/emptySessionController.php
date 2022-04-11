@@ -3,5 +3,5 @@
 session_start();
 
 if (empty($_SESSION['srCode'])) {
-    header("Location: login.php");
+    header("Location: index.php");
 }

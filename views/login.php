@@ -23,11 +23,11 @@
                                     </h5>
                                 </div>
 
-                                <form method="POST" autocomplete="off" class="row g-3 needs-validation" novalidate>
+                                <form method="POST" autocomplete="off" class="row g-3 needs-validation" novalidate id="login">
                                     <div class="col-12">
-                                        <label for="yourUsername" class="form-label">Email</label>
+                                        <label for="email" class="form-label">Email</label>
                                         <div class="input-group has-validation">
-                                            <input type="text" name="username" class="form-control" id="yourUsername" required />
+                                            <input type="email" name="email" class="form-control" id="email" required />
                                             <div class="invalid-feedback">
                                                 Please enter your email.
                                             </div>
@@ -35,8 +35,8 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" id="yourPassword" required />
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" name="password" class="form-control" id="password" required />
                                         <div class="invalid-feedback">
                                             Please enter your password.
                                         </div>
@@ -44,7 +44,7 @@
 
 
                                     <div class="col-12">
-                                        <button type="button" class="btn btn-danger rounded-pill w-100" type="submit">
+                                        <button type="submit" class="btn btn-danger rounded-pill w-100">
                                             Login
                                         </button>
                                     </div>
@@ -73,7 +73,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-danger rounded-pill">Confirm</button>
+                                                        <button type="submit" class="btn btn-danger rounded-pill">Confirm</button>
                                                     </div>
                                                 </div>
                                             </div>

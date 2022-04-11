@@ -7,5 +7,6 @@
     <?php include "views/login.php"; ?>
 </body>
 <?php include "views/footer.php"; ?>
+<script src="./assets/js/loginRegister.js"></script>
 
 </html>

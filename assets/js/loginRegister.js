@@ -1,13 +1,3 @@
-function include(file) {
-  let script = document.createElement("script");
-  script.src = file;
-  script.type = "text/javascript";
-  script.defer = true;
-  document.getElementsByTagName("head").item(0).appendChild(script);
-}
-
-include("assets/js/functions.js");
-
 $("#login").on("submit", function (e) {
   e.preventDefault();
 
@@ -33,10 +23,6 @@ $("#login").on("submit", function (e) {
       password.addClass("is-invalid");
     });
   } else {
-    if (email.hasClass("is-invalid") || password.hasClass("is-invalid")) {
-      password.removeClass("is-invalid");
-      email.removeClass("is-invalid");
-    }
     $.ajax({
       url: "controllers/loginRegisterController.php",
       method: "POST",
@@ -67,7 +53,7 @@ $("#login").on("submit", function (e) {
         } else {
           Swal.fire({
             icon: "success",
-            title: "Success",
+            title: response,
             text: "Login Successful!",
           }).then((result) => {
             window.location.href = "index.php";
@@ -94,7 +80,7 @@ $("#register").on("submit", function (e) {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: "Student Code Field is Empty!",
+      text: "SR Code Field is Empty!",
     }).then((result) => {
       srCode.focus();
       srCode.addClass("is-invalid");
@@ -227,10 +213,7 @@ $("#register").on("submit", function (e) {
   }
 });
 
-if (
-  getParameterByName("tokenKey") != "" &&
-  getParameterByName("srCode") != ""
-) {
+if (url == "verify.php") {
   $.ajax({
     url: "controllers/loginRegisterController.php",
     method: "POST",
@@ -263,6 +246,4 @@ if (
       }
     },
   });
-} else {
-  window.location.href = "index.php";
 }
