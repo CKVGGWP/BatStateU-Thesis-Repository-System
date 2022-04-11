@@ -1,3 +1,5 @@
+let url = window.location.href;
+
 $("#login").on("submit", function (e) {
   e.preventDefault();
 

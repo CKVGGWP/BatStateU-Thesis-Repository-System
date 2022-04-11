@@ -1,3 +1,4 @@
+<?php include('controllers/informationController.php'); ?>
 <main>
     <div class="container">
         <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-1">
@@ -48,6 +49,9 @@
                                             <label for="campus" class="form-label">Campus</label>
                                             <select class="form-control" name="campus" id="campus" required>
                                                 <option value selected>- Campus -</option>
+                                                <?php foreach ($campuses as $key => $row) : ?>
+                                                    <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                             <div class="invalid-feedback">Please enter a Campus!</div>
                                         </div>
