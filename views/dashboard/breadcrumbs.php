@@ -1,0 +1,18 @@
+<?php
+
+$filePath = basename($_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING']);
+
+?>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+    <?php if ($filePath == "dashboard.php") : ?>
+        <li class="breadcrumb-item active">Dashboard</li>
+    <?php elseif ($filePath == "requestAdmin.php") : ?>
+        <li class="breadcrumb-item">Manuscript</li>
+        <li class="breadcrumb-item active">Requests</li>
+    <?php elseif ($filePath == "accountSetting.php") : ?>
+        <li class="breadcrumb-item active">Account Settings</li>
+    <?php elseif ($filePath == "accountManagementAdmin.php") : ?>
+        <li class="breadcrumb-item active">Account Management</li>
+    <?php endif; ?>
+</ol>

@@ -3,10 +3,7 @@
   <div class="pagetitle">
     <h1>Account Settings</h1>
     <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-        <li class="breadcrumb-item active">Account Settings</li>
-      </ol>
+      <?php include('views/dashboard/breadcrumbs.php'); ?>
     </nav>
   </div><!-- End Page Title -->
 
@@ -46,48 +43,7 @@
               <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                 <!-- Profile Edit Form -->
-                <form>
-                  <div class="row mb-3">
-                    <label for="firstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="firstName" type="text" class="form-control" id="firstName" value="<?php echo $firstName; ?>">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="middleName" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="middleName" type="text" class="form-control" id="middleName" value="<?php echo $middleName; ?>">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="lastName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="lastName" type="text" class="form-control" id="lastName" value="<?php echo $lastName; ?>">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="campus" class="col-md-4 col-lg-3 col-form-label">Campus</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="campus" type="text" class="form-control" id="campus" value="<?php echo $campus; ?>">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="department" class="col-md-4 col-lg-3 col-form-label">Department</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="department" type="text" class="form-control" id="department" value="<?php echo $department; ?>">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="email" type="text" class="form-control" id="email" value="<?php echo $email; ?>">
-                    </div>
-                  </div>
+                <form method="POST" id="saveInfo">
 
                   <?php if ($title == 'Librarian') : ?>
 
@@ -109,8 +65,77 @@
 
                   <?php endif; ?>
 
+                  <div class="row mb-3">
+                    <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="email" type="text" class="form-control" id="email" value="<?php echo $email; ?>">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="firstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="firstName" type="text" class="form-control" id="firstName" value="<?php echo $firstName; ?>">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="middleName" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="middleName" type="text" class="form-control" id="middleName" value="<?php echo $middleName; ?>">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="lastName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="lastName" type="text" class="form-control" id="lastName" value="<?php echo $lastName; ?>">
+                    </div>
+                  </div>
+
+                  <?php if ($title == 'Librarian') : ?>
+
+                    <div class="row mb-3">
+                      <label for="campus" class="col-md-4 col-lg-3 col-form-label">Campus</label>
+                      <div class="col-md-8 col-lg-9">
+                        <select name="campus" id="userCampus" class="form-select">
+                          <option value="<?php echo $campID; ?>" selected><?php echo $campus; ?></option>
+                          <?php foreach ($campuses as $key => $row) : ?>
+                            <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="department" class="col-md-4 col-lg-3 col-form-label">Department</label>
+                      <div class="col-md-8 col-lg-9">
+                        <select name="department" id="userDepartment" class="form-select">
+                          <option value="<?php echo $deptID; ?>"><?php echo $department; ?></option>
+                        </select>
+                      </div>
+                    </div>
+
+                  <?php else : ?>
+
+                    <div class="row mb-3">
+                      <label for="campus" class="col-md-4 col-lg-3 col-form-label">Campus</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="campus" type="text" class="form-control" id="campus" value="<?php echo $campus; ?>" readonly>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <label for="department" class="col-md-4 col-lg-3 col-form-label">Department</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="department" type="text" class="form-control" id="department" value="<?php echo $department; ?>" readonly>
+                      </div>
+                    </div>
+
+                  <?php endif; ?>
+
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary" id="saveInfo">Save Changes</button>
                   </div>
                 </form><!-- End Profile Edit Form -->
 

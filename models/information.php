@@ -2,9 +2,13 @@
 
 class Information extends Database
 {
-    public function getCampuses()
+    public function getCampuses($id = '')
     {
-        $sql = "SELECT * FROM campus ORDER BY campusName ASC";
+        $sql = "SELECT * FROM campus";
+        if ($id != '') {
+            $sql .= " WHERE id NOT IN ('$id')";
+        }
+        $sql .= " ORDER BY campusName ASC";
         $result = $this->connect()->query($sql);
         $campuses = [];
         while ($row = $result->fetch_assoc()) {
@@ -35,7 +39,7 @@ class Information extends Database
 
     public function getUserBySession($id)
     {
-        $sql = "SELECT * FROM user_details u 
+        $sql = "SELECT *, c.id AS campID, d.id AS deptID FROM user_details u 
                 LEFT JOIN campus c ON c.id = u.campusID 
                 LEFT JOIN department d ON d.id = u.departmentID
                 WHERE srCode = ?";

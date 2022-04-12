@@ -3,10 +3,7 @@
     <div class="pagetitle">
         <h1>Dashboard</h1>
         <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="dashboardUser.php">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
+            <?php include('breadcrumbs.php'); ?>
         </nav>
     </div><!-- End Page Title -->
 
