@@ -25,6 +25,13 @@
         </li><!-- End View Request Nav -->
 
         <li class="nav-item">
+            <a class="nav-link " href="uploadUser.php">
+                <i class="bi bi-upload"></i>
+                <span>Upload</span>
+            </a>
+        </li><!-- End View Request Nav -->
+
+        <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>

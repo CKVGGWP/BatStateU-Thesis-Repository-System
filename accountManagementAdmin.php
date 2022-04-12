@@ -12,5 +12,6 @@
 </body>
 
 <?php include "views/footer.php"; ?>
+<script src="./assets/js/accountManagementAdmin.js"></script>
 
 </html>

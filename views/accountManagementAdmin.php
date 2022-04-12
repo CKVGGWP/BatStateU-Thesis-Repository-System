@@ -24,7 +24,7 @@
               <p>People that registered their account to the system.</p>
 
               <!-- Table with stripped rows -->
-              <table class="table datatable">
+              <table class="table datatable" id="accountManagementTable">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -38,7 +38,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <!-- <tr>
                     <th scope="row">1</th>
                     <td>0001</td>
                     <td>Brandon Jacob</td>
@@ -118,7 +118,7 @@
                     <td>me@example.com</td>
                     <td>User</td>
                     <td>DELETE</td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->
