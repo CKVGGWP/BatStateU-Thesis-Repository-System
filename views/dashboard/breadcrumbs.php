@@ -13,6 +13,7 @@ $filePath = basename($_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING']);
     <?php elseif ($filePath == "accountSetting.php") : ?>
         <li class="breadcrumb-item active">Account Settings</li>
     <?php elseif ($filePath == "accountManagementAdmin.php") : ?>
+        <li class="breadcrumb-item">Accounts</li>
         <li class="breadcrumb-item active">Account Management</li>
     <?php endif; ?>
 </ol>

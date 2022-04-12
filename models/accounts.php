@@ -4,6 +4,7 @@ require('../assets/vendor/autoload.php');
 
 class Accounts extends Database
 {
+    //-----------------------GET TABLE
     public function getAccountsTable()
     {
         $sql = "SELECT 
@@ -33,7 +34,7 @@ class Accounts extends Database
                     $email,
                     $role == 1 ? 'Admin' : 'User',
                     '<div class="btn-group-vertical">
-                        <button type="button" class="btn btn-warning btn-sm mb-2" data-srCode="'.$srCode.'" data-bs-toggle="modal" data-bs-target="#editAccounts">UPDATE</button>
+                        <button type="button" class="btn btn-warning btn-sm mb-2 edit" data-srCode="'.$srCode.'" data-bs-toggle="modal" data-bs-target="#editAccounts">EDIT</button>
                         <button type="button" class="btn btn-danger btn-sm delete" data-srCode="'.$srCode.'">DELETE</button>
                     </div>'
 
@@ -51,4 +52,41 @@ class Accounts extends Database
             return json_encode($json_data);  // send data as json format
         }
     }
+
+    //----------------------GET ACCOUNT DETAILS
+    public function getAccountDetails($srCode){
+        $sql = "SELECT u.srCode, u.email, u.firstName, u.middleName, u.lastName, d.departmentName, c.campusName
+                FROM user_details u 
+                LEFT JOIN department d ON u.departmentID = d.id 
+                LEFT JOIN campus c ON d.campusID = c.id
+                WHERE u.srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                extract($row);
+                $data[] = [
+                    $srCode,
+                    $firstName,
+                    $campusName,
+                    $departmentName,
+                    $email
+                ];
+            }
+            return json_encode($data);
+        }
+    }
+
+    //----------------------DELETE ACCOUNT
+    public function deleteAccount($srCode){
+        $sql = "DELETE FROM user_details WHERE srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
+        $stmt->execute();
+        $stmt->close();
+        return json_encode(['success' => true]);
+    }
+
 }

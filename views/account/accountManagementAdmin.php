@@ -89,7 +89,7 @@
               <input type="text" class="form-control" id="editAccountID" name="editAccountID" readonly>
             </div>
             <div class="form-group">
-              <label for="editAccountName">Name</label>
+              <label for="editAccountName"> First Name</label>
               <input type="text" class="form-control" id="editAccountName" name="editAccountName">
             </div>
             <div class="form-group">
@@ -97,6 +97,10 @@
               <select class="form-control" id="editAccountCampus" name="editAccountCampus"></select>
             </div>
           </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="editAccountSubmit">Save changes</button>
         </div>
       </div>
     </div>
