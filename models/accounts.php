@@ -7,9 +7,16 @@ class Accounts extends Database
 
     public function getAccountsTable()
     {
-        $sql = "SELECT srCode, email, CONCAT(firstName, ' ' , middleName , ' ' , lastName) 
-                AS name, departmentID, campusID, role
-                FROM user_details";
+        $sql = "SELECT 
+                u.srCode, 
+                u.email, 
+                CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name, 
+                u.role, 
+                d.departmentName, 
+                c.campusName
+                FROM user_details u 
+                LEFT JOIN department d ON u.departmentID = d.id 
+                LEFT JOIN campus c ON d.campusID = c.id";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -22,8 +29,8 @@ class Accounts extends Database
                     $totalData,
                     $srCode,
                     $name,
-                    $departmentID,
-                    $campusID,
+                    $campusName,
+                    $departmentName,
                     $email,
                     $role == 1 ? 'Admin' : 'User',
                     '<div class="btn-group-vertical">
