@@ -3,10 +3,7 @@
   <div class="pagetitle">
     <h1>Account Management</h1>
     <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-        <li class="breadcrumb-item active">Account Management</li>
-      </ol>
+      <?php include('views/dashboard/breadcrumbs.php'); ?>
     </nav>
   </div><!-- End Page Title -->
 

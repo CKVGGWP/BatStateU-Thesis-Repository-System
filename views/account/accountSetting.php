@@ -3,10 +3,7 @@
   <div class="pagetitle">
     <h1>Account Settings</h1>
     <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-        <li class="breadcrumb-item active">Account Settings</li>
-      </ol>
+      <?php include('views/dashboard/breadcrumbs.php'); ?>
     </nav>
   </div><!-- End Page Title -->
 
@@ -46,7 +43,35 @@
               <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                 <!-- Profile Edit Form -->
-                <form>
+                <form method="POST" id="saveInfo">
+
+                  <?php if ($title == 'Librarian') : ?>
+
+                    <div class="row mb-3">
+                      <label for="srCode" class="col-md-4 col-lg-3 col-form-label">Employee ID</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="srCode" type="text" class="form-control" id="srCode" value="<?php echo $srCode; ?>" readonly>
+                      </div>
+                    </div>
+
+                  <?php else : ?>
+
+                    <div class="row mb-3">
+                      <label for="srCode" class="col-md-4 col-lg-3 col-form-label">SR Code</label>
+                      <div class="col-md-8 col-lg-9">
+                        <input name="srCode" type="text" class="form-control" id="srCode" value="" readonly>
+                      </div>
+                    </div>
+
+                  <?php endif; ?>
+
+                  <div class="row mb-3">
+                    <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="email" type="text" class="form-control" id="email" value="<?php echo $email; ?>">
+                    </div>
+                  </div>
+
                   <div class="row mb-3">
                     <label for="firstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                     <div class="col-md-8 col-lg-9">
@@ -109,35 +134,8 @@
 
                   <?php endif; ?>
 
-                  <div class="row mb-3">
-                    <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="email" type="text" class="form-control" id="email" value="<?php echo $email; ?>">
-                    </div>
-                  </div>
-
-                  <?php if ($title == 'Librarian') : ?>
-
-                    <div class="row mb-3">
-                      <label for="srCode" class="col-md-4 col-lg-3 col-form-label">Employee ID</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="srCode" type="text" class="form-control" id="srCode" value="<?php echo $srCode; ?>" readonly>
-                      </div>
-                    </div>
-
-                  <?php else : ?>
-
-                    <div class="row mb-3">
-                      <label for="srCode" class="col-md-4 col-lg-3 col-form-label">SR Code</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="srCode" type="text" class="form-control" id="srCode" value="" readonly>
-                      </div>
-                    </div>
-
-                  <?php endif; ?>
-
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" class="btn btn-primary" id="saveInfo">Save Changes</button>
                   </div>
                 </form><!-- End Profile Edit Form -->
 
