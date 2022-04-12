@@ -27,7 +27,7 @@
                                     <div class="col-12">
                                         <label for="email" class="form-label">Email</label>
                                         <div class="input-group has-validation">
-                                            <input type="email" name="email" class="form-control" id="email" required />
+                                            <input type="email" name="email" class="form-control" id="email" required autocomplete="email" />
                                             <div class="invalid-feedback">
                                                 Please enter your email.
                                             </div>
@@ -36,7 +36,7 @@
 
                                     <div class="col-12">
                                         <label for="password" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" id="password" required />
+                                        <input type="password" name="password" class="form-control" id="password" required autocomplete="current-password" />
                                         <div class="invalid-feedback">
                                             Please enter your password.
                                         </div>

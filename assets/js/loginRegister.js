@@ -26,7 +26,7 @@ $("#login").on("submit", function (e) {
   } else {
     $("#loginBtn").blur();
     $("#loginBtn").html(
-      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Login'
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging In...'
     );
     $.ajax({
       url: "controllers/loginRegisterController.php",
