@@ -24,7 +24,7 @@
               <p>People that registered their account to the system.</p>
 
               <!-- Table with stripped rows -->
-              <table class="table table-hover dt-responsive nowrap" style="width:100%" id="accountManagementTable">
+              <table class="table table-hover dt-responsive nowrap text-center" id="accountManagementTable">
                 <thead>
                   <tr>
                     <th scope="col">#</th>

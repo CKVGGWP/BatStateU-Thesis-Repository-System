@@ -21,7 +21,7 @@
               <p>Students that request to view the manuscripts</p>
 
               <!-- Table with stripped rows -->
-              <table class="table datatable">
+              <table class="table table-hover dt-responsive nowrap" style="width:100%" id="requestAdminTable">
                 <thead>
                   <tr>
                     <th scope="col">#</th>

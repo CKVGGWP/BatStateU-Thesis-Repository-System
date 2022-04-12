@@ -9,7 +9,8 @@
                 <span>Dashboard</span>
             </a>
         </li><!-- End Dashboard Nav -->
-
+        
+        <?php if ($_SESSION['role'] == 1) :?>
         <li class="nav-item">
             <a class="nav-link " href="accountManagementAdmin.php">
                 <i class="bi bi-person"></i>
@@ -23,6 +24,7 @@
                 <span>View Request</span>
             </a>
         </li><!-- End View Request Nav -->
+        <?php endif;?>
 
         <li class="nav-item">
             <a class="nav-link " href="uploadUser.php">

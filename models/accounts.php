@@ -25,7 +25,7 @@ class Accounts extends Database
                     $departmentID,
                     $campusID,
                     $email,
-                    $role,
+                    $role == 1 ? 'Admin' : 'User',
                     '<div class="btn-group-vertical">
                         <button type="button" class="btn btn-warning btn-sm">UPDATE</button>
                         <button type="button" class="btn btn-danger btn-sm">DELETE</button>
