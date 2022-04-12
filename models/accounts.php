@@ -34,8 +34,8 @@ class Accounts extends Database
                     $email,
                     $role == 1 ? 'Admin' : 'User',
                     '<div class="btn-group-vertical">
-                        <button type="button" class="btn btn-warning btn-sm mb-2 edit" data-srCode="'.$srCode.'" data-bs-toggle="modal" data-bs-target="#editAccounts">EDIT</button>
-                        <button type="button" class="btn btn-danger btn-sm delete" data-srCode="'.$srCode.'">DELETE</button>
+                        <button type="button" class="btn btn-warning btn-sm mb-2 edit" data-srCode="' . $srCode . '" data-bs-toggle="modal" data-bs-target="#editAccounts">EDIT</button>
+                        <button type="button" class="btn btn-danger btn-sm delete" data-srCode="' . $srCode . '">DELETE</button>
                     </div>'
 
                 ];
@@ -54,7 +54,8 @@ class Accounts extends Database
     }
 
     //----------------------GET ACCOUNT DETAILS
-    public function getAccountDetails($srCode){
+    public function getAccountDetails($srCode)
+    {
         $sql = "SELECT u.srCode, u.email, u.firstName, u.middleName, u.lastName, d.departmentName, c.campusName
                 FROM user_details u 
                 LEFT JOIN department d ON u.departmentID = d.id 
@@ -80,7 +81,8 @@ class Accounts extends Database
     }
 
     //----------------------DELETE ACCOUNT
-    public function deleteAccount($srCode){
+    public function deleteAccount($srCode)
+    {
         $sql = "DELETE FROM user_details WHERE srCode = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $srCode);
@@ -88,5 +90,4 @@ class Accounts extends Database
         $stmt->close();
         return json_encode(['success' => true]);
     }
-
 }

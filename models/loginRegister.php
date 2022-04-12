@@ -7,7 +7,6 @@ require('../assets/vendor/autoload.php');
 
 class LoginRegister extends Database
 {
-
     private $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
 
     public function login($email, $password)
