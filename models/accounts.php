@@ -33,8 +33,8 @@ class Accounts extends Database
                     $email,
                     $role == 1 ? 'Admin' : 'User',
                     '<div class="btn-group-vertical">
-                        <button type="button" class="btn btn-warning btn-sm mb-2">UPDATE</button>
-                        <button type="button" class="btn btn-danger btn-sm">DELETE</button>
+                        <button type="button" class="btn btn-warning btn-sm mb-2" data-srCode="'.$srCode.'" data-bs-toggle="modal" data-bs-target="#editAccounts">UPDATE</button>
+                        <button type="button" class="btn btn-danger btn-sm delete" data-srCode="'.$srCode.'">DELETE</button>
                     </div>'
 
                 ];

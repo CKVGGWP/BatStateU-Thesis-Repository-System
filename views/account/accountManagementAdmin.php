@@ -18,7 +18,7 @@
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <h5 class="card-title">Users</h5>
-              <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#accountPendings">Pending Accounts</button>
+              <button type="button" class="h-25 btn btn-dark btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#accountPendings">Pending Accounts</button>
             </div>
             <p>People that registered their account to the system.</p>
 
@@ -75,5 +75,36 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Create a modal for edit accounts -->
+  <div class="modal fade" id="editAccounts" tabindex="-1" role="dialog" aria-labelledby="editAccount" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editAccount">Edit Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editAccountForm" method="post">
+            <div class="form-group">
+              <label for="editAccountID">ID</label>
+              <input type="text" class="form-control" id="editAccountID" name="editAccountID" readonly>
+            </div>
+            <div class="form-group">
+              <label for="editAccountName">Name</label>
+              <input type="text" class="form-control" id="editAccountName" name="editAccountName">
+            </div>
+            <div class="form-group">
+              <label for="editAccountCampus">Campus</label>
+              <select class="form-control" id="editAccountCampus" name="editAccountCampus"></select>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
 </main><!-- End #main -->
