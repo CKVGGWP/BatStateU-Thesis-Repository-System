@@ -37,6 +37,92 @@
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
+<<<<<<< Updated upstream
+=======
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>0001</td>
+                    <td>Brandon Jacob</td>
+                    <td>PB</td>
+                    <td>CAS</td>
+                    <td>me@example.com</td>
+                    <td>User</td>
+                    <td>DELETE</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>0002</td>
+                    <td>Bridie Kessler</td>
+                    <td>Alangilan</td>
+                    <td>CIT</td>
+                    <td>me@example.com</td>
+                    <td>User</td>
+                    <td>DELETE</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>0003</td>
+                    <td>Ashleigh Langosh</td>
+                    <td>Malvar</td>
+                    <td>CICS</td>
+                    <td>me@example.com</td>
+                    <td>User</td>
+                    <td>DELETE</td>
+                    
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>0004</td>
+                    <td>Angus Grady</td>
+                    <td>Malvar</td>
+                    <td>CoE</td>
+                    <td>me@example.com</td>
+                    <td>User</td>
+                    <td>DELETE</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>0005</td>
+                    <td>Raheem Lehner</td>
+                    <td>Alangilan</td>
+                    <td>CEAFA</td>
+                    <td>me@example.com</td>
+                    <td>User</td>
+                    <td>DELETE</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">6</th>
+                    <td>0006</td>
+                    <td>Robie Advins</td>
+                    <td>PB</td>
+                    <td>CABEIHM</td>
+                    <td>me@example.com</td>
+                    <td>User</td>
+                    <td>DELETE</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">7</th>
+                    <td>0007</td>
+                    <td>Ramie Consult</td>
+                    <td>Balayan</td>
+                    <td>CEAFA</td>
+                    <td>me@example.com</td>
+                    <td>User</td>
+                    <td>DELETE</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">8</th>
+                    <td>0008</td>
+                    <td>Eira Bound</td>
+                    <td>Lipa</td>
+                    <td>CICS</td>
+                    <td>me@example.com</td>
+                    <td>User</td>
+                    <td>DELETE</td>
+                  </tr>
+                </tbody>
+>>>>>>> Stashed changes
               </table>
               <!-- End Table with stripped rows -->
 
