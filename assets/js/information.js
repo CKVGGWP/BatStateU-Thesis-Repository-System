@@ -226,11 +226,11 @@ $("#changePassForm").on("submit", function (e) {
             title: "Oops...",
             text: "Something went wrong with the server. Please try again later.",
           });
-        } else if (response == 3) {
+        } else if (response == 4) {
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: "Password Updated Successfully! Please login again.",
+            text: "Password Updated Successfully! Please login back again to your account.",
           }).then((result) => {
             window.location.href = "controllers/signoutController.php";
           });

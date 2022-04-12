@@ -3,7 +3,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// require('../assets/vendor/autoload.php');
+$directory = dirname(__FILE__);
+require_once $directory . '/../assets/vendor/autoload.php';
 
 class Information extends Database
 {
@@ -129,7 +130,8 @@ class Information extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return 3;
+            $user = $this->getUserBySession($srCode);
+            return $this->sendEmail($user['email'], '', $user['firstName'] . ' ' . $user['lastName'], $srCode, 'change');
         } else {
             return 2;
         }
@@ -181,8 +183,7 @@ class Information extends Database
 
         if ($stmt->affected_rows > 0) {
             if ($purpose == 'Email') {
-                // $this->sendEmail($data['email'], $token, $data['firstName'] . ' ' . $data['lastName'], $data['srCode'], "verify");
-                return 4;
+                $this->sendEmail($data['email'], $token, $data['firstName'] . ' ' . $data['lastName'], $data['srCode'], "verify");
             } else {
                 return 3;
             }

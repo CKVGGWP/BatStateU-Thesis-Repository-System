@@ -407,7 +407,7 @@ class LoginRegister extends Database
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
-                return $this->sendEmail($data['email'], $token, $data['firstName'] . $data['lastName'], $data['srCode'], "reset");
+                return $this->sendEmail($data['email'], $token, $data['firstName'] . ' ' . $data['lastName'], $data['srCode'], "reset");
             } else {
                 return 2;
             }
@@ -422,7 +422,7 @@ class LoginRegister extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return $this->sendEmail($data['email'], $token, $data['firstName'] . $data['lastName'], $data['srCode'], "reset");
+            return $this->sendEmail($data['email'], $token, $data['firstName'] . ' ' . $data['lastName'], $data['srCode'], "reset");
         } else {
             return 2;
         }

@@ -58,13 +58,13 @@ $("#login").on("submit", function (e) {
           });
         } else {
           Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Login Successful!',
+            icon: "success",
+            title: "Success",
+            text: "Login Successful!",
             showConfirmButton: false,
             timer: 1500,
           }).then((result) => {
-            window.location.href = 'dashboard.php';
+            window.location.href = "dashboard.php";
           });
         }
       },
@@ -158,6 +158,7 @@ $("#register").on("submit", function (e) {
     });
   } else {
     $("#createAccBtn").blur();
+    $("#createAccBtn").attr("disabled", true);
     $("#createAccBtn").html(
       '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating...'
     );
@@ -176,6 +177,7 @@ $("#register").on("submit", function (e) {
         register: true,
       },
       success: function (response) {
+        $("#createAccBtn").attr("disabled", false);
         $("#createAccBtn").html("Create Account");
         console.log(response);
         if (response == 1) {
@@ -241,6 +243,7 @@ $("#forgotPassForm").on("submit", function (e) {
     });
   } else {
     $("#closePass").attr("disabled", true);
+    $("#confirmPass").attr("disabled", true);
     $("#confirmPass").blur();
     $("#confirmPass").html(
       '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...'
@@ -254,6 +257,7 @@ $("#forgotPassForm").on("submit", function (e) {
       },
       success: function (response) {
         $("#closePass").attr("disabled", false);
+        $("#confirmPass").attr("disabled", false);
         $("#confirmPass").html("Confirm");
         console.log(response);
         if (response == 1) {
