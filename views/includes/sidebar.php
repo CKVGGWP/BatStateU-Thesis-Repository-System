@@ -27,11 +27,18 @@
         <?php endif; ?>
 
         <li class="nav-item">
+            <a class="nav-link " href="viewAdmin.php">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>Manuscript</span>
+            </a>
+        </li><!-- End Manuscript Nav -->
+        
+        <li class="nav-item">
             <a class="nav-link " href="uploadAdmin.php">
                 <i class="bi bi-upload"></i>
                 <span>Upload</span>
             </a>
-        </li><!-- End View Request Nav -->
+        </li><!-- End Upload Nav -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
