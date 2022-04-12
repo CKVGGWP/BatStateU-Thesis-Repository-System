@@ -71,7 +71,36 @@ class LoginRegister extends Database
             exit();
         }
 
-        return $this->insertPassToken($this->getID($email));
+        if ($this->insertPassToken($this->getID($email))) {
+            return 3;
+        } else {
+            return 2;
+        }
+    }
+
+    public function changePassword($data)
+    {
+        if ($this->checkSRCode($data['srCode']) != true) {
+            return 1;
+            exit();
+        }
+
+        if ($this->validateToken($data['tokenKey'], $data['srCode']) != true) {
+            return 2;
+            exit();
+        }
+
+        if ($this->validatePassword($data['newPassword'], $data['srCode']) == true) {
+            return 3;
+            exit();
+        }
+
+        if ($this->updatePassword($this->hashPassword($data['newPassword']), $data['srCode']) == false) {
+            return 4;
+            exit();
+        } else {
+            return 5;
+        }
     }
 
     private function emailExists($email)
@@ -93,6 +122,22 @@ class LoginRegister extends Database
         $sql = "SELECT * FROM user_details WHERE srCode = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("s", $srCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function validateToken($tokenKey, $srCode)
+    {
+        $sql = "SELECT * FROM user_details u 
+                INNER JOIN user_token t ON u.id = t.userId 
+                WHERE u.srCode = ? AND t.tokenKey = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("ss", $srCode, $tokenKey);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -129,6 +174,16 @@ class LoginRegister extends Database
         }
     }
 
+    private function hashPassword($password)
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    private function createToken()
+    {
+        return md5(uniqid(rand(), true));
+    }
+
     private function checkPassword($email, $password)
     {
         $hashedPassword = $this->selectPassword($email);
@@ -144,6 +199,24 @@ class LoginRegister extends Database
             }
         } else {
             return false;
+        }
+    }
+
+    private function validatePassword($password, $srCode)
+    {
+        $sql = "SELECT password FROM user_details WHERE srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("s", $srCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if (password_verify($password, $row['password'])) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -186,7 +259,7 @@ class LoginRegister extends Database
     private function insertToken($userID, $email, $name, $srCode)
     {
         $purpose = 'Email';
-        $token = bin2hex(random_bytes(32));
+        $token = $this->createToken();
         $sql = "INSERT INTO user_token (userId, tokenKey, purpose) VALUES (?, ?, ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("iss", $userID, $token, $purpose);
@@ -229,7 +302,7 @@ class LoginRegister extends Database
             } else if ($type == "reset") {
                 $mail->Subject = 'Password Reset - BatStateU-Malvar Thesis Repository System';
                 $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
-                $email_text = "<span>You have requested to reset your password. Please <a href='" . $this->url . "resetPassword.php?tokenKey='" . $tokenKey . "&srCode=" . $srCode . ">click here</a> to reset your password.</span><br><br>";
+                $email_text = "<span>You have requested to reset your password. Please <a href='" . $this->url . "resetPassword.php?tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to reset your password.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
                 $mail->Body = $email_template;
@@ -324,7 +397,7 @@ class LoginRegister extends Database
     private function insertPassToken($data)
     {
         $purpose = 'Password';
-        $token = bin2hex(random_bytes(32));
+        $token = $this->createToken();
 
         if ($this->checkToken($data['id'], $purpose)) {
             return $this->updateToken($data, $token, $purpose);
@@ -353,6 +426,20 @@ class LoginRegister extends Database
             return $this->sendEmail($data['email'], $token, $data['firstName'] . $data['lastName'], $data['srCode'], "reset");
         } else {
             return 2;
+        }
+    }
+
+    private function updatePassword($hashedPassword, $srCode)
+    {
+        $sql = "UPDATE user_details SET password = ? WHERE srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("ss", $hashedPassword, $srCode);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

@@ -39,3 +39,13 @@ if (isset($_POST['forgotPass'])) {
 
     echo $loginRegister->resetPassword($email);
 }
+
+if (isset($_POST['resetPass'])) {
+    $data = array(
+        'tokenKey'          =>     $_POST['tokenKey'],
+        'srCode'            =>     $_POST['srCode'],
+        'newPassword'       =>     $_POST['newPassword'],
+    );
+
+    echo $loginRegister->changePassword($data);
+}

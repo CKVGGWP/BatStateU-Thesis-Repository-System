@@ -238,6 +238,11 @@ $("#forgotPassForm").on("submit", function (e) {
       email.addClass("is-invalid");
     });
   } else {
+    $("#closePass").attr("disabled", true);
+    $("#confirmPass").blur();
+    $("#confirmPass").html(
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...'
+    );
     $.ajax({
       url: "controllers/loginRegisterController.php",
       method: "POST",
@@ -246,6 +251,8 @@ $("#forgotPassForm").on("submit", function (e) {
         forgotPass: true,
       },
       success: function (response) {
+        $("#closePass").attr("disabled", false);
+        $("#confirmPass").html("Confirm");
         console.log(response);
         if (response == 1) {
           Swal.fire({
@@ -320,13 +327,120 @@ if (pathname == "verify.php") {
         });
       } else if (response == 5) {
         Swal.fire({
-          icon: "error",
-          title: "Error",
+          icon: "info",
+          title: "Info",
           text: "Account already verified!",
         }).then((result) => {
           window.location.href = "index.php";
         });
       }
     },
+  });
+}
+
+if (pathname == "resetPassword.php") {
+  let tokenKey = getParameterByName("tokenKey");
+  let srCode = getParameterByName("srCode");
+
+  if (tokenKey == "" || srCode == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "You are not allowed to access this page!",
+    }).then((result) => {
+      window.location.href = "index.php";
+    });
+  }
+
+  $("#resetPass").on("submit", function (e) {
+    e.preventDefault();
+
+    let newPassword = $("#newPassword").val();
+    let confirmPassword = $("#confirmPassword").val();
+
+    if (tokenKey == "") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Your Token Key is Empty!",
+      });
+    } else if (srCode == "") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Your SR Code is Empty!",
+      });
+    } else if (newPassword == "") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "New Password Field is Empty!",
+      });
+    } else if (confirmPassword == "") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Confirm Password Field is Empty!",
+      });
+    } else if (newPassword != confirmPassword) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "New Password and Confirm Password do not match!",
+      });
+    } else {
+      $("#resetPassword").attr("disabled", true);
+      $("#resetPassword").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Resetting...'
+      );
+      $.ajax({
+        url: "controllers/loginRegisterController.php",
+        method: "POST",
+        data: {
+          tokenKey: tokenKey,
+          srCode: srCode,
+          newPassword: newPassword,
+          resetPass: true,
+        },
+        success: function (response) {
+          $("#resetPassword").attr("disabled", false);
+          $("#resetPassword").html("Reset");
+          console.log(response);
+          if (response == 1) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "SR Code does not exists!",
+            });
+          } else if (response == 2) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Token Key does not exists!",
+            });
+          } else if (response == 3) {
+            Swal.fire({
+              icon: "info",
+              title: "Info",
+              text: "New Password cannot be the same as the old password!",
+            });
+          } else if (response == 4) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Something went wrong resetting your password! Please try again later!",
+            });
+          } else if (response == 5) {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Password Reset Successfully!",
+            }).then((result) => {
+              window.location.href = "index.php";
+            });
+          }
+        },
+      });
+    }
   });
 }

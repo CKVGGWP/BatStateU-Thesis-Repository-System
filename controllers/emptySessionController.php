@@ -5,5 +5,4 @@
 //     exit();
 // endif;
 
-
 print_r($_SESSION);

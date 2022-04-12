@@ -55,7 +55,7 @@
                                             <p class="text-center">Forgot your Password?</p>
                                         </small>
                                     </a>
-                                    <div class="modal fade" id="forgotPassword" tabindex="-1">
+                                    <div class="modal fade" id="forgotPassword" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
                                         <form method="POST" id="forgotPassForm">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -70,8 +70,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-danger rounded-pill">Confirm</button>
+                                                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal" id="closePass">Close</button>
+                                                        <button type="submit" class="btn btn-danger rounded-pill" id="confirmPass">Confirm</button>
                                                     </div>
                                                 </div>
                                             </div>

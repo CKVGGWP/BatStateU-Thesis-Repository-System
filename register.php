@@ -2,8 +2,8 @@
 <html lang="en">
 <?php include "views/head.php"; ?>
 
-<body>
-
+<body onload='$(".loader").fadeOut(400);'>
+    <div class="loader"></div>
     <?php include "views/register.php"; ?>
 
 </body>
