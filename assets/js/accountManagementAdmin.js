@@ -1,16 +1,16 @@
 $(document).ready(function () {
-  let dataTable = $("#accountManagementTable").DataTable({
-    lengthChange: false,
-    searching: false,
+  let dataTable = $('#accountManagementTable').DataTable({
+    // lengthChange: false,
+    // searching: false,
     processing: true,
-    ordering: false,
-    serverSide: true,
+    // ordering: false,
+    // serverSide: true,
     bInfo: false,
     ajax: {
-      url: "controllers/accountManagementAdminController.php", // json datasource
-      type: "POST",     // method  , by default get
-      data: { getAccounts : true },
-      
+      url: 'controllers/accountManagementAdminController.php', // json datasource
+      type: 'POST', // method  , by default get
+      data: { getAccounts: true },
+
       // success: function (row, data, index) {
       // console.log(row);
       // },
