@@ -1,4 +1,4 @@
-let url = window.location.href;
+let pathname = window.location.pathname.split("/").pop();
 
 $("#login").on("submit", function (e) {
   e.preventDefault();
@@ -273,27 +273,32 @@ $("#forgotPassForm").on("submit", function (e) {
   }
 });
 
-if (url == "verify.php") {
+if (pathname == "verify.php") {
+  let tokenKey = getParameterByName("tokenKey");
+  let srCode = getParameterByName("srCode");
   $.ajax({
     url: "controllers/loginRegisterController.php",
     method: "POST",
     data: {
-      tokenKey: getParameterByName("tokenKey"),
-      srCode: getParameterByName("srCode"),
+      tokenKey: tokenKey,
+      srCode: srCode,
       verify: true,
     },
     success: function (response) {
+      console.log(response);
       if (response == 1) {
         Swal.fire({
           icon: "error",
           title: "Error",
           text: "Token is Invalid!",
+        }).then((result) => {
+          window.location.href = "index.php";
         });
       } else if (response == 2) {
         Swal.fire({
           icon: "success",
           title: "Success",
-          text: "Account Verified Successfully!",
+          text: "Account Verified Successfully! You can now login to your account!",
         }).then((result) => {
           window.location.href = "index.php";
         });
@@ -302,6 +307,24 @@ if (url == "verify.php") {
           icon: "error",
           title: "Error",
           text: "Something went wrong verifying your account! Please try again later!",
+        }).then((result) => {
+          window.location.href = "index.php";
+        });
+      } else if (response == 4) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Invalid SR Code!",
+        }).then((result) => {
+          window.location.href = "index.php";
+        });
+      } else if (response == 5) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Account already verified!",
+        }).then((result) => {
+          window.location.href = "index.php";
         });
       }
     },

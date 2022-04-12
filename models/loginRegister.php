@@ -7,6 +7,9 @@ require('../assets/vendor/autoload.php');
 
 class LoginRegister extends Database
 {
+
+    private $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
+
     public function login($email, $password)
     {
         if ($this->emailExists($email) != true) {
@@ -53,6 +56,11 @@ class LoginRegister extends Database
 
     public function verify($tokenKey, $srCode)
     {
+        if ($this->checkSRCode($srCode) != true) {
+            return 4;
+            exit();
+        }
+
         return $this->verifyEmail($tokenKey, $srCode);
     }
 
@@ -214,14 +222,14 @@ class LoginRegister extends Database
             if ($type == "verify") {
                 $mail->Subject = 'Account Verification - BatStateU-Malvar Thesis Repository System';
                 $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
-                $email_text = "<span>You have successfully created an account! Please <a href='http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/verify.php?tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to verify your email address.</span><br><br>";
+                $email_text = "<span>You have successfully created an account! Please <a href='" . $this->url . "verify.php?tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to verify your email address.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
                 $mail->Body = $email_template;
             } else if ($type == "reset") {
                 $mail->Subject = 'Password Reset - BatStateU-Malvar Thesis Repository System';
                 $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
-                $email_text = "<span>You have requested to reset your password. Please <a href='http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/resetPassword.php?tokenKey='" . $tokenKey . "&srCode=" . $srCode . ">click here</a> to reset your password.</span><br><br>";
+                $email_text = "<span>You have requested to reset your password. Please <a href='" . $this->url . "resetPassword.php?tokenKey='" . $tokenKey . "&srCode=" . $srCode . ">click here</a> to reset your password.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
                 $mail->Body = $email_template;
@@ -237,13 +245,12 @@ class LoginRegister extends Database
         }
     }
 
-    private function verifyEmail($srCode, $tokenKey)
+    private function verifyEmail($tokenKey, $srCode)
     {
         $sql = "SELECT u.id 
                 FROM user_details u 
                 INNER JOIN user_token t ON u.id = t.userId 
-                WHERE u.srCode = ?
-                AND t.tokenKey = ?";
+                WHERE u.srCode = ? AND t.tokenKey = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("ss", $srCode, $tokenKey);
         $stmt->execute();
@@ -252,9 +259,24 @@ class LoginRegister extends Database
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $userID = $row['id'];
-            return $this->updateStatus($userID);
+            return $this->checkStatus($userID);
         } else {
             return 1;
+        }
+    }
+
+    private function checkStatus($userID)
+    {
+        $sql = "SELECT * FROM user_details WHERE id = ? AND verifyStatus = 1";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $userID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return 5;
+        } else {
+            return $this->updateStatus($userID);
         }
     }
 

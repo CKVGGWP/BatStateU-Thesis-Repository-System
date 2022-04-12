@@ -28,4 +28,5 @@
     <link href="./assets/css/styles.css" rel="stylesheet">
     <script src="assets/js/functions.js"></script>
     <?php session_start(); ?>
+    <?php include "controllers/emptySessionController.php"; ?>
 </head>
