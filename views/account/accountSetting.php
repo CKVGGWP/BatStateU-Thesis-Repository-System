@@ -6,7 +6,7 @@
       <?php include('views/dashboard/breadcrumbs.php'); ?>
     </nav>
   </div><!-- End Page Title -->
-
+  
   <section class="section profile">
     <div class="row">
       <div class="col-xl-4">

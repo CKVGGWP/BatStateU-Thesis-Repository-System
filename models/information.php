@@ -52,7 +52,7 @@ class Information extends Database
                 LEFT JOIN department d ON d.id = u.departmentID
                 WHERE srCode = ?";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $id);
+        $stmt->bind_param('s', $id);
         $stmt->execute();
         $result = $stmt->get_result();
 
