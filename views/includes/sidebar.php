@@ -27,7 +27,7 @@
         <?php endif; ?>
 
         <li class="nav-item">
-            <a class="nav-link " href="uploadUser.php">
+            <a class="nav-link " href="uploadAdmin.php">
                 <i class="bi bi-upload"></i>
                 <span>Upload</span>
             </a>

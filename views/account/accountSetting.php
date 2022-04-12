@@ -17,7 +17,7 @@
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle" placeholder="">
+            <img src="assets/img/default.png" alt="Profile" class="rounded-circle">
             <h2><?php echo $name; ?></h2>
             <h3><?php echo $title; ?></h3>
           </div>
