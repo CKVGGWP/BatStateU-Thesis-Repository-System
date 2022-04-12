@@ -97,7 +97,11 @@
             </div>
             <div class="form-group">
               <label for="editAccountCampus">Campus</label>
-              <select class="form-control" id="editAccountCampus" name="editAccountCampus"></select>
+              <select class="form-control" id="editAccountCampus" name="editAccountCampus">
+                <?php foreach ($campuses as $key => $row) : ?>
+                  <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
+                <?php endforeach; ?>
+              </select>
             </div>
           </form>
         </div>

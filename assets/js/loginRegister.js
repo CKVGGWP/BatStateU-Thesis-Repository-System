@@ -58,11 +58,13 @@ $("#login").on("submit", function (e) {
           });
         } else {
           Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Login Successful!",
+            icon: 'success',
+            title: 'Success',
+            text: 'Login Successful!',
+            showConfirmButton: false,
+            timer: 1500,
           }).then((result) => {
-            window.location.href = "dashboard.php";
+            window.location.href = 'dashboard.php';
           });
         }
       },
