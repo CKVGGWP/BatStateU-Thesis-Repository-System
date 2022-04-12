@@ -15,5 +15,10 @@ $filePath = basename($_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING']);
     <?php elseif ($filePath == "accountManagementAdmin.php") : ?>
         <li class="breadcrumb-item">Accounts</li>
         <li class="breadcrumb-item active">Account Management</li>
+    <?php elseif ($filePath == "uploadAdmin.php") : ?>
+        <li class="breadcrumb-item">Manuscript</li>
+        <li class="breadcrumb-item active">Upload</li>
+    <?php elseif ($filePath == "viewAdmin.php") : ?>
+        <li class="breadcrumb-item active">Manuscript</li>
     <?php endif; ?>
 </ol>
