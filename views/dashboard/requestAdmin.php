@@ -13,7 +13,13 @@
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Request</h5>
+            <div class="d-flex justify-content-between">
+              <h5 class="card-title">Request</h5>
+              <button type="button" class="h-25 btn btn-dark btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#requestHistory">History
+                <!-- <span class="badge bg-danger">69</span> -->
+              </button>
+
+            </div>
             <p>Students that request to view the manuscripts</p>
 
             <!-- Table with stripped rows -->
@@ -24,7 +30,7 @@
                   <th scope="col">Date</th>
                   <th scope="col">Manuscript Title</th>
                   <th scope="col">Authors</th>
-                  <th scope="col">Requestor</th>
+                  <th scope="col">Requester</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -104,5 +110,36 @@
       </div>
     </div>
   </section>
+  <!-- Modal for Request History -->
+  <div class="modal fade" id="requestHistory" tabindex="-1" role="dialog" aria-labelledby="requestHistory" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="requestHistory">Request History</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Manuscript Title</th>
+                  <th scope="col">Authors</th>
+                  <th scope="col">Requester</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </main><!-- End #main -->

@@ -15,9 +15,9 @@
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <h5 class="card-title">Users</h5>
-              <button type="button" class="h-25 btn btn-dark btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#accountPendings">Pending Accounts
+              <!-- <button type="button" class="h-25 btn btn-dark btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#accountPendings">Pending Accounts
                 <span class="badge bg-danger">69</span>
-              </button>
+              </button> -->
               
             </div>
             <p>People that registered their account to the system.</p>
@@ -47,7 +47,7 @@
   </section>
 
   <!-- Create a modal with a table -->
-  <div class="modal fade" id="accountPendings" tabindex="-1" role="dialog" aria-labelledby="accountPendings" aria-hidden="true">
+  <!-- <div class="modal fade" id="accountPendings" tabindex="-1" role="dialog" aria-labelledby="accountPendings" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- Create a modal for edit accounts -->
   <div class="modal fade" id="editAccounts" tabindex="-1" role="dialog" aria-labelledby="editAccount" aria-hidden="true">
