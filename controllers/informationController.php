@@ -21,3 +21,7 @@ $srCode = $user['srCode'];
 $email = $user['email'];
 $campus = $user['campusName'];
 $department = $user['departmentName'];
+$deptID = $user['deptID'];
+$campID = $user['campID'];
+
+$campusNotIncluded = $info->getCampuses($campID);
