@@ -10,19 +10,21 @@
             </a>
         </li><!-- End Dashboard Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link " href="accountManagementAdmin.php">
-                <i class="bi bi-person"></i>
-                <span>Account Management</span>
-            </a>
-        </li><!-- End Account Management Nav -->
+        <?php if ($_SESSION['role'] == 1) : ?>
+            <li class="nav-item">
+                <a class="nav-link " href="accountManagementAdmin.php">
+                    <i class="bi bi-person"></i>
+                    <span>Account Management</span>
+                </a>
+            </li><!-- End Account Management Nav -->
 
-        <li class="nav-item">
-            <a class="nav-link " href="requestAdmin.php">
-                <i class="bi bi-book"></i>
-                <span>View Request</span>
-            </a>
-        </li><!-- End View Request Nav -->
+            <li class="nav-item">
+                <a class="nav-link " href="requestAdmin.php">
+                    <i class="bi bi-book"></i>
+                    <span>View Request</span>
+                </a>
+            </li><!-- End View Request Nav -->
+        <?php endif; ?>
 
         <li class="nav-item">
             <a class="nav-link " href="uploadUser.php">
