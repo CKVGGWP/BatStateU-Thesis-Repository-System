@@ -2,7 +2,6 @@
 <html lang="en">
 <?php include "views/includes/head.php"; ?>
 <?php include "controllers/emptySessionController.php"; ?>
-<?php include "controllers/adminSessionController.php"; ?>
 
 <body>
     <?php include "views/headerAdmin.php"; ?>
