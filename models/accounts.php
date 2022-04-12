@@ -4,7 +4,6 @@ require('../assets/vendor/autoload.php');
 
 class Accounts extends Database
 {
-
     public function getAccountsTable()
     {
         $sql = "SELECT 
@@ -34,16 +33,12 @@ class Accounts extends Database
                     $email,
                     $role == 1 ? 'Admin' : 'User',
                     '<div class="btn-group-vertical">
-                        <button type="button" class="btn btn-warning btn-sm">UPDATE</button>
+                        <button type="button" class="btn btn-warning btn-sm mb-2">UPDATE</button>
                         <button type="button" class="btn btn-danger btn-sm">DELETE</button>
                     </div>'
 
                 ];
-
-
-                
             }
-
 
             $json_data = array(
                 "draw"            => 1,   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 

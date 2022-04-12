@@ -35,7 +35,10 @@ class Information extends Database
 
     public function getUserBySession($id)
     {
-        $sql = "SELECT * FROM user_details WHERE srCode = ?";
+        $sql = "SELECT * FROM user_details u 
+                LEFT JOIN campus c ON c.id = u.campusID 
+                LEFT JOIN department d ON d.id = u.departmentID
+                WHERE srCode = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $id);
         $stmt->execute();

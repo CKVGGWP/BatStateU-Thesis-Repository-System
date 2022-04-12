@@ -104,7 +104,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" href="accountSetting.php">
                             <!--account setting -->
                             <i class="bi bi-gear"></i>
                             <span>Account Settings</span>
@@ -113,7 +113,6 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="#">
                             <i class="bi bi-question-circle"></i>
