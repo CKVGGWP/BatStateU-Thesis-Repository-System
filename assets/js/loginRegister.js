@@ -62,7 +62,7 @@ $("#login").on("submit", function (e) {
             title: "Success",
             text: "Login Successful!",
           }).then((result) => {
-            window.location.href = "dashboardAdmin.php";
+            window.location.href = "dashboard.php";
           });
         }
       },

@@ -32,4 +32,20 @@ class Information extends Database
 
         return json_encode($option);
     }
+
+    public function getUserBySession($id)
+    {
+        $sql = "SELECT * FROM user_details WHERE srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row;
+        } else {
+            return false;
+        }
+    }
 }
