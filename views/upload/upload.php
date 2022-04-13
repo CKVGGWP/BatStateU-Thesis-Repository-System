@@ -65,7 +65,7 @@
                 </div>
               </div>
               <div class="text-center">
-                <button type="submit" class="btn btn-danger w-25 mt-3 rounded-pill">UPLOAD</button>
+                <button type="submit" class="btn btn-danger w-25 mt-3 rounded-pill" id="uploadFiles">UPLOAD</button>
               </div>
             </form>
 

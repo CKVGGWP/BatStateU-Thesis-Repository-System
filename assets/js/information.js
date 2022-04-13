@@ -268,8 +268,6 @@ $(document).on("submit", "#editAccountForm", function (e) {
   let editAccountCampus = $("#editAccountCampus").val();
   let editDepartment = $("#editDepartment").val();
 
-  console.log(editAccountID);
-
   if (editEmail == "") {
     Swal.fire({
       icon: "error",
