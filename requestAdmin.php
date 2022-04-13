@@ -15,5 +15,7 @@
 
 <?php include "views/includes/footer.php"; ?>
 <script src="./assets/js/manuscript.js"></script>
+<script src="./assets/js/information.js"></script>
+
 
 </html>

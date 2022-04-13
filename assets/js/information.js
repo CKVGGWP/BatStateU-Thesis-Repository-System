@@ -383,3 +383,32 @@ $(document).on("submit", "#editAccountForm", function (e) {
     });
   }
 });
+
+if ($("#notifications").length > 0) {
+  $(document).ready(function () {
+    function loadNotifications(view = "") {
+      let views = view;
+      $.ajax({
+        url: "controllers/newInformationController.php",
+        data: { notif: true, view: views },
+        dataType: "json",
+        success: function (data) {
+          console.log(data);
+          $("#countHeader").html(data.countHeader);
+          $("#notificationDIV").html(data.notifications);
+          if (data.countNotifications > 0) {
+            $("#notifbadge").html(data.countNotifications);
+          }
+        },
+      });
+    }
+
+    loadNotifications();
+
+    $(document).on("click", "#notifications", function () {
+      $("#notifbadge").html("");
+      $("#countHeader").html("You have read all your notifications.");
+      loadNotifications("view");
+    });
+  });
+}

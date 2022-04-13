@@ -89,6 +89,91 @@ class Information extends Database
         return $this->updatePassword($new, $srCode);
     }
 
+    private function countNotification($id)
+    {
+        $sql = "SELECT 
+                COUNT(n.id) 
+                FROM notification n 
+                LEFT JOIN user_details u ON u.srCode = n.userID 
+                WHERE u.srCode = ? 
+                AND nRead = 0";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['COUNT(n.id)'];
+        } else {
+            return 0;
+        }
+    }
+
+    public function getNotification($id)
+    {
+        $sql = "SELECT * FROM notification n 
+                LEFT JOIN notificationtype t ON t.id = n.typeID 
+                WHERE n.userID = ? ORDER BY n.nRead ASC, n.dateReceived DESC";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $notif = "";
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $notif .= '<li class="notification-item">
+                                <i class="bi bi-exclamation-circle text-warning"></i>
+                                    <div>
+                                        <h4>"' . $row['type'] . '"</h4>
+                                        <p>"' . $row['notifMesage'] . '"</p>
+                                        <p>"' . date("F j, Y - H:i:s", $row['dateReceived']) . '"</p>
+                                    </div>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>';
+            }
+        } else {
+            $notif .= '<li class="notification-item">
+                            <div>
+                                <h4>No Notifications Yet!</h4>
+                            </div>
+                       </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>';
+        }
+
+        if ($this->countNotification($id) != 0) {
+            $header = "You have " . $this->countNotification($id) . " new notifications";
+            $header .= '<a href="#" id="markAllBTN"><span class="badge rounded-pill bg-primary p-2 ms-2">Mark all as Read</span></a>';
+        }
+
+        $data = array(
+            "countHeader" => $header,
+            "countNotifications" => $this->countNotification($id),
+            "notifications" => $notif
+        );
+
+        return json_encode($data);
+    }
+
+    public function updateNotification($id)
+    {
+        $sql = "UPDATE notification SET nRead = 1 WHERE userID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private function emailBySRCode($srCode)
     {
         $sql = "SELECT email FROM user_details WHERE srCode = ?";

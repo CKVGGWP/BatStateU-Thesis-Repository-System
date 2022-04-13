@@ -18,5 +18,6 @@
 </body>
 
 <?php include "views/includes/footer.php"; ?>
+<script src="./assets/js/information.js"></script>
 
 </html>
