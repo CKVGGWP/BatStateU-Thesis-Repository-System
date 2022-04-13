@@ -15,12 +15,13 @@
           <div class="card-body">
             <h5 class="card-title">Manuscript</h5>
             <!-- Table with stripped rows -->
-            <table class="table table-hover dt-responsive nowrap text-center" id="accountManagementTable">
+            <table class="table table-hover dt-responsive nowrap text-center" width="100%" id="manuscriptTable">
               <thead>
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Title</th>
                   <th scope="col">Authors</th>
+                  <th scope="col">Date Uploaded</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
