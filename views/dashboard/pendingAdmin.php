@@ -18,7 +18,7 @@
               <a href="viewAdmin.php" class="btn btn-dark btn-sm my-3">Manuscripts</a>
             </div>
             <!-- Table with stripped rows -->
-            <table class="table table-hover dt-responsive nowrap text-center" width="100%" id="manuscriptTable">
+            <table class="table table-hover dt-responsive nowrap text-center" width="100%" id="pendingManuscriptTable">
               <thead>
                 <tr>
                   <th scope="col">#</th>
