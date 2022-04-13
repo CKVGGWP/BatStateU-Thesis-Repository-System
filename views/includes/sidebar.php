@@ -24,14 +24,23 @@
                     <span>View Request</span>
                 </a>
             </li><!-- End View Request Nav -->
-        <?php endif; ?>
 
-        <li class="nav-item">
+            <li class="nav-item">
             <a class="nav-link " href="viewAdmin.php">
                 <i class="bi bi-file-earmark-pdf"></i>
                 <span>Manuscript</span>
             </a>
         </li><!-- End Manuscript Nav -->
+        <?php endif; ?>
+
+        <?php if ($_SESSION['role'] == 0) : ?>
+        <li class="nav-item">
+            <a class="nav-link " href="searchUser.php">
+                <i class="bi bi-search"></i>
+                <span>Browse Manuscript</span>
+            </a>
+        </li><!-- End Browse Manuscript Nav -->
+        <?php endif; ?>
 
         <li class="nav-item">
             <a class="nav-link " href="upload.php">

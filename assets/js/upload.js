@@ -79,7 +79,7 @@ $("#adminUpload").on("submit", function (e) {
       success: function (data) {
         $("#uploadFiles").html("UPLOAD");
         $("#uploadFiles").attr("disabled", false);
-        console.log(data);
+        // console.log(data);
         Swal.fire({
           icon: "success",
           title: "Upload Successful",
