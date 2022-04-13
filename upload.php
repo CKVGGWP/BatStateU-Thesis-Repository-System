@@ -9,7 +9,7 @@
 
     <?php include "views/includes/sidebar.php"; ?>
 
-    <?php include "views/dashboard/uploadAdmin.php"; ?>
+    <?php include "views/upload/upload.php"; ?>
 
 </body>
 

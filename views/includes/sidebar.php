@@ -34,7 +34,7 @@
         </li><!-- End Manuscript Nav -->
 
         <li class="nav-item">
-            <a class="nav-link " href="uploadAdmin.php">
+            <a class="nav-link " href="upload.php">
                 <i class="bi bi-upload"></i>
                 <span>Upload</span>
             </a>

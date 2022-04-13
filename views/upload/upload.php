@@ -3,7 +3,7 @@
   <div class="pagetitle">
     <h1>Manuscript Upload</h1>
     <nav>
-      <?php include('breadcrumbs.php'); ?>
+      <?php include('views/dashboard/breadcrumbs.php'); ?>
     </nav>
   </div><!-- End Page Title -->
 
@@ -24,8 +24,8 @@
               </div>
               <div class="col-md-6">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="yearPub" placeholder="Year Publication">
-                  <label for="yearPub">Year Publication</label>
+                  <input type="text" class="form-control" id="yearPub" placeholder="Year of Publication">
+                  <label for="yearPub">Year of Publication</label>
                 </div>
               </div>
               <div class="col-md-6">
@@ -34,18 +34,24 @@
                   <label for="authors">Authors</label>
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="department" placeholder="Department">
-                  <label for="yearPub">Department</label>
+              <?php if ($role == 'Admin') : ?>
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <select class="form-select" id="department" placeholder="Department">
+                      <?php foreach ($campuses as $key => $row) : ?>
+                        <option value="<?= $row['id'] ?>"><?= $row['campusName'] ?></option>
+                      <?php endforeach; ?>
+                    </select>
+                    <label for="yearPub">Department</label>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="program" placeholder="Program">
-                  <label for="program">Program</label>
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="text" class="form-control" id="program" placeholder="Program">
+                    <label for="program">Program</label>
+                  </div>
                 </div>
-              </div>
+              <?php endif; ?>
               <div class="col-md-6">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Abstract</label>
                 <div class="col-md-12">
