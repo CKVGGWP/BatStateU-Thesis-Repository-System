@@ -26,10 +26,10 @@ class Manuscript extends Database
                     $manuscriptTitle,
                     "",
                     $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
-                    '<div class="btn-group-vertical">
-                        <button type="button" class="btn btn-warning btn-sm mb-2 edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">EDIT</button>
+                    '
+                        <button type="button" class="btn btn-warning btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">EDIT</button>
                         <button type="button" class="btn btn-danger btn-sm delete" data-id="' . $id . '">DELETE</button>
-                    </div>',
+                    ',
                 ];
             }
 
