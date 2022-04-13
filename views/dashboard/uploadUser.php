@@ -18,7 +18,7 @@
             <form class="row g-3">
             <div class="col-md-12">
                   <div class="form-floating">
-                    <input type="text" class="form-control" id="title" placeholder="Title">
+                    <textarea type="text" class="form-control" id="title" placeholder="Title"></textarea>
                     <label for="title">Title</label>
                   </div>
                 </div>
@@ -34,27 +34,15 @@
                     <label for="authors">Password</label>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-floating">
-                    <input type="text" class="form-control" id="department" placeholder="Department">
-                    <label for="yearPub">Department</label>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-floating">
-                    <input type="text" class="form-control" id="program" placeholder="Program">
-                    <label for="program">Program</label>
-                  </div>
-                </div>
               <div class="col-md-6">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Abstract</label>
-                <div class="col-sm-10">
+                <div class="col-sm-12">
                   <input class="form-control" type="file" id="formFile">
                 </div>
               </div>
               <div class="col-md-6">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Journal</label>
-                <div class="col-sm-10">
+                <div class="col-sm-12">
                   <input class="form-control" type="file" id="formFile">
                 </div>
               </div>
