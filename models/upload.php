@@ -5,51 +5,48 @@ require('../assets/vendor/autoload.php');
 class Upload extends Database
 {
     //-----------------------Upload File
-    public function uploadFiles()
+    public function uploadFiles($values, $files)
     {
-        $sql = "SELECT 
-                u.srCode, 
-                u.email, 
-                CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name, 
-                u.role, 
-                d.departmentName, 
-                c.campusName
-                FROM user_details u 
-                LEFT JOIN department d ON u.departmentID = d.id 
-                LEFT JOIN campus c ON d.campusID = c.id";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $totalData = 0;
-            while ($row = $result->fetch_assoc()) {
-                extract($row);
-                $totalData++;
-                $data[] = [
-                    $totalData,
-                    $srCode,
-                    $name,
-                    $campusName,
-                    $departmentName,
-                    $email,
-                    $role == 1 ? 'Admin' : 'User',
-                    '<div class="btn-group-vertical">
-                        <button type="button" class="btn btn-warning btn-sm mb-2 edit" data-srCode="' . $srCode . '" data-bs-toggle="modal" data-bs-target="#editAccounts">EDIT</button>
-                        <button type="button" class="btn btn-danger btn-sm delete" data-srCode="' . $srCode . '">DELETE</button>
-                    </div>'
-
-                ];
+        $type = ['journal', 'abstract'];
+        foreach ($type as $key => $value) {
+            $path = "../assets/uploads/";
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
             }
+            $file_name = $files[$value]['name'];
+            $file_size = $files[$value]['size'];
+            $file_tmp = $files[$value]['tmp_name'];
+            $file_type = $files[$value]['type'];
+            $file_ext = strtolower(end(explode('.', $file_name)));
+            
+            $title = $values['title'];
+            $title = str_replace(" ", "", $values['title']);
 
-            $json_data = array(
-                "draw"            => 1,   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
-                "recordsTotal"    => intval($totalData),  // total number of records
-                "recordsFiltered" => intval($totalData), // total number of records after searching, if there is no searching then totalFiltered = totalData
-                "data"            => $data   // total data array
+            $file_name_new = $values['yearPub'] . '_' . substr($title, 0, 100);
 
-            );
-
-            return json_encode($json_data);  // send data as json format
+            $file_path = $path . $file_name_new . '_' . $value . '.' . $file_ext;
+            move_uploaded_file($file_tmp, $file_path);
         }
+        
+        $insert = $this->insertToDB($values, $file_name_new);
+        return $insert;
+    }
+    public function insertToDB($values, $file_name_new)
+    {   
+        // return print_r($values);
+        $abstract = $file_name_new . '_abstract.pdf';
+        $journal = $file_name_new . '_journal.pdf';
+        $title = $values['title'];
+        $yearPub = $values['yearPub'];
+        $authors = $values['authors'];
+        $department = $values['department'];
+        $program = $values['program'];
+        $dateNow = date("Y-m-d H:i:s");
+
+        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, dateUploaded, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , '0')";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('ssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $program, $dateNow);
+        $stmt->execute();
+        $stmt->close();
     }
 }
