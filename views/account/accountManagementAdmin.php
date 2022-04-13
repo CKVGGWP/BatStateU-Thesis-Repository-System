@@ -20,7 +20,7 @@
               </button> -->
 
             </div>
-            <p>People that registered their account to the system.</p>
+            <p>List of Registered Accounts on the System</p>
 
             <!-- Table with stripped rows -->
             <table class="table table-hover dt-responsive nowrap text-center" id="accountManagementTable">
@@ -94,7 +94,7 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="editEmail">Email Address</label>
-                <input type="email" class="form-control" id="editEmail" name="editEmail" readonly>
+                <input type="email" class="form-control" id="editEmail" name="editEmail">
               </div>
             </div>
             <div class="row my-2">

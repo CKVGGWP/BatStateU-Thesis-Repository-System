@@ -20,7 +20,7 @@
               </button>
 
             </div>
-            <p>Students that request to view the manuscripts</p>
+            <p>List of students that are requesting to view/download the manuscripts</p>
 
             <!-- Table with stripped rows -->
             <table class="table table-hover dt-responsive nowrap" style="width:100%" id="requestAdminTable">
@@ -117,7 +117,7 @@
         <div class="modal-header">
           <h5 class="modal-title" id="requestHistory">Request History</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            
+
           </button>
         </div>
         <div class="modal-body">

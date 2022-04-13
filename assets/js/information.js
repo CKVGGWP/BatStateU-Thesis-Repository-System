@@ -369,6 +369,17 @@ $(document).on("submit", "#editAccountForm", function (e) {
           }).then((result) => {
             location.reload();
           });
+        } else if (response == 4) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text:
+              "Information Updated Successfully! We've sent a verification email to " +
+              editEmail +
+              ".",
+          }).then((result) => {
+            location.reload();
+          });
         }
       },
     });
