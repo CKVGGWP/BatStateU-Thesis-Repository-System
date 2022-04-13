@@ -50,7 +50,7 @@ class Information extends Database
         $sql = "SELECT *, c.id AS campID, d.id AS deptID FROM user_details u 
                 LEFT JOIN campus c ON c.id = u.campusID 
                 LEFT JOIN department d ON d.id = u.departmentID
-                WHERE srCode = ?";
+                WHERE u.srCode = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $id);
         $stmt->execute();
