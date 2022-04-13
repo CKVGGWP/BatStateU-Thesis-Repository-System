@@ -121,14 +121,18 @@
                     <div class="row mb-3">
                       <label for="userCampus" class="col-md-4 col-lg-3 col-form-label">Campus</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="userCampus" type="text" class="form-control" id="userCampus" value="<?php echo $campus; ?>" readonly>
+                        <select name="userCampus" class="form-select" id="userCampus" readonly disabled>
+                          <option value="<?php echo $campID ?>" selected><?php echo $campus; ?></option>
+                        </select>
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="userDepartment" class="col-md-4 col-lg-3 col-form-label">Department</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="userDepartment" type="text" class="form-control" id="userDepartment" value="<?php echo $department; ?>" readonly>
+                        <select name="userDepartment" class="form-select" id="userDepartment" readonly disabled>
+                          <option value="<?php echo $deptID; ?>" selected><?php echo $department; ?></option>
+                        </select>
                       </div>
                     </div>
 
