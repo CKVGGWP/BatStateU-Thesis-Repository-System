@@ -55,13 +55,13 @@
               <div class="col-md-6">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Abstract</label>
                 <div class="col-md-12">
-                  <input class="form-control" type="file" id="formFile" accept="application/pdf">
+                  <input class="form-control" type="file" id="abstract" accept="application/pdf">
                 </div>
               </div>
               <div class="col-md-6">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Journal</label>
                 <div class="col-md-12">
-                  <input class="form-control" type="file" id="formFile" accept="application/pdf">
+                  <input class="form-control" type="file" id="journal" accept="application/pdf">
                 </div>
               </div>
               <div class="text-center">

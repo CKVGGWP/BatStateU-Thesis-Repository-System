@@ -5,11 +5,11 @@ include('../models/upload.php');
 
 $upload = new Upload();
 if (isset($_POST['uploadAdmin'])) {
-    echo $_POST;
-    // echo $upload->uploadFiles();
+    print_r($_POST);
+    print_r($_FILES);
+    echo $upload->uploadFiles($_POST, $_FILES);
 }
 
-// echo $title;
 
 
 
