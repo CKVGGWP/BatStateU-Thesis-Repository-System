@@ -27,72 +27,84 @@
                                 <form method="POST" autocomplete="off" class="needs-validation" novalidate id="register">
                                     <div class="row g-2">
                                         <div class="col-md-4 col-12">
-                                            <label for="firstName" class="form-label">First Name</label>
-                                            <input type="text" name="firstName" class="form-control" id="firstName" required>
-                                            <div class="invalid-feedback">Please, enter your first name!</div>
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="firstName" placeholder="First Name" required>
+                                                <label for="firstName">First Name</label>
+                                            </div>
+                                            <div class="invalid-feedback">Please enter your first name!</div>
                                         </div>
 
                                         <div class="col-md-4 col-12">
-                                            <label for="middleName" class="form-label">Middle Name</label>
-                                            <input type="text" name="middleName" class="form-control" id="middleName">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="middleName" placeholder="Middle Name">
+                                                <label for="middleName">Middle Name</label>
+                                            </div>
                                         </div>
 
                                         <div class="col-md-4  col-12">
-                                            <label for="lastName" class="form-label">Last Name</label>
-                                            <input type="text" name="lastName" class="form-control" id="lastName" required>
-                                            <div class="invalid-feedback">Please, enter your last name!</div>
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="lastName" placeholder="Last Name" required>
+                                                <label for="lastName">Last Name</label>
+                                            </div>
+                                            <div class="invalid-feedback">Please enter your last name!</div>
                                         </div>
                                     </div>
 
                                     <div class="row g-2 mt-2">
                                         <div class="col-md-6 col-12 mt-2">
-                                            <label for="campus" class="form-label">Campus</label>
-                                            <select class="form-control" name="campus" id="campus" required>
-                                                <option value selected disabled>- Campus -</option>
-                                                <?php foreach ($campuses as $key => $row) : ?>
-                                                    <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
+                                            <div class="form-floating">
+                                                <select class="form-control" name="campus" id="campus" required>
+                                                    <option value selected disabled>Please select a Campus</option>
+                                                    <?php foreach ($campuses as $key => $row) : ?>
+                                                        <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <label for="campus" class="form-label">Campus</label>
+                                            </div>
                                             <div class="invalid-feedback">Please enter a Campus!</div>
                                         </div>
 
                                         <div class="col-md-6 col-12 mt-2">
-                                            <label for="department" class="form-label">Department</label>
-                                            <select class="form-control" name="department" id="department" required>
-                                                <option value selected disabled>- Department -</option>
-                                            </select>
+                                            <div class="form-floating">
+                                                <select class="form-control" name="department" id="department" required>
+                                                    <option value selected disabled>Please select a Department</option>
+                                                </select>
+                                                <label for="department" class="form-label">Department</label>
+                                            </div>
                                             <div class="invalid-feedback">Please enter a Department!</div>
                                         </div>
 
                                     </div>
                                     <div class="col-md-12 col-12 mt-2">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" id="email" pattern=".+@g\.batstate-u\.edu\.ph" required>
-                                        <div class="invalid-feedback">Please enter your valid Email address!</div>
-                                    </div>
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="email" placeholder="Email" pattern=".+@g\.batstate-u\.edu\.ph" required>
+                                            <label for="email">Email</label>
+                                            <div class="invalid-feedback">Please enter your valid Email address!</div>
+                                        </div>
 
-                                    <div class="row g-2 mt-2">
-                                        <div class="col-md-6 col-12">
-                                            <label for="srCode" class="form-label">SR Code</label>
-                                            <div class="input has-validation">
-                                                <input type="text" name="srCode" class="form-control" id="srCode" required>
-                                                <div class="invalid-feedback">Please input your SR Code!</div>
+                                        <div class="row g-2 mt-2">
+                                            <div class="col-md-6  col-12">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="srCode" placeholder="SR Code" required>
+                                                    <label for="srCode">SR Code</label>
+                                                </div>
+                                                <div class="invalid-feedback">Please enter your SR Code!</div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-md-6 col-12">
-                                            <label for="password" class="form-label">Password</label>
-                                            <input type="password" name="password" class="form-control" id="password" required>
-                                            <div class="invalid-feedback">Please enter your password!</div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center mt-4">
-                                        <button class="btn btn-danger rounded-pill w-100" type="submit" id="createAccBtn">Create
-                                            Account</button>
-                                    </div>
-                                    <div class="col-12 mt-3 text-center">
-                                        <p class="small mb-0">Already have an account? <a href="index.php">Login</a></p>
-                                    </div>
+                                            <div class="col-md-6 col-12">
+                                            <div class="form-floating">
+                                                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                                                    <label for="password">Password</label>
+                                                </div>
+                                                <div class="invalid-feedback">Please enter your password!</div>
+                                            </div>
+                                            <div class="d-flex justify-content-center mt-4">
+                                                <button class="btn btn-danger rounded-pill w-100" type="submit" id="createAccBtn">Create
+                                                    Account</button>
+                                            </div>
+                                            <div class="col-12 mt-3 text-center">
+                                                <p class="small mb-0">Already have an account? <a href="index.php">Login</a></p>
+                                            </div>
                                 </form>
                             </div>
                         </div>

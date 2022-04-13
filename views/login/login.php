@@ -25,18 +25,20 @@
 
                                 <form method="POST" autocomplete="off" class="row g-3 needs-validation" novalidate id="login">
                                     <div class="col-12">
-                                        <label for="email" class="form-label">Email</label>
-                                        <div class="input-group has-validation">
-                                            <input type="email" name="email" class="form-control" id="email" required autocomplete="email" />
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="email" placeholder="Email">
+                                            <label for="email">Email</label>
                                             <div class="invalid-feedback">
-                                                Please enter your email.
-                                            </div>
+                                            Please enter your email.
+                                        </div>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" id="password" required autocomplete="current-password" />
+                                    <div class="form-floating">
+                                            <input type="password" class="form-control" id="password" placeholder="Password">
+                                            <label for="password">Password</label>
+                                        </div>
                                         <div class="invalid-feedback">
                                             Please enter your password.
                                         </div>
