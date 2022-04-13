@@ -31,7 +31,7 @@
                 <div class="col-md-6">
                   <div class="form-floating">
                     <input type="text" class="form-control" id="authors" placeholder="Authors">
-                    <label for="authors">Password</label>
+                    <label for="authors">Authors</label>
                   </div>
                 </div>
                 <div class="col-md-6">
