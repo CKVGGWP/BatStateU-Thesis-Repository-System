@@ -8,6 +8,10 @@ if (isset($_POST['getManuscript'])) {
     echo $manuscript->getManuscriptTable();
 }
 
+if (isset($_POST['browseManuscript'])) {
+    echo $manuscript->getBrowseManuscriptTable();
+}
+
 if (isset($_POST['getRequestAdmin'])) {
     echo $manuscript->getRequestAdminTable();
 }

@@ -15,7 +15,7 @@
           <div class="card-body">
             <h5 class="card-title">Search Manuscript</h5>
             <!-- Table with stripped rows -->
-            <table class="table table-hover dt-responsive nowrap text-center" width="100%" id="manuscriptTable">
+            <table class="table table-hover dt-responsive nowrap text-center" width="100%" id="browseManuscriptTable">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -23,8 +23,6 @@
                   <th scope="col">Abstract</th>
                   <th scope="col">Authors</th>
                   <th scope="col">Year Published</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Date Uploaded</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
