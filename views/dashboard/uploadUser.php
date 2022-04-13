@@ -59,7 +59,7 @@
                 </div>
               </div>
               <div class="text-center">
-                <button type="submit" class="btn btn-primary w-25">Submit</button>
+                <button type="submit" class="btn btn-danger w-25 mt-3 rounded-pill">UPLOAD</button>
               </div>
             </form>
 
