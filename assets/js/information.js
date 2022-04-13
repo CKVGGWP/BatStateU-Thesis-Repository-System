@@ -32,6 +32,23 @@ $("#userCampus").on("change", function () {
   });
 });
 
+$("#editAccountCampus").on("change", function () {
+  let campus = $(this).val();
+
+  $.ajax({
+    url: "controllers/newInformationController.php",
+    method: "POST",
+    data: {
+      campus: campus,
+      getCampus: true,
+    },
+    dataType: "json",
+    success: function (data) {
+      $("#editDepartment").html(data);
+    },
+  });
+});
+
 $("#saveInfo").on("submit", function (e) {
   e.preventDefault();
 
@@ -233,6 +250,124 @@ $("#changePassForm").on("submit", function (e) {
             text: "Password Updated Successfully! Please login back again to your account.",
           }).then((result) => {
             window.location.href = "controllers/signoutController.php";
+          });
+        }
+      },
+    });
+  }
+});
+
+$(document).on("submit", "#editAccountForm", function (e) {
+  e.preventDefault();
+
+  let editAccountID = $("#editAccountID").val();
+  let editEmail = $("#editEmail").val();
+  let editFirstName = $("#editFirstName").val();
+  let editMiddleName = $("#editMiddleName").val();
+  let editLastName = $("#editLastName").val();
+  let editAccountCampus = $("#editAccountCampus").val();
+  let editDepartment = $("#editDepartment").val();
+
+  console.log(editAccountID);
+
+  if (editEmail == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your email address.",
+    }).then((result) => {
+      email.focus();
+      email.addClass("is-invalid");
+    });
+  } else if (emailValidation(editEmail) == false) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter a valid email address.",
+    }).then((result) => {
+      email.focus();
+      email.addClass("is-invalid");
+    });
+  } else if (editFirstName == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your first name.",
+    }).then((result) => {
+      firstName.focus();
+      firstName.addClass("is-invalid");
+    });
+  } else if (editLastName == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your last name.",
+    }).then((result) => {
+      lastName.focus();
+      lastName.addClass("is-invalid");
+    });
+  } else if (editAccountCampus == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please select your campus.",
+    }).then((result) => {
+      userCampus.focus();
+      userCampus.addClass("is-invalid");
+    });
+  } else if (editDepartment == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please select your department.",
+    }).then((result) => {
+      userDepartment.focus();
+      userDepartment.addClass("is-invalid");
+    });
+  } else {
+    $("#closeModal").attr("disabled", true);
+    $("#editAccountSubmit").blur();
+    $("#editAccountSubmit").attr("disabled", true);
+    $("#editAccountSubmit").html(
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
+    );
+    $.ajax({
+      url: "controllers/newInformationController.php",
+      method: "POST",
+      data: {
+        srCode: editAccountID,
+        email: editEmail,
+        firstName: editFirstName,
+        middleName: editMiddleName,
+        lastName: editLastName,
+        userCampus: editAccountCampus,
+        userDepartment: editDepartment,
+        saveInfo: true,
+      },
+      success: function (response) {
+        console.log(response);
+        $("#editAccountSubmit").attr("disabled", false);
+        $("#closeModal").attr("disabled", false);
+        $("#editAccountSubmit").html("Save Changes");
+        if (response == 1) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Email Already Exists!",
+          });
+        } else if (response == 2) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong with the server. Please try again later.",
+          });
+        } else if (response == 3) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Information Updated Successfully!",
+          }).then((result) => {
+            location.reload();
           });
         }
       },

@@ -70,10 +70,12 @@ class Accounts extends Database
                 extract($row);
                 $data[] = [
                     $srCode,
+                    $email,
                     $firstName,
+                    $middleName,
+                    $lastName,
                     $campusName,
                     $departmentName,
-                    $email
                 ];
             }
             return json_encode($data);

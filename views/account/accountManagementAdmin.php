@@ -18,7 +18,7 @@
               <!-- <button type="button" class="h-25 btn btn-dark btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#accountPendings">Pending Accounts
                 <span class="badge bg-danger">69</span>
               </button> -->
-              
+
             </div>
             <p>People that registered their account to the system.</p>
 
@@ -85,30 +85,55 @@
           <h5 class="modal-title" id="editAccount">Edit Account</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <form id="editAccountForm" method="post">
-            <div class="form-group">
-              <label for="editAccountID">ID</label>
-              <input type="text" class="form-control" id="editAccountID" name="editAccountID" readonly>
+        <form id="editAccountForm" method="post">
+          <div class="modal-body">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="editAccountID">ID</label>
+                <input type="text" class="form-control" id="editAccountID" name="editAccountID" readonly>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="editEmail">Email Address</label>
+                <input type="email" class="form-control" id="editEmail" name="editEmail" readonly>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="editAccountName"> First Name</label>
-              <input type="text" class="form-control" id="editAccountName" name="editAccountName">
+            <div class="row my-2">
+              <div class="form-group col-md-4">
+                <label for="editFirstName"> First Name</label>
+                <input type="text" class="form-control" id="editFirstName" name="editFirstName">
+              </div>
+              <div class="form-group col-md-4">
+                <label for="editMiddleName"> Middle Name</label>
+                <input type="text" class="form-control" id="editMiddleName" name="editMiddleName">
+              </div>
+              <div class="form-group col-md-4">
+                <label for="editLastName"> Last Name</label>
+                <input type="text" class="form-control" id="editLastName" name="editLastName">
+              </div>
             </div>
-            <div class="form-group">
-              <label for="editAccountCampus">Campus</label>
-              <select class="form-control" id="editAccountCampus" name="editAccountCampus">
-                <?php foreach ($campuses as $key => $row) : ?>
-                  <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
-                <?php endforeach; ?>
-              </select>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="editAccountCampus">Campus</label>
+                <select class="form-control" id="editAccountCampus" name="editAccountCampus">
+                  <option value="<?php echo $campID; ?>" selected><?php echo $campus; ?></option>
+                  <?php foreach ($campusNotIncluded as $key => $row) : ?>
+                    <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="editDepartment">Department</label>
+                <select class="form-control" id="editDepartment" name="editDepartment">
+                  <option value="<?php echo $deptID; ?>"><?php echo $department; ?></option>
+                </select>
+              </div>
             </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-danger" id="editAccountSubmit">Save changes</button>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
+            <button type="submit" class="btn btn-danger" id="editAccountSubmit">Save changes</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

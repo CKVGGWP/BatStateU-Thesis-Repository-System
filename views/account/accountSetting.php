@@ -6,7 +6,7 @@
       <?php include('views/dashboard/breadcrumbs.php'); ?>
     </nav>
   </div><!-- End Page Title -->
-  
+
   <section class="section profile">
     <div class="row">
       <div class="col-xl-4">
@@ -100,7 +100,7 @@
                       <div class="col-md-8 col-lg-9">
                         <select name="userCampus" id="userCampus" class="form-select">
                           <option value="<?php echo $campID; ?>" selected><?php echo $campus; ?></option>
-                          <?php foreach ($campuses as $key => $row) : ?>
+                          <?php foreach ($campusNotIncluded as $key => $row) : ?>
                             <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
                           <?php endforeach; ?>
                         </select>

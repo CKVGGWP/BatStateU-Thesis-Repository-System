@@ -44,23 +44,23 @@ $(document).on("click", ".delete", function () {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.value) {
-        $.ajax({
-          url: "controllers/accountManagementAdminController.php",
-          type: "POST",
-          data: { deleteAccount: true, srCode: srCode },
-          success: function (data) {
-            Swal.fire({
-              icon: "success",
-              title: "Account Deleted",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            $("#accountManagementTable").DataTable().ajax.reload();
-          },
-        });
-      }
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: "controllers/accountManagementAdminController.php",
+        type: "POST",
+        data: { deleteAccount: true, srCode: srCode },
+        success: function (data) {
+          Swal.fire({
+            icon: "success",
+            title: "Account Deleted",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          $("#accountManagementTable").DataTable().ajax.reload();
+        },
+      });
+    }
   });
 });
 
@@ -73,8 +73,11 @@ $(document).on("click", ".edit", function () {
     success: function (data) {
       var dataObject = JSON.parse(data);
       console.log(dataObject);
-      $('#editAccountID').val(dataObject[0][0]);
-      $('#editAccountName').val(dataObject[0][1]);
+      $("#editAccountID").val(dataObject[0][0]);
+      $("#editEmail").val(dataObject[0][1]);
+      $("#editFirstName").val(dataObject[0][2]);
+      $("#editMiddleName").val(dataObject[0][3]);
+      $("#editLastName").val(dataObject[0][4]);
     },
   });
 });

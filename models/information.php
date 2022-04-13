@@ -93,7 +93,7 @@ class Information extends Database
     {
         $sql = "SELECT email FROM user_details WHERE srCode = ?";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $srCode);
+        $stmt->bind_param('s', $srCode);
         $stmt->execute();
         $result = $stmt->get_result();
 
