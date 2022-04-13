@@ -20,7 +20,10 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Title</th>
+                  <th scope="col">Abstract</th>
                   <th scope="col">Authors</th>
+                  <th scope="col">Year Published</th>
+                  <th scope="col">Status</th>
                   <th scope="col">Date Uploaded</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -34,5 +37,20 @@
       </div>
     </div>
   </section>
-
+ <div class="modal fade" id="viewAbstractModal" tabindex="-1" role="dialog" aria-labelledby="editAccount" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editAccount">Abstract</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>PDF HERE</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </main><!-- End #main -->

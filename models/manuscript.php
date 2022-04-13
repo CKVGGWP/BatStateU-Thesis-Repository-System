@@ -7,11 +7,7 @@ class Manuscript extends Database
     // MANUSCRIPT TABLE
     public function getManuscriptTable()
     {
-        $sql = "SELECT 
-                id,
-                manuscriptTitle,
-                dateUploaded
-                FROM manuscript";
+        $sql = "SELECT * FROM manuscript";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -24,7 +20,14 @@ class Manuscript extends Database
                 $data[] = [
                     $totalData,
                     $manuscriptTitle,
+                    "<a href='#' data-bs-toggle='modal' data-bs-target='#viewAbstractModal' data title='Click to view: ".$abstract."'>". $abstract ."</a>",
                     "",
+                    $yearPub,
+                    $status = ($status == 1) 
+                        ? 
+                            '<span class="badge bg-success rounded-pill">APPROVED</span>' 
+                        : 
+                            '<span class="badge bg-warning rounded-pill">PENDING</span>',
                     $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
                     '
                         <button type="button" class="btn btn-warning btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">EDIT</button>
