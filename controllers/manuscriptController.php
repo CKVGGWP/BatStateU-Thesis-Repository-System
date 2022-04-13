@@ -12,4 +12,6 @@ if (isset($_POST['getRequestAdmin'])) {
     echo $manuscript->getRequestAdminTable();
 }
 
-
+if (isset($_POST['pendingManuscript'])) {
+    echo $manuscript->getPendingManuscriptTable();
+}
