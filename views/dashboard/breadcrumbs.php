@@ -20,5 +20,7 @@ $filePath = basename($_SERVER['REQUEST_URI'], '?' . $_SERVER['QUERY_STRING']);
         <li class="breadcrumb-item active">Upload</li>
     <?php elseif ($filePath == "viewAdmin.php") : ?>
         <li class="breadcrumb-item active">Manuscript</li>
+    <?php elseif ($filePath == "searchUser.php") : ?>
+        <li class="breadcrumb-item active">Browse Manuscript</li>
     <?php endif; ?>
 </ol>
