@@ -18,7 +18,7 @@
             <form class="row g-3">
             <div class="col-md-12">
                   <div class="form-floating">
-                    <input type="text" class="form-control" id="title" placeholder="Title">
+                    <textarea type="text" class="form-control" id="title" placeholder="Title"></textarea>
                     <label for="title">Title</label>
                   </div>
                 </div>
@@ -48,14 +48,14 @@
                 </div>
               <div class="col-md-6">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Abstract</label>
-                <div class="col-sm-10">
-                  <input class="form-control" type="file" id="formFile">
+                <div class="col-md-12">
+                  <input class="form-control" type="file" id="formFile" accept="application/pdf">
                 </div>
               </div>
               <div class="col-md-6">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Journal</label>
-                <div class="col-sm-10">
-                  <input class="form-control" type="file" id="formFile">
+                <div class="col-md-12">
+                  <input class="form-control" type="file" id="formFile" accept="application/pdf">
                 </div>
               </div>
               <div class="text-center">
