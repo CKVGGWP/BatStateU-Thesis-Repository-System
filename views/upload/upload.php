@@ -15,7 +15,7 @@
           <div class="card-body">
             <h5 class="card-title">Upload</h5>
 
-            <form class="row g-3">
+            <form class="row g-3" id="adminUpload" enctype="multipart/form-data">
               <div class="col-md-12">
                 <div class="form-floating">
                   <textarea type="text" class="form-control" id="title" placeholder="Title"></textarea>
