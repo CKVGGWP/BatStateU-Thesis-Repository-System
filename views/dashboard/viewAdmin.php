@@ -107,7 +107,8 @@
          </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
+            <button type="submit" class="btn btn-danger" id="editManuscript">Save changes</button>
         </div>
       </div>
     </div>

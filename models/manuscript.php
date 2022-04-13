@@ -4,6 +4,21 @@ require('../assets/vendor/autoload.php');
 
 class Manuscript extends Database
 {
+
+    public function getManuscriptDetails($manuscriptId) {
+        $sql = "SELECT * FROM manuscript WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $manuscriptId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            extract($row);
+            $data[] = $row;
+        }
+        return trim(json_encode($data), '[]');
+    }
+
     // MANUSCRIPT TABLE
     public function getManuscriptTable()
     {

@@ -98,3 +98,19 @@ $(document).ready(function () {
     stateSave: false,
   });
 });
+
+$(document).on('click', '.edit', function () {
+  let manuscriptId = $(this).data('id');
+  $.ajax({
+    url: 'controllers/manuscriptController.php',
+    type: 'POST',
+    data: {
+      manuscriptDetails: 1,
+      manuscriptId: manuscriptId,
+    },
+    success: function (response) {
+      var resp = JSON.parse(response);
+      $('#manuscriptTitle').val(resp.manuscriptTitle);
+    },
+  });
+});

@@ -15,3 +15,8 @@ if (isset($_POST['getRequestAdmin'])) {
 if (isset($_POST['pendingManuscript'])) {
     echo $manuscript->getPendingManuscriptTable();
 }
+
+if (isset($_POST['manuscriptDetails'])) {
+    $manuscriptId = $_POST['manuscriptId'];
+    echo $manuscript->getManuscriptDetails($manuscriptId);
+}
