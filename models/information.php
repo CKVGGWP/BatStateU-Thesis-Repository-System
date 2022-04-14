@@ -329,15 +329,15 @@ class Information extends Database
                 $email_text = "<span>This is to inform you that you have successfully changed your email! Please <a href='" . $this->url . "verify.php?tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to verify your new email address.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
-                $mail->Body = $email_template;
             } else if ($type == "change") {
                 $mail->Subject = 'Password Has Been Changed - BatStateU-Malvar Thesis Repository System';
                 $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
                 $email_text = "<span>This is to inform you that you have recently changed your password. If you did not do this change, contact us immediately.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
-                $mail->Body = $email_template;
             }
+
+            $mail->Body = $email_template;
 
             if ($mail->send()) {
                 return 4;

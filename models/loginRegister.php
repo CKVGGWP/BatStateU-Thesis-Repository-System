@@ -293,15 +293,15 @@ class LoginRegister extends Database
                 $email_text = "<span>You have successfully created an account! Please <a href='" . $this->url . "index.php?title=Verify Account&tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to verify your email address.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
-                $mail->Body = $email_template;
             } else if ($type == "reset") {
                 $mail->Subject = 'Password Reset - BatStateU-Malvar Thesis Repository System';
                 $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
                 $email_text = "<span>You have requested to reset your password. Please <a href='" . $this->url . "index.php?title=Reset Password&tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to reset your password.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
-                $mail->Body = $email_template;
             }
+
+            $mail->Body = $email_template;
 
             if ($mail->send()) {
                 return true;
