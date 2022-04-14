@@ -33,7 +33,7 @@ class Manuscript extends Database
             $totalData++;
             $data[] = [
                 $totalData,
-                "<a href='#viewJournalModal' data-bs-toggle='modal' data title='Click to view: ".$manuscriptTitle."'>". $manuscriptTitle ."</a>",
+                "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle ."</a>",
                 "",
                 $yearPub,
                 $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),

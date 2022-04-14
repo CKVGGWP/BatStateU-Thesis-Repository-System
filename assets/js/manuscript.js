@@ -134,6 +134,30 @@ $(document).ready(function () {
 
 $(document).on('click', '.edit', function () {
   let manuscriptId = $(this).data('id');
+  manuscriptDetails(manuscriptId);
+});
+
+$(document).on('click', '.view-journal', function () {
+  $('.radio-journal').prop('checked', true);
+  $('#viewJournalModalTitle').html('Journal');
+
+  let manuscriptId = $(this).data('id');
+  manuscriptDetails(manuscriptId);
+});
+
+$('.toggle-manuscript').change(function () {
+  if ($('.radio-journal').is(':checked')) {
+    $('#modalJournal').prop('hidden', false);
+    $('#modalAbstract').prop('hidden', true);
+    $('#viewJournalModalTitle').html('Journal');
+  } else {
+    $('#modalJournal').prop('hidden', true);
+    $('#modalAbstract').prop('hidden', false);
+    $('#viewJournalModalTitle').html('Abstract');
+  }
+});
+
+function manuscriptDetails(manuscriptId) {
   $.ajax({
     url: 'controllers/manuscriptController.php',
     type: 'POST',
@@ -144,6 +168,13 @@ $(document).on('click', '.edit', function () {
     success: function (response) {
       var resp = JSON.parse(response);
       $('#manuscriptTitle').val(resp.manuscriptTitle);
+      $('#viewJournalModal .modal-body').html(
+        '<iframe id="modalJournal" src="./assets/uploads/' +
+          resp.journal +
+          '" type="application/pdf" style="height:600px;width:100%"></iframe><iframe hidden id="modalAbstract" src="./assets/uploads/' +
+          resp.abstract +
+          '" type="application/pdf" style="height:600px;width:100%"></iframe>'
+      );
     },
   });
-});
+}
