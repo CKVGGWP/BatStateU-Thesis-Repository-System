@@ -45,7 +45,7 @@
                 <!-- Profile Edit Form -->
                 <form method="POST" id="saveInfo">
 
-                  <?php if ($title == 'Librarian') : ?>
+                  <?php if ($role == 'Admin') : ?>
 
                     <div class="row mb-3">
                       <label for="srCode" class="col-md-4 col-lg-3 col-form-label">Employee ID</label>
@@ -93,7 +93,7 @@
                     </div>
                   </div>
 
-                  <?php if ($title == 'Librarian') : ?>
+                  <?php if ($role == 'Admin') : ?>
 
                     <div class="row mb-3">
                       <label for="userCampus" class="col-md-4 col-lg-3 col-form-label">Campus</label>

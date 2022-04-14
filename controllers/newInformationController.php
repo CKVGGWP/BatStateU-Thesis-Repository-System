@@ -31,9 +31,8 @@ if (isset($_POST['saveInfo'])) {
 if (isset($_POST['changePass'])) {
     $currentPassword = $_POST['currentPassword'];
     $newPassword = $_POST['newPassword'];
-    $renewPassword = $_POST['renewPassword'];
 
-    echo $info->changePassword($currentPassword, $newPassword, $renewPassword);
+    echo $info->changePassword($currentPassword, $newPassword, $srCode);
 }
 
 if (isset($_POST['notif'])) {
