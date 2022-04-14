@@ -1,11 +1,13 @@
 <?php
 
+require('credentials.php');
+
 class Database
 {
-    private $host = "localhost";
-    private $dbName = "repository";
-    private $username = "root";
-    private $password = "";
+    private $host = DB_HOST;
+    private $dbName = DB_NAME;
+    private $username = DB_USER;
+    private $password = DB_PASS;
 
     protected function connect()
     {
