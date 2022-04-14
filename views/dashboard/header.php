@@ -64,7 +64,7 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="accountSetting.php">
+                        <a class="dropdown-item d-flex align-items-center" href="dashboard.php?title=Account Settings">
                             <!--account setting -->
                             <i class="bi bi-gear"></i>
                             <span>Account Settings</span>

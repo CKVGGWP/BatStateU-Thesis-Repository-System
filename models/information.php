@@ -81,7 +81,7 @@ class Information extends Database
 
     public function changePassword($current, $new, $srCode)
     {
-        if ($this->verifyPassword($current, $srCode) != true) {
+        if ($this->verifyPassword($current, $srCode) == false) {
             return 1;
             exit();
         }

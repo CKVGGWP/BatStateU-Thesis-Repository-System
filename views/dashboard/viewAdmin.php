@@ -15,7 +15,7 @@
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <h5 class="card-title">Manuscript</h5>
-              <a href="pending.php" class="btn btn-dark btn-sm my-3">Pending Manuscript</a>
+              <a href="dashboard.php?title=Pending Manuscripts" class="btn btn-dark btn-sm my-3">Pending Manuscript</a>
             </div>
             <!-- Table with stripped rows -->
             <table class="table table-hover dt-responsive nowrap text-center" width="100%" id="manuscriptTable">
@@ -39,7 +39,7 @@
     </div>
   </section>
 
-   <div class="modal fade" id="pendingManuscriptModal" tabindex="-1" role="dialog" aria-labelledby="pendingManuscriptModal" aria-hidden="true">
+  <div class="modal fade" id="pendingManuscriptModal" tabindex="-1" role="dialog" aria-labelledby="pendingManuscriptModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -84,7 +84,7 @@
     </div>
   </div>
 
-   <div class="modal fade" id="editManuscriptModal" tabindex="-1" role="dialog" aria-labelledby="editManuscriptModal" aria-hidden="true">
+  <div class="modal fade" id="editManuscriptModal" tabindex="-1" role="dialog" aria-labelledby="editManuscriptModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -92,9 +92,9 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-         <form id="" method="POST" autocomplete="off" class="m-2">
-           <input type="hidden" id="">
-           <div class="row">
+          <form id="" method="POST" autocomplete="off" class="m-2">
+            <input type="hidden" id="">
+            <div class="row">
               <div class="col-12">
                 <div class="form-group">
                   <div class="form-floating">
@@ -102,13 +102,13 @@
                     <label for="manuscriptTitle">Title</label>
                     <div class="invalid-feedback">Please enter your email.</div>
                   </div>
+                </div>
               </div>
-           </div>
-         </form>
+          </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
-            <button type="submit" class="btn btn-danger" id="editManuscript">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
+          <button type="submit" class="btn btn-danger" id="editManuscript">Save changes</button>
         </div>
       </div>
     </div>

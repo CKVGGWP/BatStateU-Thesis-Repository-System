@@ -29,13 +29,13 @@
                                             <input type="text" class="form-control" id="email" placeholder="Email">
                                             <label for="email">Email</label>
                                             <div class="invalid-feedback">
-                                            Please enter your email.
-                                        </div>
+                                                Please enter your email.
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
-                                    <div class="form-floating">
+                                        <div class="form-floating">
                                             <input type="password" class="form-control" id="password" placeholder="Password">
                                             <label for="password">Password</label>
                                         </div>
@@ -83,7 +83,7 @@
                                 <div class="col-12 text-center">
                                     <p class="small mb-0">
                                         Don't have account?
-                                        <a href="register.php">Create an account</a>
+                                        <a href="index.php?title=Create Account">Create an account</a>
                                     </p>
                                 </div>
                             </div>

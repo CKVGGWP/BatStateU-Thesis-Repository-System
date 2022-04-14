@@ -92,7 +92,7 @@
                                             </div>
 
                                             <div class="col-md-6 col-12">
-                                            <div class="form-floating">
+                                                <div class="form-floating">
                                                     <input type="password" class="form-control" id="password" placeholder="Password" required>
                                                     <label for="password">Password</label>
                                                 </div>

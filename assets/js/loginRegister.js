@@ -64,7 +64,7 @@ $("#login").on("submit", function (e) {
             showConfirmButton: false,
             timer: 1500,
           }).then((result) => {
-            window.location.href = "dashboard.php";
+            window.location.href = "dashboard.php?title=Dashboard";
           });
         }
       },
@@ -286,7 +286,7 @@ $("#forgotPassForm").on("submit", function (e) {
   }
 });
 
-if (pathname == "verify.php") {
+if (getParameterByName("title") == "Verify Account") {
   let tokenKey = getParameterByName("tokenKey");
   let srCode = getParameterByName("srCode");
   $.ajax({
@@ -344,7 +344,7 @@ if (pathname == "verify.php") {
   });
 }
 
-if (pathname == "resetPassword.php") {
+if (getParameterByName("title") == "Reset Password") {
   let tokenKey = getParameterByName("tokenKey");
   let srCode = getParameterByName("srCode");
 
