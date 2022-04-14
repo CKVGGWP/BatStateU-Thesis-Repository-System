@@ -1,1 +1,1 @@
-# Batangas State University Malvar Thesis Repository and Management System
+# Batangas State University JPLPC-Malvar Campus Thesis Repository and Management System
