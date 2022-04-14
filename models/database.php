@@ -7,11 +7,6 @@ require('credentials.php');
 
 class Database
 {
-    private $host = DB_HOST;
-    private $dbName = DB_NAME;
-    private $username = DB_USER;
-    private $password = DB_PASS;
-
     protected $typeID = array(
         '1' => 'Pending Manuscript',
         '2' => 'Approved Manuscript',
@@ -33,7 +28,7 @@ class Database
 
     protected function connect()
     {
-        $this->conn = mysqli_connect($this->host, $this->username, $this->password, $this->dbName);
+        $this->conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         if (!$this->conn) {
             die("Connection failed: " . mysqli_connect_error());
         } else {
