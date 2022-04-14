@@ -3,13 +3,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-$directory = dirname(__FILE__);
-require_once $directory . '/../assets/vendor/autoload.php';
-
 class Information extends Database
 {
-    private $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
-
     public function getCampuses($id = '')
     {
         $sql = "SELECT * FROM campus";
@@ -89,13 +84,14 @@ class Information extends Database
         return $this->updatePassword($new, $srCode);
     }
 
-    private function countNotification($id)
+    private function countNotification($srCode)
     {
+        $id = $this->getID($srCode);
         $sql = "SELECT 
                 COUNT(n.id) 
                 FROM notification n 
-                LEFT JOIN user_details u ON u.srCode = n.userID 
-                WHERE u.srCode = ? 
+                LEFT JOIN user_details u ON u.id = n.userID 
+                WHERE u.id = ? 
                 AND nRead = 0";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $id);
@@ -110,10 +106,27 @@ class Information extends Database
         }
     }
 
-    public function getNotification($id)
+    private function getID($srCode)
     {
-        $sql = "SELECT * FROM notification n 
-                LEFT JOIN notificationtype t ON t.id = n.typeID 
+        $sql = "SELECT id FROM user_details WHERE srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['id'];
+        } else {
+            return 0;
+        }
+    }
+
+    public function getNotification($srCode)
+    {
+        $id = $this->getID($srCode);
+        $sql = "SELECT * FROM notification n
+                LEFT JOIN user_details u ON u.id = n.userID 
                 WHERE n.userID = ? ORDER BY n.nRead ASC, n.dateReceived DESC";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $id);
@@ -124,12 +137,14 @@ class Information extends Database
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $notif .= '<li class="notification-item">
+                            <a href="' . $row['redirect'] . '">
                                 <i class="bi bi-exclamation-circle text-warning"></i>
                                     <div>
                                         <h4>"' . $row['type'] . '"</h4>
-                                        <p>"' . $row['notifMesage'] . '"</p>
+                                        <p>"' . $row['notifMessage'] . '"</p>
                                         <p>"' . date("F j, Y - H:i:s", $row['dateReceived']) . '"</p>
                                     </div>
+                            </a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -160,8 +175,9 @@ class Information extends Database
         return json_encode($data);
     }
 
-    public function updateNotification($id)
+    public function updateNotification($srCode)
     {
+        $id = $this->getID($srCode);
         $sql = "UPDATE notification SET nRead = 1 WHERE userID = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $id);

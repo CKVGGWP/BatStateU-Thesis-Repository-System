@@ -1,11 +1,9 @@
 <?php
 
-require('../assets/vendor/autoload.php');
-
 class Manuscript extends Database
 {
-
-    public function getManuscriptDetails($manuscriptId) {
+    public function getManuscriptDetails($manuscriptId)
+    {
         $sql = "SELECT * FROM manuscript WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $manuscriptId);
@@ -33,7 +31,7 @@ class Manuscript extends Database
             $totalData++;
             $data[] = [
                 $totalData,
-                "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle ."</a>",
+                "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 "",
                 $yearPub,
                 $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
@@ -67,7 +65,7 @@ class Manuscript extends Database
             $totalData++;
             $data[] = [
                 $totalData,
-                "<a href='#viewJournalModal' data-bs-toggle='modal' data title='Click to view: ".$manuscriptTitle."'>". $manuscriptTitle ."</a>",
+                "<a href='#viewJournalModal' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 "",
                 str_replace(";", "<br>", $author),
                 $yearPub,
@@ -102,7 +100,7 @@ class Manuscript extends Database
             $totalData++;
             $data[] = [
                 $totalData,
-                "<a href='#viewJournalModal' data-bs-toggle='modal' data title='Click to view: ".$manuscriptTitle."'>". $manuscriptTitle ."</a>",
+                "<a href='#viewJournalModal' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 "",
                 $yearPub,
                 $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
@@ -162,27 +160,29 @@ class Manuscript extends Database
         return json_encode($json_data);  // send data as json format
     }
 
-    public function deleteManuscript($manuscriptId) {
+    public function deleteManuscript($manuscriptId)
+    {
         $sql = "DELETE FROM manuscript WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("i", $manuscriptId);
         $stmt->execute();
-        
-        if($stmt->affected_rows > 0) {
+
+        if ($stmt->affected_rows > 0) {
             return 1;
         } else {
             return 0;
         }
     }
 
-    public function updateManuscript($data) {
+    public function updateManuscript($data)
+    {
         extract($data);
         $sql = "UPDATE manuscript SET manuscriptTitle = ? WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("si", $manuscriptTitle, $manuscriptId);
         $stmt->execute();
-        
-        if($stmt->affected_rows > 0) {
+
+        if ($stmt->affected_rows > 0) {
             return 1;
         } else {
             return 0;

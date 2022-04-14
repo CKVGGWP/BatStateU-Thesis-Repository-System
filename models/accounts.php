@@ -1,7 +1,5 @@
 <?php
 
-require('../assets/vendor/autoload.php');
-
 class Accounts extends Database
 {
     //-----------------------GET TABLE
