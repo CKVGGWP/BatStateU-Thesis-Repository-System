@@ -132,6 +132,35 @@ $(document).ready(function () {
   });
 });
 
+$(document).on('click', '.delete', function () {
+  let manuscriptId = $(this).data('id');
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#dc3545',
+    confirmButtonText: 'Yes, delete it!',
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: 'controllers/manuscriptController.php',
+        type: 'POST',
+        data: { deleteManuscript: 1, manuscriptId: manuscriptId },
+        success: function (data) {
+          if (data == 1) {
+            Swal.fire('Deleted!', 'Manuscript has been deleted.', 'success');
+          } else {
+            Swal.fire('Error!', 'Something went wrong.', 'error');
+          }
+          $('#manuscriptTable').DataTable().ajax.reload();
+        },
+      });
+    }
+  });
+});
+
 $(document).on('click', '.edit', function () {
   let manuscriptId = $(this).data('id');
   manuscriptDetails(manuscriptId);
@@ -167,6 +196,7 @@ function manuscriptDetails(manuscriptId) {
     },
     success: function (response) {
       var resp = JSON.parse(response);
+      $('#manuscriptId').val(resp.id);
       $('#manuscriptTitle').val(resp.manuscriptTitle);
       $('#viewJournalModal .modal-body').html(
         '<iframe id="modalJournal" src="./assets/uploads/' +
@@ -178,3 +208,36 @@ function manuscriptDetails(manuscriptId) {
     },
   });
 }
+
+$('#updateManuscript').click(function (e) {
+  e.preventDefault();
+
+  $('#updateManuscript').attr('disabled', true);
+  $('#updateManuscript').html(
+    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
+  );
+
+  let manuscriptId = $('#manuscriptId').val();
+  let manuscriptTitle = $('#manuscriptTitle').val();
+
+  $.ajax({
+    url: 'controllers/manuscriptController.php',
+    type: 'POST',
+    data: {
+      udpateManuscript: 1,
+      manuscriptId: manuscriptId,
+      manuscriptTitle: manuscriptTitle,
+    },
+    success: function (data) {
+      if (data == 1) {
+        Swal.fire('Updated!', 'Manuscript has been updated.', 'success');
+      } else {
+        Swal.fire('Error!', 'Something went wrong.', 'error');
+      }
+
+      $('#updateManuscript').attr('disabled', false);
+      $('#updateManuscript').html('Save changes');
+      $('#manuscriptTable').DataTable().ajax.reload();
+    },
+  });
+});

@@ -108,6 +108,7 @@
            <div class="row">
               <div class="col-12">
                 <div class="form-group">
+                  <input type="hidden" id="manuscriptId">
                   <div class="form-floating">
                     <textarea type="text" class="form-control" id="manuscriptTitle" placeholder="Title"></textarea>
                     <label for="manuscriptTitle">Title</label>
@@ -119,7 +120,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
-            <button type="submit" class="btn btn-danger" id="editManuscript">Save changes</button>
+            <button type="submit" class="btn btn-danger" id="updateManuscript">Save changes</button>
         </div>
       </div>
     </div>

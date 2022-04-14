@@ -24,3 +24,16 @@ if (isset($_POST['manuscriptDetails'])) {
     $manuscriptId = $_POST['manuscriptId'];
     echo $manuscript->getManuscriptDetails($manuscriptId);
 }
+
+if (isset($_POST['deleteManuscript'])) {
+    $manuscriptId = $_POST['manuscriptId'];
+    echo $manuscript->deleteManuscript($manuscriptId);
+}
+
+if (isset($_POST['udpateManuscript'])) {
+    $data = array(
+        'manuscriptId'        =>     $_POST['manuscriptId'],
+        'manuscriptTitle'     =>     $_POST['manuscriptTitle']
+    );
+    echo $manuscript->updateManuscript($data);
+}
