@@ -3,12 +3,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require('../assets/vendor/autoload.php');
-
 class LoginRegister extends Database
 {
-    private $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
-
     public function login($email, $password)
     {
         if ($this->emailExists($email) != true) {
@@ -286,7 +282,7 @@ class LoginRegister extends Database
             $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom('otrms.batstateu@gmail.com', 'BatStateU-Malvar Thesis Repository System');
+            $mail->setFrom(EMAIL, 'BatStateU-Malvar Thesis Repository System');
             $mail->addAddress($email);     //Add a recipient
 
             //Content
@@ -297,15 +293,15 @@ class LoginRegister extends Database
                 $email_text = "<span>You have successfully created an account! Please <a href='" . $this->url . "index.php?title=Verify Account&tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to verify your email address.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
-                $mail->Body = $email_template;
             } else if ($type == "reset") {
                 $mail->Subject = 'Password Reset - BatStateU-Malvar Thesis Repository System';
                 $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
                 $email_text = "<span>You have requested to reset your password. Please <a href='" . $this->url . "index.php?title=Reset Password&tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to reset your password.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
-                $mail->Body = $email_template;
             }
+
+            $mail->Body = $email_template;
 
             if ($mail->send()) {
                 return true;

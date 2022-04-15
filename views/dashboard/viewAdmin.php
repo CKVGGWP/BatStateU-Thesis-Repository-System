@@ -71,17 +71,17 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-        <div class="row">
-          <div class="col-4">
-            <h5 class="modal-title" id="viewJournalModalTitle">Journal</h5>
+          <div class="row">
+            <div class="col-4">
+              <h5 class="modal-title" id="viewJournalModalTitle">Journal</h5>
+            </div>
+            <div class="col-8">
+              <input type="radio" class="btn-check toggle-manuscript radio-journal" name="options-outlined" id="success-outlined" autocomplete="off" checked>
+              <label class="btn btn-outline-success btn-sm" for="success-outlined">Journal</label>
+              <input type="radio" class="btn-check toggle-manuscript" name="options-outlined" id="danger-outlined" autocomplete="off">
+              <label class="btn btn-outline-danger btn-sm" for="danger-outlined">Abstract</label>
+            </div>
           </div>
-          <div class="col-8">
-            <input type="radio" class="btn-check toggle-manuscript radio-journal" name="options-outlined" id="success-outlined" autocomplete="off" checked>
-            <label class="btn btn-outline-success btn-sm" for="success-outlined">Journal</label>
-            <input type="radio" class="btn-check toggle-manuscript" name="options-outlined" id="danger-outlined" autocomplete="off">
-            <label class="btn btn-outline-danger btn-sm" for="danger-outlined">Abstract</label>
-          </div>
-        </div>
 
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -119,8 +119,13 @@
           </form>
         </div>
         <div class="modal-footer">
+<<<<<<< HEAD
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
             <button type="submit" class="btn btn-danger" id="updateManuscript">Save changes</button>
+=======
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
+          <button type="submit" class="btn btn-danger" id="updateManuscript">Save changes</button>
+>>>>>>> 2f0a58af78d4f86ffa1514f4b91e5151cbb302d9
         </div>
       </div>
     </div>

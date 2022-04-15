@@ -3,13 +3,8 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-$directory = dirname(__FILE__);
-require_once $directory . '/../assets/vendor/autoload.php';
-
 class Information extends Database
 {
-    private $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
-
     public function getCampuses($id = '')
     {
         $sql = "SELECT * FROM campus";
@@ -89,13 +84,14 @@ class Information extends Database
         return $this->updatePassword($new, $srCode);
     }
 
-    private function countNotification($id)
+    private function countNotification($srCode)
     {
+        $id = $this->getID($srCode);
         $sql = "SELECT 
                 COUNT(n.id) 
                 FROM notification n 
-                LEFT JOIN user_details u ON u.srCode = n.userID 
-                WHERE u.srCode = ? 
+                LEFT JOIN user_details u ON u.id = n.userID 
+                WHERE u.id = ? 
                 AND nRead = 0";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $id);
@@ -110,10 +106,27 @@ class Information extends Database
         }
     }
 
-    public function getNotification($id)
+    private function getID($srCode)
     {
-        $sql = "SELECT * FROM notification n 
-                LEFT JOIN notificationtype t ON t.id = n.typeID 
+        $sql = "SELECT id FROM user_details WHERE srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['id'];
+        } else {
+            return 0;
+        }
+    }
+
+    public function getNotification($srCode)
+    {
+        $id = $this->getID($srCode);
+        $sql = "SELECT * FROM notification n
+                LEFT JOIN user_details u ON u.id = n.userID 
                 WHERE n.userID = ? ORDER BY n.nRead ASC, n.dateReceived DESC";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $id);
@@ -124,12 +137,14 @@ class Information extends Database
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $notif .= '<li class="notification-item">
+                            <a href="' . $row['redirect'] . '">
                                 <i class="bi bi-exclamation-circle text-warning"></i>
                                     <div>
                                         <h4>"' . $row['type'] . '"</h4>
-                                        <p>"' . $row['notifMesage'] . '"</p>
+                                        <p>"' . $row['notifMessage'] . '"</p>
                                         <p>"' . date("F j, Y - H:i:s", $row['dateReceived']) . '"</p>
                                     </div>
+                            </a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -160,8 +175,9 @@ class Information extends Database
         return json_encode($data);
     }
 
-    public function updateNotification($id)
+    public function updateNotification($srCode)
     {
+        $id = $this->getID($srCode);
         $sql = "UPDATE notification SET nRead = 1 WHERE userID = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $id);
@@ -302,7 +318,7 @@ class Information extends Database
             $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom('otrms.batstateu@gmail.com', 'BatStateU-Malvar Thesis Repository System');
+            $mail->setFrom(EMAIL, 'BatStateU-Malvar Thesis Repository System');
             $mail->addAddress($email);     //Add a recipient
 
             //Content
@@ -313,15 +329,15 @@ class Information extends Database
                 $email_text = "<span>This is to inform you that you have successfully changed your email! Please <a href='" . $this->url . "verify.php?tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to verify your new email address.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
-                $mail->Body = $email_template;
             } else if ($type == "change") {
                 $mail->Subject = 'Password Has Been Changed - BatStateU-Malvar Thesis Repository System';
                 $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
                 $email_text = "<span>This is to inform you that you have recently changed your password. If you did not do this change, contact us immediately.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
                 $email_template = $email_header . $email_text . $email_footer;
-                $mail->Body = $email_template;
             }
+
+            $mail->Body = $email_template;
 
             if ($mail->send()) {
                 return 4;
