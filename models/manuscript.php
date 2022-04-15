@@ -4,7 +4,19 @@ class Manuscript extends Database
 {
     public function getManuscriptDetails($manuscriptId)
     {
-        $sql = "SELECT * FROM manuscript WHERE id = ?";
+        $sql = "SELECT
+                m.id,
+                m.manuscriptTitle,
+                m.abstract,
+                m.journal,
+                m.author,
+                m.yearPub,
+                m.campus,
+                m.department,
+                d.departmentName
+                FROM manuscript m
+                lEFT JOIN department d ON m.department = d.id
+                WHERE m.id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $manuscriptId);
         $stmt->execute();
@@ -20,7 +32,18 @@ class Manuscript extends Database
     // MANUSCRIPT TABLE
     public function getManuscriptTable()
     {
-        $sql = "SELECT * FROM manuscript WHERE status = 1";
+        $sql = "SELECT
+                m.id,
+                m.manuscriptTitle,
+                m.author,
+                m.yearPub,
+                m.dateUploaded,
+                c.campusName,
+                d.departmentName
+                FROM manuscript m
+                LEFT JOIN campus c ON m.campus = c.id
+                lEFT JOIN department d ON m.department = d.id
+                WHERE m.status = 1";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -32,8 +55,10 @@ class Manuscript extends Database
             $data[] = [
                 $totalData,
                 "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
-                "",
+                $author,
                 $yearPub,
+                $campusName,
+                $departmentName,
                 $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
                 '   <button type="button" class="btn btn-warning btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#editManuscriptModal">EDIT</button>
                     <button type="button" class="btn btn-danger btn-sm delete" data-id="' . $id . '">DELETE</button>
@@ -65,13 +90,10 @@ class Manuscript extends Database
             $totalData++;
             $data[] = [
                 $totalData,
-                "<a href='#viewJournalModal' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
-                "",
+                "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 str_replace(";", "<br>", $author),
                 $yearPub,
-                //$dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
-                '   <button type="button" class="btn btn-warning btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#editManuscriptModal">EDIT</button>
-                    <button type="button" class="btn btn-danger btn-sm delete" data-id="' . $id . '">DELETE</button>
+                '<button type="button" class="btn btn-primary btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">DOWNLOAD</button>
                 ',
             ];
         }
@@ -111,7 +133,7 @@ class Manuscript extends Database
             $data[] = [
                 $totalData,
                 "<a href='#viewJournalModal' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
-                "",
+                $author,
                 $yearPub,
                 $campusName,
                 $departmentName,
@@ -189,9 +211,9 @@ class Manuscript extends Database
     public function updateManuscript($data)
     {
         extract($data);
-        $sql = "UPDATE manuscript SET manuscriptTitle = ? WHERE id = ?";
+        $sql = "UPDATE manuscript SET manuscriptTitle = ?, author = ?, yearPub = ?, campus = ?, department = ? WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("si", $manuscriptTitle, $manuscriptId);
+        $stmt->bind_param("ssiiii", $manuscriptTitle, $manuscriptAuthors, $manuscriptYearPub, $manuscriptCampus, $manuscriptDept, $manuscriptId);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {

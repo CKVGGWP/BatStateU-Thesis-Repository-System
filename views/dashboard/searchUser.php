@@ -20,7 +20,6 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Title</th>
-                  <th scope="col">Abstract</th>
                   <th scope="col">Authors</th>
                   <th scope="col">Year Published</th>
                   <th scope="col">Actions</th>
@@ -43,7 +42,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>PDF HERE</p>
+          <p>ABSTRACT HERE</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>

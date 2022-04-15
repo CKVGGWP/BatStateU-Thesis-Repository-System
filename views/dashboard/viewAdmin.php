@@ -25,6 +25,8 @@
                   <th scope="col">Title</th>
                   <th scope="col">Authors</th>
                   <th scope="col">Year Published</th>
+                  <th scope="col">Campus</th>
+                  <th scope="col">Department</th>
                   <th scope="col">Date Uploaded</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -112,10 +114,49 @@
                   <div class="form-floating">
                     <textarea type="text" class="form-control" id="manuscriptTitle" placeholder="Title"></textarea>
                     <label for="manuscriptTitle">Title</label>
-                    <div class="invalid-feedback">Please enter your email.</div>
+                    <div class="invalid-feedback">Please enter a valid Title.</div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="row my-2">
+              <div class="form-group col-md-6 col-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="manuscriptAuthors" placeholder="Authors">
+                  <label for="manuscriptAuthors">Authors</label>
+                  <div class="invalid-feedback">Please enter a valid Authors.</div>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="manuscriptYearPub" placeholder="Year Published">
+                  <label for="manuscriptYearPub">Year Published</label>
+                  <div class="invalid-feedback">Please enter a valid Year.</div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col-12">
+                <div class="form-floating">
+                  <select class="form-control" name="manuscriptCampus" id="manuscriptCampus" required>
+                      <option value selected disabled>Please select a Campus</option>
+                      <?php foreach ($campuses as $key => $row) : ?>
+                          <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
+                      <?php endforeach; ?>
+                  </select>
+                  <label for="campus" class="form-label">Campus</label>
+                  <div class="invalid-feedback">Please enter a valid Campus.</div>
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-12">
+                <div class="form-floating">
+                  <select class="form-control" name="manuscriptDept" id="manuscriptDept" required>
+                  </select>
+                  <label for="department" class="form-label">Department</label>
+                  <div class="invalid-feedback">Please enter a valid Department.</div>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
         <div class="modal-footer">

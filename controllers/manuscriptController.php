@@ -33,7 +33,12 @@ if (isset($_POST['deleteManuscript'])) {
 if (isset($_POST['udpateManuscript'])) {
     $data = array(
         'manuscriptId'        =>     $_POST['manuscriptId'],
-        'manuscriptTitle'     =>     $_POST['manuscriptTitle']
+        'manuscriptTitle'     =>     $_POST['manuscriptTitle'],
+        'manuscriptAuthors'   =>     $_POST['manuscriptAuthors'],
+        'manuscriptYearPub'   =>     $_POST['manuscriptYearPub'],
+        'manuscriptCampus'    =>     $_POST['manuscriptCampus'],
+        'manuscriptDept'      =>     $_POST['manuscriptDept']
+
     );
     echo $manuscript->updateManuscript($data);
 }

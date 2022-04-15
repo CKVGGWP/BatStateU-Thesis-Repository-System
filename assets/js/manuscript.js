@@ -174,6 +174,11 @@ $(document).on('click', '.view-journal', function () {
   manuscriptDetails(manuscriptId);
 });
 
+$(document).on('click', '#viewAbstractUser', function () {
+  let manuscriptId = $(this).data('id');
+  manuscriptDetails(manuscriptId);
+});
+
 $('.toggle-manuscript').change(function () {
   if ($('.radio-journal').is(':checked')) {
     $('#modalJournal').prop('hidden', false);
@@ -196,12 +201,28 @@ function manuscriptDetails(manuscriptId) {
     },
     success: function (response) {
       var resp = JSON.parse(response);
+
       $('#manuscriptId').val(resp.id);
       $('#manuscriptTitle').val(resp.manuscriptTitle);
+      $('#manuscriptAuthors').val(resp.author);
+      $('#manuscriptYearPub').val(resp.yearPub);
+      $('#manuscriptCampus').val(resp.campus);
+      $('#manuscriptDept').html(
+        '<option selected value="' +
+          resp.department +
+          '">' +
+          resp.departmentName +
+          '</option>'
+      );
       $('#viewJournalModal .modal-body').html(
         '<iframe id="modalJournal" src="./assets/uploads/' +
           resp.journal +
           '" type="application/pdf" style="height:600px;width:100%"></iframe><iframe hidden id="modalAbstract" src="./assets/uploads/' +
+          resp.abstract +
+          '" type="application/pdf" style="height:600px;width:100%"></iframe>'
+      );
+      $('#viewAbstractModal .modal-body').html(
+        '<iframe id="modalAbstract" src="./assets/uploads/' +
           resp.abstract +
           '" type="application/pdf" style="height:600px;width:100%"></iframe>'
       );
@@ -219,6 +240,10 @@ $('#updateManuscript').click(function (e) {
 
   let manuscriptId = $('#manuscriptId').val();
   let manuscriptTitle = $('#manuscriptTitle').val();
+  let manuscriptAuthors = $('#manuscriptAuthors').val();
+  let manuscriptYearPub = $('#manuscriptYearPub').val();
+  let manuscriptCampus = $('#manuscriptCampus').val();
+  let manuscriptDept = $('#manuscriptDept').val();
 
   $.ajax({
     url: 'controllers/manuscriptController.php',
@@ -227,6 +252,10 @@ $('#updateManuscript').click(function (e) {
       udpateManuscript: 1,
       manuscriptId: manuscriptId,
       manuscriptTitle: manuscriptTitle,
+      manuscriptAuthors: manuscriptAuthors,
+      manuscriptYearPub: manuscriptYearPub,
+      manuscriptCampus: manuscriptCampus,
+      manuscriptDept: manuscriptDept,
     },
     success: function (data) {
       if (data == 1) {
@@ -270,5 +299,22 @@ $(document).on('click', '.approved-pending', function () {
         },
       });
     }
+  });
+});
+
+$('#manuscriptCampus').on('change', function () {
+  let campus = $(this).val();
+
+  $.ajax({
+    url: 'controllers/newInformationController.php',
+    method: 'POST',
+    data: {
+      campus: campus,
+      getCampus: 1,
+    },
+    dataType: 'json',
+    success: function (data) {
+      $('#manuscriptDept').html(data);
+    },
   });
 });
