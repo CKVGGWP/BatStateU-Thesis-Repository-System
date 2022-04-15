@@ -25,6 +25,8 @@
                   <th scope="col">Title</th>
                   <th scope="col">Authors</th>
                   <th scope="col">Year Published</th>
+                  <th scope="col">Campus</th>
+                  <th scope="col">Department</th>
                   <th scope="col">Date Uploaded</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -39,44 +41,14 @@
     </div>
   </section>
 
-  <div class="modal fade" id="viewJournalModal" tabindex="-1" role="dialog" aria-labelledby="viewJournalModal" aria-hidden="true">
+  <div class="modal fade" id="pendingRequestModal" tabindex="-1" role="dialog" aria-labelledby="viewJournalModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="viewJournalModalTitle">Journal</h5>
+          <h5 class="modal-title">Details</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>PDF HERE</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="editManuscriptModal" tabindex="-1" role="dialog" aria-labelledby="editManuscriptModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editManuscriptModalTitle">Journal</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="" method="POST" autocomplete="off" class="m-2">
-            <input type="hidden" id="">
-            <div class="row">
-              <div class="col-12">
-                <div class="form-group">
-                  <div class="form-floating">
-                    <textarea type="text" class="form-control" id="manuscriptTitle" placeholder="Title"></textarea>
-                    <label for="manuscriptTitle">Title</label>
-                    <div class="invalid-feedback">Please enter your email.</div>
-                  </div>
-                </div>
-              </div>
-          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>

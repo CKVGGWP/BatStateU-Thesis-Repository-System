@@ -119,13 +119,8 @@
           </form>
         </div>
         <div class="modal-footer">
-<<<<<<< HEAD
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
             <button type="submit" class="btn btn-danger" id="updateManuscript">Save changes</button>
-=======
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
-          <button type="submit" class="btn btn-danger" id="editManuscript">Save changes</button>
->>>>>>> 748a063c36d9a6fb7bfb8685d93d4c3186191c4c
         </div>
       </div>
     </div>

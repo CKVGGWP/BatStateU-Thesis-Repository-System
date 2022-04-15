@@ -91,7 +91,17 @@ class Manuscript extends Database
 
     public function getPendingManuscriptTable()
     {
-        $sql = "SELECT * FROM manuscript WHERE status = 0";
+        $sql = "SELECT m.id,
+                       m.manuscriptTitle,
+                       m.author,
+                       m.yearPub,
+                       m.dateUploaded,
+                       c.campusName,
+                       d.departmentName
+                       FROM manuscript m
+                       LEFT JOIN campus c ON m.campus = c.id
+                       lEFT JOIN department d ON m.department = d.id
+                       WHERE m.status = 0";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -105,9 +115,11 @@ class Manuscript extends Database
                 "<a href='#viewJournalModal' data-bs-toggle='modal' data title='Click to view: ".$manuscriptTitle."'>". $manuscriptTitle ."</a>",
                 "",
                 $yearPub,
+                $campusName,
+                $departmentName,
                 $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
-                '   <button type="button" class="btn btn-success btn-sm approved" data-id="' . $id . '">APPROVE</button>
-                    <button type="button" class="btn btn-danger btn-sm decline" data-id="' . $id . '">DECLINE</button>
+                '   <button type="button" class="btn btn-success btn-sm approved-pending" data-id="' . $id . '">APPROVE</button>
+                    <button type="button" class="btn btn-danger btn-sm decline-pending" data-id="' . $id . '">DECLINE</button>
                 ',
             ];
         }
@@ -145,8 +157,8 @@ class Manuscript extends Database
                 "",
                 "",
                 '
-                    <button type="button" class="btn btn-success btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">APPROVE</button>
-                    <button type="button" class="btn btn-danger btn-sm delete" data-id="' . $id . '">DISAPPROVE</button>
+                    <button type="button" class="btn btn-success btn-sm approve-request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">APPROVE</button>
+                    <button type="button" class="btn btn-danger btn-sm disapprove-request" data-id="' . $id . '">DISAPPROVE</button>
                 ',
             ];
         }
@@ -180,6 +192,19 @@ class Manuscript extends Database
         $sql = "UPDATE manuscript SET manuscriptTitle = ? WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("si", $manuscriptTitle, $manuscriptId);
+        $stmt->execute();
+        
+        if($stmt->affected_rows > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+     public function approveManuscript($manuscriptId) {
+        $sql = "UPDATE manuscript SET status = 1 WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $manuscriptId);
         $stmt->execute();
         
         if($stmt->affected_rows > 0) {

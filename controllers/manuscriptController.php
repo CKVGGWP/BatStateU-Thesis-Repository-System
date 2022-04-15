@@ -37,3 +37,8 @@ if (isset($_POST['udpateManuscript'])) {
     );
     echo $manuscript->updateManuscript($data);
 }
+
+if (isset($_POST['approveManuscript'])) {
+    $manuscriptId = $_POST['manuscriptId'];
+    echo $manuscript->approveManuscript($manuscriptId);
+}

@@ -241,3 +241,34 @@ $('#updateManuscript').click(function (e) {
     },
   });
 });
+
+$(document).on('click', '.approved-pending', function () {
+  let manuscriptId = $(this).data('id');
+
+  Swal.fire({
+    title: 'Confirm Manuscript Approval',
+    text: 'Are you sure you want to approve this manuscript?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#dc3545',
+    confirmButtonText: 'Yes, Approve it!',
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: 'controllers/manuscriptController.php',
+        type: 'POST',
+        data: { approveManuscript: 1, manuscriptId: manuscriptId },
+        success: function (data) {
+          console.log(data);
+          if (data == 1) {
+            Swal.fire('Approved!', 'Manuscript has been approved.', 'success');
+          } else {
+            Swal.fire('Error!', 'Something went wrong.', 'error');
+          }
+          $('#pendingManuscriptTable').DataTable().ajax.reload();
+        },
+      });
+    }
+  });
+});
