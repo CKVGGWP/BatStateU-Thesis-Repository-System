@@ -289,7 +289,7 @@ $("#updateManuscript").click(function (e) {
     url: "controllers/manuscriptController.php",
     type: "POST",
     data: {
-      udpateManuscript: 1,
+      updateManuscript: 1,
       manuscriptId: manuscriptId,
       manuscriptTitle: manuscriptTitle,
       manuscriptAuthors: manuscriptAuthors,
@@ -334,10 +334,18 @@ $(document).on("click", ".approved-pending", function () {
         },
         success: function (data) {
           console.log(data);
-          if (data == 1) {
-            Swal.fire("Approved!", "Manuscript has been approved.", "success");
+          if (data.success == 1) {
+            Swal.fire(
+              "Approved!",
+              data.title + " has been approved.",
+              "success"
+            );
           } else {
-            Swal.fire("Error!", "Something went wrong.", "error");
+            Swal.fire(
+              "Error!",
+              "Something went wrong. Error: " + data.error,
+              "error"
+            );
           }
           $("#pendingManuscriptTable").DataTable().ajax.reload();
         },
@@ -369,10 +377,18 @@ $(document).on("click", ".decline-pending", function () {
         },
         success: function (data) {
           console.log(data);
-          if (data == 1) {
-            Swal.fire("Declined!", "Manuscript has been declined.", "success");
+          if (data.success == 1) {
+            Swal.fire(
+              "Declined!",
+              data.title + " has been declined.",
+              "success"
+            );
           } else {
-            Swal.fire("Error!", "Something went wrong.", "error");
+            Swal.fire(
+              "Error!",
+              "Something went wrong. Error: " + data.error,
+              "error"
+            );
           }
           $("#pendingManuscriptTable").DataTable().ajax.reload();
         },

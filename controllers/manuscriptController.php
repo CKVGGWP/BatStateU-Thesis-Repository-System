@@ -32,7 +32,7 @@ if (isset($_POST['deleteManuscript'])) {
     echo $manuscript->deleteManuscript($manuscriptId);
 }
 
-if (isset($_POST['udpateManuscript'])) {
+if (isset($_POST['updateManuscript'])) {
     $data = array(
         'manuscriptId'        =>     $_POST['manuscriptId'],
         'manuscriptTitle'     =>     $_POST['manuscriptTitle'],
