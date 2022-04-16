@@ -8,7 +8,7 @@ function static_count()
 
 function read_dateTime($dateTime)
 {
-    return date("F j, Y g:i:a", strtotime($dateTime));
+    return date("F j, Y g:i a", strtotime($dateTime));
 }
 
 function read_date($date)
