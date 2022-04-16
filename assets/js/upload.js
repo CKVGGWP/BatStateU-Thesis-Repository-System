@@ -92,6 +92,8 @@ $("#adminUpload").on("submit", function (e) {
               title: title + " has been uploaded successfully!",
               showConfirmButton: false,
               timer: 1500,
+            }).then((result) => {
+              location.reload();
             });
           },
           error: function (data) {
