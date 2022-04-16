@@ -18,7 +18,7 @@
                     <div class="col-xxl-4 col-md-6">
                         <div class="card info-card sales-card">
                             <div class="card-body">
-                                <h5 class="card-title">Pending Request/s</h5>
+                                <h5 class="card-title">Pending Request/s <a href="dashboard.php?title=View Request"><small> View Details</small></a></h5>
 
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -38,7 +38,7 @@
                         <div class="card info-card revenue-card">
 
                             <div class="card-body">
-                                <h5 class="card-title">Pending Approval</h5>
+                                <h5 class="card-title">Pending Approval <a href="dashboard.php?title=Pending Manuscripts"><small> View Details</small></a></h5>
 
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -160,7 +160,7 @@
                 <!-- Total User Card -->
                 <div class="card">
                     <div class="card-body pb-0">
-                        <h5 class="card-title">Total Users</h5>
+                        <h5 class="card-title">Total Users <a href="dashboard.php?title=Account Management"><small> View Details</small></a></h5>
 
                         <div id="totalUsersPieGraph"></div>
                     </div>
