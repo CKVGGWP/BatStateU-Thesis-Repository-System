@@ -32,8 +32,8 @@ class Accounts extends Database
                     $email,
                     $role == 1 ? 'Admin' : 'User',
                     '<div class="btn-group-vertical">
-                        <button type="button" class="btn btn-warning btn-sm mb-2 edit" data-srCode="' . $srCode . '" data-bs-toggle="modal" data-bs-target="#editAccounts">EDIT</button>
-                        <button type="button" class="btn btn-danger btn-sm delete" data-srCode="' . $srCode . '">DELETE</button>
+                        <button type="button" class="btn btn-warning btn-sm mb-2 editUser" data-srCode="' . $srCode . '" data-bs-toggle="modal" data-bs-target="#editAccounts">EDIT</button>
+                        <button type="button" class="btn btn-danger btn-sm deleteUser" data-srCode="' . $srCode . '">DELETE</button>
                     </div>'
 
                 ];
@@ -81,13 +81,32 @@ class Accounts extends Database
     }
 
     //----------------------DELETE ACCOUNT
-    public function deleteAccount($srCode)
+    public function deleteAccount($srCode, $session)
     {
-        $sql = "DELETE FROM user_details WHERE srCode = ?";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $srCode);
-        $stmt->execute();
-        $stmt->close();
-        return json_encode(['success' => true]);
+        if ($srCode == $session) {
+            $data = [
+                'status' => '0',
+                'message' => 'You cannot delete your own account.'
+            ];
+        } else {
+            $sql = "DELETE FROM user_details WHERE srCode = ?";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param('s', $srCode);
+            $stmt->execute();
+
+            if ($stmt->affected_rows > 0) {
+                $data = [
+                    'status' => '1',
+                    'message' => $srCode . '\'s account has been successfully deleted.'
+                ];
+            } else {
+                $data = [
+                    'status' => '2',
+                    'message' => 'Something went wrong! Error' . mysqli_error($this->connect())
+                ];
+            }
+        }
+
+        return json_encode($data);
     }
 }

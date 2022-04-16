@@ -262,9 +262,16 @@ class Manuscript extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return 1;
+            $data = [
+                "success" => 1,
+                "message" => $manuscriptTitle . " updated successfully"
+            ];
         } else {
-            return 0;
+            $data = [
+                "success" => 0,
+                "message" => "Error updating " . $manuscriptTitle,
+                "error" => "Something went wrong! Error: " . $stmt->error
+            ];
         }
     }
 
@@ -283,14 +290,25 @@ class Manuscript extends Database
         }
     }
 
-    private function insertNotification($manuscriptId, $status)
+    private function insertNotification($manuscriptId, $status, $request = "")
     {
         $srCode = $this->getSRCode("manuscript", "srCode", "id", $manuscriptId);
         $title = $this->getManuscriptTitle($manuscriptId);
         $id = $this->getID($srCode);
-        $type = ($status == "Approved") ? $this->typeID[2] : $this->typeID[3];
+
+        if ($request == "") {
+            $type = ($status == "Approved") ? $this->typeID[2] : $this->typeID[3];
+        } else {
+            $type = ($status == "Approved") ? $this->typeID[5] : $this->typeID[6];
+        }
+
         $message = $title;
-        $message .= ($status == "Approved") ? $this->messages[2] : $this->messages[3] . " Insert Reason Here";
+
+        if ($request == "") {
+            $message .= ($status == "Approved") ? $this->messages[4] : $this->messages[5] . " Insert Reason Here";
+        } else {
+            $message .= ($status == "Approved") ? $this->messages[2] : $this->messages[3] . " Insert Reason Here";
+        }
         $dateNow = dateTimeNow();
         $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
             . " VALUES (?, ?, ?, ?, ?)";
@@ -325,7 +343,7 @@ class Manuscript extends Database
         return $row['manuscriptTitle'];
     }
 
-    public function updateManuscriptRequest($id, $status)
+    public function updateManuscriptRequest($id, $status, $request)
     {
         $sql = "UPDATE manuscript_token SET status = ? WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
@@ -333,8 +351,7 @@ class Manuscript extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return 1;
-            $this->insertNotification($id, $status = ($status == 1) ? "Approved" : "Declined");
+            $this->insertNotification($id, $status = ($status == 1) ? "Approved" : "Declined", $request);
         } else {
             return 0;
         }

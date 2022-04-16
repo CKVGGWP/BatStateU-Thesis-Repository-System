@@ -298,10 +298,10 @@ $("#updateManuscript").click(function (e) {
       manuscriptDept: manuscriptDept,
     },
     success: function (data) {
-      if (data == 1) {
-        Swal.fire("Updated!", "Manuscript has been updated.", "success");
+      if (data.success == 1) {
+        Swal.fire("Updated!", data.message, "success");
       } else {
-        Swal.fire("Error!", "Something went wrong.", "error");
+        Swal.fire("Error!", data.message, "error");
       }
 
       $("#updateManuscript").attr("disabled", false);
@@ -436,10 +436,18 @@ $(document).on("click", ".approve-request", function () {
           status: 1,
         },
         success: function (data) {
-          if (data == 1) {
-            Swal.fire("Approved!", "Request has been approved.", "success");
+          if (data.success == 1) {
+            Swal.fire(
+              "Approved!",
+              data.title + " request has been approved.",
+              "success"
+            );
           } else {
-            Swal.fire("Error!", "Something went wrong.", "error");
+            Swal.fire(
+              "Error!",
+              "Something went wrong. Error : " + data.error,
+              "error"
+            );
           }
 
           $("#requestAdminTable").DataTable().ajax.reload();
@@ -471,10 +479,18 @@ $(document).on("click", ".decline-request", function () {
           status: 2,
         },
         success: function (data) {
-          if (data == 1) {
-            Swal.fire("Declined!", "Request has been Declined.", "success");
+          if (data.success == 1) {
+            Swal.fire(
+              "Declined!",
+              data.title + " request has been Declined.",
+              "success"
+            );
           } else {
-            Swal.fire("Error!", "Something went wrong.", "error");
+            Swal.fire(
+              "Error!",
+              "Something went wrong. Error: " + data.error,
+              "error"
+            );
           }
 
           $("#requestAdminTable").DataTable().ajax.reload();

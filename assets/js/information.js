@@ -392,7 +392,7 @@ if ($("#notifications").length > 0) {
       data: { view: view },
       dataType: "json",
       success: function (data) {
-        console.log(data);
+        // console.log(data);
         $("#countHeader").html(data.countHeader);
         $("#notificationDIV").html(data.notifications);
         if (data.countNotifications > 0) {
