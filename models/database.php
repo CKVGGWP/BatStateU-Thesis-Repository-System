@@ -22,13 +22,26 @@ class Database
     protected $redirect = array(
         '1' => 'dashboard.php?title=View Request',
         '2' => 'dashboard.php?title=Dashboard',
+        '3' => 'dashboard.php?title=Pending Manuscripts',
     );
 
     protected $messages = array(
         '1' => ' has been uploaded. Please check the list of manuscripts.',
         '2' => ' has been approved!',
         '3' => ' has been rejected! Reason: ',
+        '4' => ' request has been approved!',
+        '5' => ' request has been rejected! Reason: ',
     );
+
+    protected function hashPassword($password)
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    protected function createToken()
+    {
+        return md5(uniqid(rand(), true));
+    }
 
     protected function getID($srCode)
     {
@@ -44,16 +57,6 @@ class Database
         } else {
             return 0;
         }
-    }
-
-    protected function hashPassword($password)
-    {
-        return password_hash($password, PASSWORD_DEFAULT);
-    }
-
-    protected function createToken()
-    {
-        return md5(uniqid(rand(), true));
     }
 
     protected function getSRCode($table, $column, $where, $value)

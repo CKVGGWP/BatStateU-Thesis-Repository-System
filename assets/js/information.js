@@ -385,33 +385,44 @@ $(document).on("submit", "#editAccountForm", function (e) {
 });
 
 if ($("#notifications").length > 0) {
-  $(document).ready(function () {
-    function loadNotifications(view = "") {
-      $.ajax({
-        url: "controllers/newInformationController.php",
-        method: "POST",
-        data: { view: view },
-        dataType: "json",
-        success: function (data) {
-          console.log(data);
-          $("#countHeader").html(data.countHeader);
-          $("#notificationDIV").html(data.notifications);
-          if (data.countNotifications > 0) {
-            $("#notifbadge").html(data.countNotifications);
-          }
-        },
-      });
-    }
-
-    loadNotifications();
-
-    $(document).on("click", "#notifications", function () {
-      $("#notifbadge").html("");
-      loadNotifications("view");
+  function loadNotifications(view = "") {
+    $.ajax({
+      url: "controllers/newInformationController.php",
+      method: "POST",
+      data: { view: view },
+      dataType: "json",
+      success: function (data) {
+        // console.log(data);
+        $("#countHeader").html(data.countHeader);
+        $("#notificationDIV").html(data.notifications);
+        if (data.countNotifications > 0) {
+          $("#notifbadge").html(data.countNotifications);
+        }
+      },
     });
+  }
 
-    setInterval(function () {
-      loadNotifications();
-    }, 5000);
+  loadNotifications();
+
+  $(document).on("click", "#notifications", function () {
+    $("#notifbadge").html("");
+    loadNotifications("view");
+  });
+
+  setInterval(function () {
+    loadNotifications();
+  }, 5000);
+
+  $(document).on("click", "#markAllBTN", function (e) {
+    e.preventDefault();
+
+    $.ajax({
+      url: "controllers/newInformationController.php",
+      method: "POST",
+      data: { markAll: true },
+      success: function (response) {
+        loadNotifications();
+      },
+    });
   });
 }

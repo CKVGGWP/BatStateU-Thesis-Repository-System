@@ -33,7 +33,7 @@ if (isset($_POST['deleteManuscript'])) {
     echo $manuscript->deleteManuscript($manuscriptId);
 }
 
-if (isset($_POST['udpateManuscript'])) {
+if (isset($_POST['updateManuscript'])) {
     $data = array(
         'manuscriptId'        =>     $_POST['manuscriptId'],
         'manuscriptTitle'     =>     $_POST['manuscriptTitle'],
@@ -61,5 +61,9 @@ if (isset($_POST['getUserManuscript'])) {
 if (isset($_POST['manuscriptRequest'])) {
     $id = $_POST['id'];
     $status = $_POST['status'];
-    echo $manuscript->updateManuscriptRequest($id, $status);
+    echo $manuscript->updateManuscriptRequest($id, $status, "request");
+}
+
+if (isset($_POST['getPendingManuscript'])) {
+    echo $manuscript->getManuscriptButton();
 }

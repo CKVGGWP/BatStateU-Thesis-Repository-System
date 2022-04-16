@@ -74,7 +74,7 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" href="<?php echo manual($role); ?>" target="_blank">
                             <i class="bi bi-question-circle"></i>
                             <span>Users Manual</span>
                         </a>

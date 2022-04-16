@@ -111,7 +111,7 @@ class Upload extends Database
         $dateNow = date("Y-m-d H:i:s");
         $sql = "INSERT INTO notification(userID, type, notifMessage, redirect, dateReceived) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('issss', $userID, $this->typeID[1], $message, $this->redirect[1], $dateNow);
+        $stmt->bind_param('issss', $userID, $this->typeID[1], $message, $this->redirect[3], $dateNow);
         $stmt->execute();
         $stmt->close();
     }

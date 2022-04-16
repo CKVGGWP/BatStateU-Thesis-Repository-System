@@ -3,6 +3,10 @@
 include('../models/database.php');
 include('../models/accounts.php');
 
+session_start();
+
+$session = isset($_SESSION['srCode']) ? $_SESSION['srCode'] : '';
+
 $accounts = new Accounts();
 if (isset($_POST['getAccounts'])) {
     echo $accounts->getAccountsTable();
@@ -16,6 +20,5 @@ if (isset($_POST['getAccountDetails'])) {
 // Delete Account
 if (isset($_POST['deleteAccount'])) {
     $srCode = $_POST['srCode'];
-    echo $accounts->deleteAccount($srCode);
+    echo $accounts->deleteAccount($srCode, $session);
 }
-

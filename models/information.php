@@ -88,7 +88,7 @@ class Information extends Database
     {
         $id = $this->getID($srCode);
         $sql = "SELECT 
-                COUNT(n.id) 
+                COUNT(n.id) AS nums
                 FROM notification n 
                 LEFT JOIN user_details u ON u.id = n.userID 
                 WHERE u.id = ? 
@@ -100,7 +100,7 @@ class Information extends Database
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            return $row['COUNT(n.id)'];
+            return $row['nums'];
         } else {
             return 0;
         }
@@ -112,7 +112,7 @@ class Information extends Database
             $this->updateNotification($srCode);
         }
         $id = $this->getID($srCode);
-        $sql = "SELECT * FROM notification n
+        $sql = "SELECT n.type, n.notifMessage, n.dateReceived, n.redirect FROM notification n
                 LEFT JOIN user_details u ON u.id = n.userID 
                 WHERE n.userID = ? ORDER BY n.nRead ASC, n.dateReceived DESC";
         $stmt = $this->connect()->prepare($sql);
@@ -123,46 +123,44 @@ class Information extends Database
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $notif .= '<li class="notification-item">
-                            <a href="' . $row['redirect'] . '">
-                                <i class="bi bi-exclamation-circle text-warning"></i>
-                                    <div>
-                                        <h4>"' . $row['type'] . '"</h4>
-                                        <p>"' . $row['notifMessage'] . '"</p>
-                                        <p>"' . date("F j, Y - H:i:s", $row['dateReceived']) . '"</p>
-                                    </div>
-                            </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>';
+                $notif .= '<li class="notification-item">';
+                $notif .= '<i class="fa-regular fa-file-pdf text-danger"></i>';
+                $notif .= '<a href="' . $row['redirect'] . '">';
+                $notif .= "<div>";
+                $notif .= "<h4>" . $row['type'] . "</h4>";
+                $notif .= "<p>" . $row['notifMessage'] . "</p>";
+                $notif .= "<p>" . read_dateTime($row['dateReceived']) . "</p>";
+                $notif .= "</div>";
+                $notif .= "</a>";
+                $notif .= "<li>";
+                $notif .= "<hr class='dropdown-divider'>";
+                $notif .= "</li>";
             }
         } else {
-            $notif .= '<li class="notification-item">
-                            <div>
-                                <h4>No Notifications Yet!</h4>
-                            </div>
-                       </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>';
+            $notif .= '<li class="notification-item d-flex align-items-center justify-content-center">';
+            $notif .= '<i class="fa-regular fa-bell"></i>';
+            $notif .= '<div>';
+            $notif .= '<h4>You have no notifications yet!</h4>';
+            $notif .= '</div>';
+            $notif .= '</li>';
+            $notif .= "<li>";
+            $notif .= "<hr class='dropdown-divider'>";
+            $notif .= "</li>";
         }
 
-        if ($this->countNotification($id) != 0) {
-            $header = "You have " . $this->countNotification($id) . " new notifications";
-            $header .= '<a href="#" id="markAllBTN"><span class="badge rounded-pill bg-primary p-2 ms-2">Mark all as Read</span></a>';
-        }
+        $header = "You have " . $this->countNotification($srCode) . " new notification(s)";
+        $header .= ($this->countNotification($srCode) > 0) ? '<a href="#" id="markAllBTN"><span class="badge rounded-pill bg-info p-2 ms-2">Mark all as Read</span></a>' : '';
 
         $data = array(
             "countHeader" => $header,
-            "countNotifications" => $this->countNotification($id),
+            "countNotifications" => $this->countNotification($srCode),
             "notifications" => $notif
         );
 
         return json_encode($data);
     }
 
-    private function updateNotification($srCode)
+    public function updateNotification($srCode)
     {
         $id = $this->getID($srCode);
         $sql = "UPDATE notification SET nRead = 1 WHERE userID = ?";
@@ -295,7 +293,7 @@ class Information extends Database
             $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom(EMAIL, 'BatStateU-Malvar Thesis Repository System');
+            $mail->setFrom(EMAIL, 'BatStateU JPLPC-Malvar Thesis Repository and Management System');
             $mail->addAddress($email);     //Add a recipient
 
             //Content
