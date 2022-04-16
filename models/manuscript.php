@@ -231,8 +231,7 @@ class Manuscript extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return 1;
-            $this->insertNotification($manuscriptId, "Approved");
+            return $this->insertNotification($manuscriptId, "Approved");
         } else {
             return 0;
         }
@@ -246,8 +245,7 @@ class Manuscript extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return 1;
-            $this->insertNotification($manuscriptId, "Declined");
+            return $this->insertNotification($manuscriptId, "Declined");
         } else {
             return 0;
         }
@@ -259,19 +257,29 @@ class Manuscript extends Database
         $title = $this->getManuscriptTitle($manuscriptId);
         $id = $this->getID($srCode);
         $type = ($status == "Approved") ? $this->typeID[2] : $this->typeID[3];
-        $message = ($status == "Approved") ? $this->messages[2] : $this->messages[3] . " Insert Reason Here";
-
+        $message = $title;
+        $message .= ($status == "Approved") ? $this->messages[2] : $this->messages[3] . " Insert Reason Here";
+        $dateNow = dateNow();
         $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
             . " VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("issss", $id, $type, $title . " $message", $this->redirect[2], $this->dateNow());
+        $stmt->bind_param("issss", $id, $type, $message, $this->redirect[2], $dateNow);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return true;
+            $data = array(
+                "success" => 1,
+                "title" => $title,
+            );
         } else {
-            return false;
+            $data = array(
+                "success" => 0,
+                "title" => $title,
+                "error" => mysqli_errno($this->connect()),
+            );
         }
+
+        return json_encode($data);
     }
 
     private function getManuscriptTitle($manuscriptID)

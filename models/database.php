@@ -4,6 +4,7 @@ $directory = dirname(__FILE__);
 require_once $directory . '/../assets/vendor/autoload.php';
 
 require('credentials.php');
+require('functions.php');
 
 date_default_timezone_set('Asia/Manila');
 
@@ -59,14 +60,22 @@ class Database
     {
         $sql = "SELECT $column FROM $table WHERE $where = ?";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$value]);
-        $result = $stmt->fetch();
-        return $result[$column];
-    }
 
-    protected function dateNow()
-    {
-        return date("Y-m-d H:i:s");
+        if (is_int($value)) {
+            $stmt->bind_param('i', $value);
+        } else {
+            $stmt->bind_param('s', $value);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row[$column];
+        } else {
+            return 0;
+        }
     }
 
     protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
