@@ -54,48 +54,57 @@ $("#adminUpload").on("submit", function (e) {
       text: "Your journal must be a pdf file!",
     });
   } else {
-    $("#uploadFiles").blur();
-    $("#uploadFiles").html(
-      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading...'
-    );
-    $("#uploadFiles").attr("disabled", true);
-    var formData = new FormData();
-    formData.append("title", title);
-    formData.append("yearPub", yearPub);
-    formData.append("authors", authors);
-    formData.append("department", department);
-    formData.append("program", program);
-    formData.append("abstract", abstract);
-    formData.append("journal", journal);
-    formData.append("uploadAdmin", true);
+    Swal.fire({
+      title: "Are you sure that you want to upload " + title + "?",
+      text: "You are about to upload your thesis/capstone! Please make sure all the information provided is correct!",
+      icon: "question",
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $("#uploadFiles").blur();
+        $("#uploadFiles").html(
+          '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading...'
+        );
+        $("#uploadFiles").attr("disabled", true);
+        var formData = new FormData();
+        formData.append("title", title);
+        formData.append("yearPub", yearPub);
+        formData.append("authors", authors);
+        formData.append("department", department);
+        formData.append("program", program);
+        formData.append("abstract", abstract);
+        formData.append("journal", journal);
+        formData.append("uploadAdmin", true);
 
-    $.ajax({
-      url: "controllers/uploadController.php",
-      type: "POST",
-      data: formData,
-      contentType: false,
-      cache: false,
-      processData: false,
-      success: function (data) {
-        $("#uploadFiles").html("UPLOAD");
-        $("#uploadFiles").attr("disabled", false);
-        // console.log(data);
-        Swal.fire({
-          icon: "success",
-          title: title + " has been uploaded successfully!",
-          showConfirmButton: false,
-          timer: 1500,
+        $.ajax({
+          url: "controllers/uploadController.php",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function (data) {
+            $("#uploadFiles").html("UPLOAD");
+            $("#uploadFiles").attr("disabled", false);
+            // console.log(data);
+            Swal.fire({
+              icon: "success",
+              title: title + " has been uploaded successfully!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          },
+          error: function (data) {
+            console.log(data);
+            Swal.fire({
+              icon: "error",
+              title: "Upload Failed",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          },
         });
-      },
-      error: function (data) {
-        console.log(data);
-        Swal.fire({
-          icon: "error",
-          title: "Upload Failed",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      },
+      }
     });
   }
 });

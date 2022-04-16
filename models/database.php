@@ -22,6 +22,7 @@ class Database
     protected $redirect = array(
         '1' => 'dashboard.php?title=View Request',
         '2' => 'dashboard.php?title=Dashboard',
+        '3' => 'dashboard.php?title=Pending Manuscripts',
     );
 
     protected $messages = array(
