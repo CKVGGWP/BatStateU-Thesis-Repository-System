@@ -40,7 +40,7 @@
     <link href="./assets/css/styles.css" rel="stylesheet">
     <script src="assets/js/functions.js"></script>
 
-    <title><?php echo isset($_GET['title']) ? $_GET['title'] . " || BatStateU Thesis Repository System" : "BatStateU Thesis Repository System" ?></title>
+    <title><?php echo isset($_GET['title']) ? $_GET['title'] . " | BatStateU Thesis Repository and Management System" : "BatStateU Thesis Repository and Management System" ?></title>
 
     <?php session_start(); ?>
 </head>

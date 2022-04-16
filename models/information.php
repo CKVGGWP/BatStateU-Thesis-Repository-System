@@ -293,7 +293,7 @@ class Information extends Database
             $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom(EMAIL, 'BatStateU-Malvar Thesis Repository System');
+            $mail->setFrom(EMAIL, 'BatStateU JPLPC-Malvar Thesis Repository and Management System');
             $mail->addAddress($email);     //Add a recipient
 
             //Content
