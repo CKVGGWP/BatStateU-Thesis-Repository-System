@@ -13,33 +13,11 @@
             <!-- Left side columns -->
             <div class="col-lg-12">
                 <div class="row">
-
-                    <!-- Sales Card -->
-                    <div class="col-xxl-4 col-md-6">
-                        <div class="card info-card sales-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Pending Request/s</h5>
-
-                                <div class="d-flex align-items-center">
-                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-hourglass"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6>3</h6>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div><!-- End Sales Card -->
-
-                    <!-- Customers Card -->
-                    <div class="col-xxl-8 col-xl-12">
-
+                    <!-- Manuscript Request Status Card -->
+                    <div class="col-xxl-12 col-xl-12">
                         <div class="card recent-sales overflow-auto">
                             <div class="card-body">
-                                <h5 class="card-title">Manuscript Status</h5>
+                                <h5 class="card-title">Manuscript Request Status</h5>
 
                                 <table class="table table-borderless table-sm table-hover text-center">
                                     <thead>
@@ -49,51 +27,60 @@
                                             <th scope="col">Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><a href="#" class="text-primary" title="Sample title here">Sample title here</a></td>
-                                            <td>Condoriano</td>
-                                            <td><span class="badge bg-warning">PENDING</span></td>
-                                        </tr>
-                                    </tbody>
                                 </table>
-
                             </div>
-
                         </div>
-
-
                     </div>
 
-                    <!-- Recent Sales -->
-                    <div class="col-12">
+                    <!-- Manuscript Upload Status Card -->
+                     <div class="col-xxl-12 col-xl-12">
                         <div class="card recent-sales overflow-auto">
                             <div class="card-body">
-                                <h5 class="card-title">Search Manuscript</h5>
+                                <h5 class="card-title">Manuscript Upload Status</h5>
 
-                                <table class="table table-borderless table-sm table-hover text-center">
+                                <table class="table table-borderless table-sm table-hover text-center" id="userManuscriptUploadStatus">
                                     <thead>
                                         <tr>
                                             <th scope="col">Title</th>
-                                            <th scope="col">Author</th>
                                             <th scope="col">Date Uploaded</th>
+                                            <th scope="col">Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><a href="#" class="text-primary" title="Sample title here">Sample title here1</a></td>
-                                            <td>God Ussop</td>
-                                            <td>Jan 3, 2020</td>
-                                        </tr>
-                                    </tbody>
                                 </table>
-
                             </div>
-
                         </div>
-                    </div><!-- End Recent Sales -->
+                    </div>
                 </div>
             </div><!-- End Left side columns -->
+        </div>
     </section>
+
+    <div class="modal fade" id="viewJournalModal" tabindex="-1" role="dialog" aria-labelledby="viewJournalModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <div class="col-4">
+              <h5 class="modal-title" id="viewJournalModalTitle">Journal</h5>
+            </div>
+            <div class="col-8">
+              <input type="radio" class="btn-check toggle-manuscript radio-journal" name="options-outlined" id="success-outlined" autocomplete="off" checked>
+              <label class="btn btn-outline-success btn-sm" for="success-outlined">Journal</label>
+              <input type="radio" class="btn-check toggle-manuscript" name="options-outlined" id="danger-outlined" autocomplete="off">
+              <label class="btn btn-outline-danger btn-sm" for="danger-outlined">Abstract</label>
+            </div>
+          </div>
+
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>PDF HERE</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </main><!-- End #main -->

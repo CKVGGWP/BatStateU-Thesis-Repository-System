@@ -122,6 +122,7 @@ class Manuscript extends Database
                        LEFT JOIN campus c ON m.campus = c.id
                        lEFT JOIN department d ON m.department = d.id
                        WHERE m.status = 0";
+
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -132,7 +133,7 @@ class Manuscript extends Database
             $totalData++;
             $data[] = [
                 $totalData,
-                "<a href='#viewJournalModal' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                "<a href='#viewJournalModal' class='view-journal' data-bs-toggle='modal' data-id = '". $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 $author,
                 $yearPub,
                 $campusName,
@@ -158,10 +159,17 @@ class Manuscript extends Database
     public function getRequestAdminTable()
     {
         $sql = "SELECT 
-                id,
-                manuscriptTitle,
-                dateUploaded
-                FROM manuscript WHERE status = 0";
+                t.id,
+                t.manuscriptID,
+                t.userID,
+                t.time,
+                m.manuscriptTitle,
+                m.author,
+                CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name
+                FROM manuscript_token t
+                LEFT JOIN manuscript m ON t.manuscriptID = m.id
+                LEFT JOIN user_details u ON t.userID = u.id
+                WHERE t.status = 0";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -172,14 +180,50 @@ class Manuscript extends Database
             $totalData++;
             $data[] = [
                 $totalData,
-                $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
+                $time = (new DateTime($time))->format('F d, Y - h:i A'),
                 $manuscriptTitle,
-                "",
-                "",
+                $author,
+                $name,
                 '
                     <button type="button" class="btn btn-success btn-sm approve-request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">APPROVE</button>
-                    <button type="button" class="btn btn-danger btn-sm disapprove-request" data-id="' . $id . '">DISAPPROVE</button>
+                    <button type="button" class="btn btn-danger btn-sm decline-request" data-id="' . $id . '">DECLINE</button>
                 ',
+            ];
+        }
+
+        $json_data = array(
+            "draw"            => 1,   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+            "recordsTotal"    => intval($totalData),  // total number of records
+            "recordsFiltered" => intval($totalData), // total number of records after searching, if there is no searching then totalFiltered = totalData
+            "data"            => $data   // total data array
+
+        );
+
+        return json_encode($json_data);  // send data as json format
+    }
+
+    public function getManuscriptBySrCode($srCode) {
+        $sql = "SELECT 
+                id,
+                manuscriptTitle,
+                dateUploaded,
+                status  
+                FROM manuscript 
+                WHERE srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("s", $srCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $totalData = 0;
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            extract($row);
+            $totalData++;
+            $data[] = [
+                 "<a href='#viewJournalModal' class='view-journal' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
+                $status = ($status == 0) ? '<span class="badge bg-warning">PENDING</span>' : (($status == 1) ? '<span class="badge bg-success">APPROVED</span>' : '<span class="badge bg-danger">DECLINED</span>'),
             ];
         }
 
@@ -223,31 +267,16 @@ class Manuscript extends Database
         }
     }
 
-    public function approveManuscript($manuscriptId)
+    public function updatePendingManuscript($manuscriptId, $status)
     {
-        $sql = "UPDATE manuscript SET status = 1 WHERE id = ?";
+        $sql = "UPDATE manuscript SET status = ? WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("i", $manuscriptId);
+        $stmt->bind_param("ii", $status, $manuscriptId);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
             return 1;
-            $this->insertNotification($manuscriptId, "Approved");
-        } else {
-            return 0;
-        }
-    }
-
-    public function declineManuscript($manuscriptId)
-    {
-        $sql = "UPDATE manuscript SET status = 2 WHERE id = ?";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("i", $manuscriptId);
-        $stmt->execute();
-
-        if ($stmt->affected_rows > 0) {
-            return 1;
-            $this->insertNotification($manuscriptId, "Declined");
+            $this->insertNotification($manuscriptId,  $status = ($status == 1) ? "Approved" : "Declined");
         } else {
             return 0;
         }
@@ -283,5 +312,20 @@ class Manuscript extends Database
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         return $row['manuscriptTitle'];
+    }
+
+    public function updateManuscriptRequest($id, $status)
+    {
+        $sql = "UPDATE manuscript_token SET status = ? WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("ii", $status, $id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return 1;
+            $this->insertNotification($id, $status = ($status == 1) ? "Approved" : "Declined");
+        } else {
+            return 0;
+        }
     }
 }

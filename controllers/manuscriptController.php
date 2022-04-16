@@ -3,6 +3,8 @@
 include('../models/database.php');
 include('../models/manuscript.php');
 
+session_start();
+
 $manuscript = new Manuscript();
 if (isset($_POST['getManuscript'])) {
     echo $manuscript->getManuscriptTable();
@@ -43,12 +45,20 @@ if (isset($_POST['udpateManuscript'])) {
     echo $manuscript->updateManuscript($data);
 }
 
-if (isset($_POST['approveManuscript'])) {
+if (isset($_POST['updatePendingManuscript'])) {
     $manuscriptId = $_POST['manuscriptId'];
-    echo $manuscript->approveManuscript($manuscriptId);
+    $status = $_POST['status'];
+    echo $manuscript->updatePendingManuscript($manuscriptId, $status);
 }
 
-if (isset($_POST['declineManuscript'])) {
-    $manuscriptId = $_POST['manuscriptId'];
-    echo $manuscript->declineManuscript($manuscriptId);
+
+if (isset($_POST['getUserManuscript'])) {
+    $srCode = $_SESSION['srCode'];
+    echo $manuscript->getManuscriptBySrCode($srCode);
+}
+
+if (isset($_POST['manuscriptRequest'])) {
+    $id = $_POST['id'];
+    $status = $_POST['status'];
+    echo $manuscript->updateManuscriptRequest($id, $status);
 }

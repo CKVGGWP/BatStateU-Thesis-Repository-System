@@ -27,7 +27,7 @@
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Date</th>
+                  <th scope="col">Date Requested</th>
                   <th scope="col">Manuscript Title</th>
                   <th scope="col">Authors</th>
                   <th scope="col">Requester</th>
