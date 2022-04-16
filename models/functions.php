@@ -8,7 +8,7 @@ function static_count()
 
 function read_dateTime($dateTime)
 {
-    return date("F j, Y H:i:s", strtotime($dateTime));
+    return date("F j, Y g:i:a", strtotime($dateTime));
 }
 
 function read_date($date)
@@ -18,10 +18,15 @@ function read_date($date)
 
 function read_time($time)
 {
-    return date("H:i:s", strtotime($time));
+    return date("g:i:a", strtotime($time));
+}
+
+function dateTimeNow()
+{
+    return date("Y-m-d H:i:s");
 }
 
 function dateNow()
 {
-    return date("Y-m-d H:i:s");
+    return date("Y-m-d");
 }

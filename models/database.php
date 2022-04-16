@@ -30,6 +30,16 @@ class Database
         '3' => ' has been rejected! Reason: ',
     );
 
+    protected function hashPassword($password)
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    protected function createToken()
+    {
+        return md5(uniqid(rand(), true));
+    }
+
     protected function getID($srCode)
     {
         $sql = "SELECT id FROM user_details WHERE srCode = ?";
@@ -44,16 +54,6 @@ class Database
         } else {
             return 0;
         }
-    }
-
-    protected function hashPassword($password)
-    {
-        return password_hash($password, PASSWORD_DEFAULT);
-    }
-
-    protected function createToken()
-    {
-        return md5(uniqid(rand(), true));
     }
 
     protected function getSRCode($table, $column, $where, $value)

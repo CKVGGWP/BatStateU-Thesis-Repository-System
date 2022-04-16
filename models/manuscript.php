@@ -133,7 +133,7 @@ class Manuscript extends Database
             $totalData++;
             $data[] = [
                 $totalData,
-                "<a href='#viewJournalModal' class='view-journal' data-bs-toggle='modal' data-id = '". $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                "<a href='#viewJournalModal' class='view-journal' data-bs-toggle='modal' data-id = '" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 $author,
                 $yearPub,
                 $campusName,
@@ -202,7 +202,8 @@ class Manuscript extends Database
         return json_encode($json_data);  // send data as json format
     }
 
-    public function getManuscriptBySrCode($srCode) {
+    public function getManuscriptBySrCode($srCode)
+    {
         $sql = "SELECT 
                 id,
                 manuscriptTitle,
@@ -221,7 +222,7 @@ class Manuscript extends Database
             extract($row);
             $totalData++;
             $data[] = [
-                 "<a href='#viewJournalModal' class='view-journal' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                "<a href='#viewJournalModal' class='view-journal' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
                 $status = ($status == 0) ? '<span class="badge bg-warning">PENDING</span>' : (($status == 1) ? '<span class="badge bg-success">APPROVED</span>' : '<span class="badge bg-danger">DECLINED</span>'),
             ];
@@ -290,7 +291,7 @@ class Manuscript extends Database
         $type = ($status == "Approved") ? $this->typeID[2] : $this->typeID[3];
         $message = $title;
         $message .= ($status == "Approved") ? $this->messages[2] : $this->messages[3] . " Insert Reason Here";
-        $dateNow = dateNow();
+        $dateNow = dateTimeNow();
         $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
             . " VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->connect()->prepare($sql);
@@ -337,5 +338,23 @@ class Manuscript extends Database
         } else {
             return 0;
         }
+    }
+
+    public function getManuscriptButton()
+    {
+        $button = '<h5 class="card-title">Manuscript</h5>';
+        $sql = "SELECT COUNT(id) AS nums FROM manuscript WHERE status = 0";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $button .= '<a href="dashboard.php?title=Pending Manuscripts" class="btn btn-dark btn-sm my-3">Pending Manuscript <span class="badge bg-primary badge-number">' . $row['nums'] . '</span></a>';
+        } else {
+            $button .= '<a href="dashboard.php?title=Pending Manuscripts" class="btn btn-dark btn-sm my-3">Pending Manuscript</a>';
+        }
+
+        return json_encode($button);
     }
 }

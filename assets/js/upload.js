@@ -82,7 +82,7 @@ $("#adminUpload").on("submit", function (e) {
         // console.log(data);
         Swal.fire({
           icon: "success",
-          title: title + "has been uploaded successfully!",
+          title: title + " has been uploaded successfully!",
           showConfirmButton: false,
           timer: 1500,
         });

@@ -62,3 +62,7 @@ if (isset($_POST['manuscriptRequest'])) {
     $status = $_POST['status'];
     echo $manuscript->updateManuscriptRequest($id, $status);
 }
+
+if (isset($_POST['getPendingManuscript'])) {
+    echo $manuscript->getManuscriptButton();
+}

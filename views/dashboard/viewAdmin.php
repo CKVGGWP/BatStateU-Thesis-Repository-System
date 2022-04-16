@@ -13,9 +13,8 @@
 
         <div class="card">
           <div class="card-body">
-            <div class="d-flex justify-content-between">
-              <h5 class="card-title">Manuscript</h5>
-              <a href="dashboard.php?title=Pending Manuscripts" class="btn btn-dark btn-sm my-3">Pending Manuscript</a>
+            <div class="d-flex justify-content-between" id="pendingManuscriptButton">
+
             </div>
             <!-- Table with stripped rows -->
             <table class="table table-hover dt-responsive nowrap text-center" width="100%" id="manuscriptTable">
@@ -139,10 +138,10 @@
               <div class="form-group col-md-6 col-12">
                 <div class="form-floating">
                   <select class="form-control" name="manuscriptCampus" id="manuscriptCampus" required>
-                      <option value selected disabled>Please select a Campus</option>
-                      <?php foreach ($campuses as $key => $row) : ?>
-                          <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
-                      <?php endforeach; ?>
+                    <option value selected disabled>Please select a Campus</option>
+                    <?php foreach ($campuses as $key => $row) : ?>
+                      <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
+                    <?php endforeach; ?>
                   </select>
                   <label for="campus" class="form-label">Campus</label>
                   <div class="invalid-feedback">Please enter a valid Campus.</div>
