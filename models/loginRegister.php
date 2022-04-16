@@ -66,7 +66,7 @@ class LoginRegister extends Database
             exit();
         }
 
-        if ($this->insertPassToken($this->getID($email))) {
+        if ($this->insertPassToken($this->getIdByEmail($email))) {
             return 3;
         } else {
             return 2;
@@ -167,16 +167,6 @@ class LoginRegister extends Database
             $row = $result->fetch_assoc();
             return $row['password'];
         }
-    }
-
-    private function hashPassword($password)
-    {
-        return password_hash($password, PASSWORD_DEFAULT);
-    }
-
-    private function createToken()
-    {
-        return md5(uniqid(rand(), true));
     }
 
     private function checkPassword($email, $password)
@@ -362,7 +352,7 @@ class LoginRegister extends Database
         }
     }
 
-    private function getID($email)
+    private function getIdByEmail($email)
     {
         $sql = "SELECT id, firstName, lastName, email, srCode FROM user_details WHERE email = ?";
         $stmt = $this->connect()->prepare($sql);

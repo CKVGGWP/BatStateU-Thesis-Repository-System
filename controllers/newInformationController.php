@@ -35,9 +35,9 @@ if (isset($_POST['changePass'])) {
     echo $info->changePassword($currentPassword, $newPassword, $srCode);
 }
 
-if (isset($_POST['notif'])) {
+if (isset($_POST['view'])) {
     if ($_POST['view'] != "") {
-        echo $info->updateNotification($srCode);
+        echo $info->getNotification($srCode, "Update");
     }
     echo $info->getNotification($srCode);
 }

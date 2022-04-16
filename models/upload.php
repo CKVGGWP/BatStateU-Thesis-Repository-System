@@ -1,7 +1,5 @@
 <?php
 
-date_default_timezone_set('Asia/Manila');
-
 class Upload extends Database
 {
     //-----------------------Upload File

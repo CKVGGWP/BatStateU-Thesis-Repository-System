@@ -387,10 +387,10 @@ $(document).on("submit", "#editAccountForm", function (e) {
 if ($("#notifications").length > 0) {
   $(document).ready(function () {
     function loadNotifications(view = "") {
-      let views = view;
       $.ajax({
         url: "controllers/newInformationController.php",
-        data: { notif: true, view: views },
+        method: "POST",
+        data: { view: view },
         dataType: "json",
         success: function (data) {
           console.log(data);
@@ -407,8 +407,11 @@ if ($("#notifications").length > 0) {
 
     $(document).on("click", "#notifications", function () {
       $("#notifbadge").html("");
-      $("#countHeader").html("You have read all your notifications.");
       loadNotifications("view");
     });
+
+    setInterval(function () {
+      loadNotifications();
+    }, 5000);
   });
 }

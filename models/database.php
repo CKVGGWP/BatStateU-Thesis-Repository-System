@@ -5,6 +5,8 @@ require_once $directory . '/../assets/vendor/autoload.php';
 
 require('credentials.php');
 
+date_default_timezone_set('Asia/Manila');
+
 class Database
 {
     protected $typeID = array(
@@ -18,11 +20,54 @@ class Database
 
     protected $redirect = array(
         '1' => 'dashboard.php?title=View Request',
+        '2' => 'dashboard.php?title=Dashboard',
     );
 
     protected $messages = array(
         '1' => ' has been uploaded. Please check the list of manuscripts.',
+        '2' => ' has been approved!',
+        '3' => ' has been rejected! Reason: ',
     );
+
+    protected function getID($srCode)
+    {
+        $sql = "SELECT id FROM user_details WHERE srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['id'];
+        } else {
+            return 0;
+        }
+    }
+
+    protected function hashPassword($password)
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    protected function createToken()
+    {
+        return md5(uniqid(rand(), true));
+    }
+
+    protected function getSRCode($table, $column, $where, $value)
+    {
+        $sql = "SELECT $column FROM $table WHERE $where = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$value]);
+        $result = $stmt->fetch();
+        return $result[$column];
+    }
+
+    protected function dateNow()
+    {
+        return date("Y-m-d H:i:s");
+    }
 
     protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
 

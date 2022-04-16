@@ -223,16 +223,65 @@ class Manuscript extends Database
         }
     }
 
-     public function approveManuscript($manuscriptId) {
+    public function approveManuscript($manuscriptId)
+    {
         $sql = "UPDATE manuscript SET status = 1 WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("i", $manuscriptId);
         $stmt->execute();
-        
-        if($stmt->affected_rows > 0) {
+
+        if ($stmt->affected_rows > 0) {
             return 1;
+            $this->insertNotification($manuscriptId, "Approved");
         } else {
             return 0;
         }
+    }
+
+    public function declineManuscript($manuscriptId)
+    {
+        $sql = "UPDATE manuscript SET status = 2 WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $manuscriptId);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return 1;
+            $this->insertNotification($manuscriptId, "Declined");
+        } else {
+            return 0;
+        }
+    }
+
+    private function insertNotification($manuscriptId, $status)
+    {
+        $srCode = $this->getSRCode("manuscript", "srCode", "id", $manuscriptId);
+        $title = $this->getManuscriptTitle($manuscriptId);
+        $id = $this->getID($srCode);
+        $type = ($status == "Approved") ? $this->typeID[2] : $this->typeID[3];
+        $message = ($status == "Approved") ? $this->messages[2] : $this->messages[3] . " Insert Reason Here";
+
+        $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
+            . " VALUES (?, ?, ?, ?, ?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("issss", $id, $type, $title . " $message", $this->redirect[2], $this->dateNow());
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function getManuscriptTitle($manuscriptID)
+    {
+        $sql = "SELECT manuscriptTitle FROM manuscript WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $manuscriptID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['manuscriptTitle'];
     }
 }

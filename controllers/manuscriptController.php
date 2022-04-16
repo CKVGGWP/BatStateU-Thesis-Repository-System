@@ -47,3 +47,8 @@ if (isset($_POST['approveManuscript'])) {
     $manuscriptId = $_POST['manuscriptId'];
     echo $manuscript->approveManuscript($manuscriptId);
 }
+
+if (isset($_POST['declineManuscript'])) {
+    $manuscriptId = $_POST['manuscriptId'];
+    echo $manuscript->declineManuscript($manuscriptId);
+}

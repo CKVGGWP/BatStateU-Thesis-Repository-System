@@ -94,7 +94,7 @@ class Information extends Database
                 WHERE u.id = ? 
                 AND nRead = 0";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $id);
+        $stmt->bind_param('i', $id);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -106,30 +106,17 @@ class Information extends Database
         }
     }
 
-    private function getID($srCode)
+    public function getNotification($srCode, $action = "")
     {
-        $sql = "SELECT id FROM user_details WHERE srCode = ?";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $srCode);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            return $row['id'];
-        } else {
-            return 0;
+        if ($action != "") {
+            $this->updateNotification($srCode);
         }
-    }
-
-    public function getNotification($srCode)
-    {
         $id = $this->getID($srCode);
         $sql = "SELECT * FROM notification n
                 LEFT JOIN user_details u ON u.id = n.userID 
                 WHERE n.userID = ? ORDER BY n.nRead ASC, n.dateReceived DESC";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $id);
+        $stmt->bind_param('i', $id);
         $stmt->execute();
         $result = $stmt->get_result();
         $notif = "";
@@ -175,12 +162,12 @@ class Information extends Database
         return json_encode($data);
     }
 
-    public function updateNotification($srCode)
+    private function updateNotification($srCode)
     {
         $id = $this->getID($srCode);
         $sql = "UPDATE notification SET nRead = 1 WHERE userID = ?";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $id);
+        $stmt->bind_param('i', $id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -291,16 +278,6 @@ class Information extends Database
         } else {
             return 2;
         }
-    }
-
-    private function createToken()
-    {
-        return md5(uniqid(rand(), true));
-    }
-
-    private function hashPassword($pass)
-    {
-        return password_hash($pass, PASSWORD_DEFAULT);
     }
 
     private function sendEmail($email, $tokenKey = '', $name, $srCode, $type)

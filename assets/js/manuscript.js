@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  let manuscriptTable = $('#manuscriptTable').DataTable({
+  let manuscriptTable = $("#manuscriptTable").DataTable({
     // lengthChange: false,
     // searching: false,
     processing: true,
@@ -7,8 +7,8 @@ $(document).ready(function () {
     // serverSide: true,
     bInfo: false,
     ajax: {
-      url: 'controllers/manuscriptController.php', // json datasource
-      type: 'POST', // method  , by default get
+      url: "controllers/manuscriptController.php", // json datasource
+      type: "POST", // method  , by default get
       data: { getManuscript: true },
 
       // success: function (row, data, index) {
@@ -32,7 +32,7 @@ $(document).ready(function () {
     stateSave: false,
   });
 
-  let browseManuscriptTable = $('#browseManuscriptTable').DataTable({
+  let browseManuscriptTable = $("#browseManuscriptTable").DataTable({
     // lengthChange: false,
     // searching: false,
     processing: true,
@@ -40,8 +40,8 @@ $(document).ready(function () {
     // serverSide: true,
     bInfo: false,
     ajax: {
-      url: 'controllers/manuscriptController.php', // json datasource
-      type: 'POST', // method  , by default get
+      url: "controllers/manuscriptController.php", // json datasource
+      type: "POST", // method  , by default get
       data: { browseManuscript: true },
 
       // success: function (row, data, index) {
@@ -65,7 +65,7 @@ $(document).ready(function () {
     stateSave: false,
   });
 
-  let requestAdminTable = $('#requestAdminTable').DataTable({
+  let requestAdminTable = $("#requestAdminTable").DataTable({
     // lengthChange: false,
     // searching: false,
     processing: true,
@@ -73,8 +73,8 @@ $(document).ready(function () {
     // serverSide: true,
     bInfo: false,
     ajax: {
-      url: 'controllers/manuscriptController.php', // json datasource
-      type: 'POST', // method  , by default get
+      url: "controllers/manuscriptController.php", // json datasource
+      type: "POST", // method  , by default get
       data: { getRequestAdmin: true },
 
       // success: function (row, data, index) {
@@ -98,7 +98,7 @@ $(document).ready(function () {
     stateSave: false,
   });
 
-  let pendingManuscriptTable = $('#pendingManuscriptTable').DataTable({
+  let pendingManuscriptTable = $("#pendingManuscriptTable").DataTable({
     // lengthChange: false,
     // searching: false,
     processing: true,
@@ -106,8 +106,8 @@ $(document).ready(function () {
     // serverSide: true,
     bInfo: false,
     ajax: {
-      url: 'controllers/manuscriptController.php', // json datasource
-      type: 'POST', // method  , by default get
+      url: "controllers/manuscriptController.php", // json datasource
+      type: "POST", // method  , by default get
       data: { pendingManuscript: true },
 
       // success: function (row, data, index) {
@@ -132,69 +132,69 @@ $(document).ready(function () {
   });
 });
 
-$(document).on('click', '.delete', function () {
-  let manuscriptId = $(this).data('id');
+$(document).on("click", ".delete", function () {
+  let manuscriptId = $(this).data("id");
   Swal.fire({
-    title: 'Are you sure?',
+    title: "Are you sure?",
     text: "You won't be able to revert this!",
-    icon: 'warning',
+    icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#dc3545',
-    confirmButtonText: 'Yes, delete it!',
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: "Yes, delete it!",
   }).then((result) => {
     if (result.value) {
       $.ajax({
-        url: 'controllers/manuscriptController.php',
-        type: 'POST',
+        url: "controllers/manuscriptController.php",
+        type: "POST",
         data: { deleteManuscript: 1, manuscriptId: manuscriptId },
         success: function (data) {
           if (data == 1) {
-            Swal.fire('Deleted!', 'Manuscript has been deleted.', 'success');
+            Swal.fire("Deleted!", "Manuscript has been deleted.", "success");
           } else {
-            Swal.fire('Error!', 'Something went wrong.', 'error');
+            Swal.fire("Error!", "Something went wrong.", "error");
           }
-          $('#manuscriptTable').DataTable().ajax.reload();
+          $("#manuscriptTable").DataTable().ajax.reload();
         },
       });
     }
   });
 });
 
-$(document).on('click', '.edit', function () {
-  let manuscriptId = $(this).data('id');
+$(document).on("click", ".edit", function () {
+  let manuscriptId = $(this).data("id");
   manuscriptDetails(manuscriptId);
 });
 
-$(document).on('click', '.view-journal', function () {
-  $('.radio-journal').prop('checked', true);
-  $('#viewJournalModalTitle').html('Journal');
+$(document).on("click", ".view-journal", function () {
+  $(".radio-journal").prop("checked", true);
+  $("#viewJournalModalTitle").html("Journal");
 
-  let manuscriptId = $(this).data('id');
+  let manuscriptId = $(this).data("id");
   manuscriptDetails(manuscriptId);
 });
 
-$(document).on('click', '#viewAbstractUser', function () {
-  let manuscriptId = $(this).data('id');
+$(document).on("click", "#viewAbstractUser", function () {
+  let manuscriptId = $(this).data("id");
   manuscriptDetails(manuscriptId);
 });
 
-$('.toggle-manuscript').change(function () {
-  if ($('.radio-journal').is(':checked')) {
-    $('#modalJournal').prop('hidden', false);
-    $('#modalAbstract').prop('hidden', true);
-    $('#viewJournalModalTitle').html('Journal');
+$(".toggle-manuscript").change(function () {
+  if ($(".radio-journal").is(":checked")) {
+    $("#modalJournal").prop("hidden", false);
+    $("#modalAbstract").prop("hidden", true);
+    $("#viewJournalModalTitle").html("Journal");
   } else {
-    $('#modalJournal').prop('hidden', true);
-    $('#modalAbstract').prop('hidden', false);
-    $('#viewJournalModalTitle').html('Abstract');
+    $("#modalJournal").prop("hidden", true);
+    $("#modalAbstract").prop("hidden", false);
+    $("#viewJournalModalTitle").html("Abstract");
   }
 });
 
 function manuscriptDetails(manuscriptId) {
   $.ajax({
-    url: 'controllers/manuscriptController.php',
-    type: 'POST',
+    url: "controllers/manuscriptController.php",
+    type: "POST",
     data: {
       manuscriptDetails: 1,
       manuscriptId: manuscriptId,
@@ -202,26 +202,26 @@ function manuscriptDetails(manuscriptId) {
     success: function (response) {
       var resp = JSON.parse(response);
 
-      $('#manuscriptId').val(resp.id);
-      $('#manuscriptTitle').val(resp.manuscriptTitle);
-      $('#manuscriptAuthors').val(resp.author);
-      $('#manuscriptYearPub').val(resp.yearPub);
-      $('#manuscriptCampus').val(resp.campus);
-      $('#manuscriptDept').html(
+      $("#manuscriptId").val(resp.id);
+      $("#manuscriptTitle").val(resp.manuscriptTitle);
+      $("#manuscriptAuthors").val(resp.author);
+      $("#manuscriptYearPub").val(resp.yearPub);
+      $("#manuscriptCampus").val(resp.campus);
+      $("#manuscriptDept").html(
         '<option selected value="' +
           resp.department +
           '">' +
           resp.departmentName +
-          '</option>'
+          "</option>"
       );
-      $('#viewJournalModal .modal-body').html(
+      $("#viewJournalModal .modal-body").html(
         '<iframe id="modalJournal" src="./assets/uploads/' +
           resp.journal +
           '" type="application/pdf" style="height:600px;width:100%"></iframe><iframe hidden id="modalAbstract" src="./assets/uploads/' +
           resp.abstract +
           '" type="application/pdf" style="height:600px;width:100%"></iframe>'
       );
-      $('#viewAbstractModal .modal-body').html(
+      $("#viewAbstractModal .modal-body").html(
         '<iframe id="modalAbstract" src="./assets/uploads/' +
           resp.abstract +
           '" type="application/pdf" style="height:600px;width:100%"></iframe>'
@@ -230,24 +230,24 @@ function manuscriptDetails(manuscriptId) {
   });
 }
 
-$('#updateManuscript').click(function (e) {
+$("#updateManuscript").click(function (e) {
   e.preventDefault();
 
-  $('#updateManuscript').attr('disabled', true);
-  $('#updateManuscript').html(
+  $("#updateManuscript").attr("disabled", true);
+  $("#updateManuscript").html(
     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
   );
 
-  let manuscriptId = $('#manuscriptId').val();
-  let manuscriptTitle = $('#manuscriptTitle').val();
-  let manuscriptAuthors = $('#manuscriptAuthors').val();
-  let manuscriptYearPub = $('#manuscriptYearPub').val();
-  let manuscriptCampus = $('#manuscriptCampus').val();
-  let manuscriptDept = $('#manuscriptDept').val();
+  let manuscriptId = $("#manuscriptId").val();
+  let manuscriptTitle = $("#manuscriptTitle").val();
+  let manuscriptAuthors = $("#manuscriptAuthors").val();
+  let manuscriptYearPub = $("#manuscriptYearPub").val();
+  let manuscriptCampus = $("#manuscriptCampus").val();
+  let manuscriptDept = $("#manuscriptDept").val();
 
   $.ajax({
-    url: 'controllers/manuscriptController.php',
-    type: 'POST',
+    url: "controllers/manuscriptController.php",
+    type: "POST",
     data: {
       udpateManuscript: 1,
       manuscriptId: manuscriptId,
@@ -259,62 +259,93 @@ $('#updateManuscript').click(function (e) {
     },
     success: function (data) {
       if (data == 1) {
-        Swal.fire('Updated!', 'Manuscript has been updated.', 'success');
+        Swal.fire("Updated!", "Manuscript has been updated.", "success");
       } else {
-        Swal.fire('Error!', 'Something went wrong.', 'error');
+        Swal.fire("Error!", "Something went wrong.", "error");
       }
 
-      $('#updateManuscript').attr('disabled', false);
-      $('#updateManuscript').html('Save changes');
-      $('#manuscriptTable').DataTable().ajax.reload();
+      $("#updateManuscript").attr("disabled", false);
+      $("#updateManuscript").html("Save changes");
+      $("#manuscriptTable").DataTable().ajax.reload();
     },
   });
 });
 
-$(document).on('click', '.approved-pending', function () {
-  let manuscriptId = $(this).data('id');
+$(document).on("click", ".approved-pending", function () {
+  let manuscriptId = $(this).data("id");
 
   Swal.fire({
-    title: 'Confirm Manuscript Approval',
-    text: 'Are you sure you want to approve this manuscript?',
-    icon: 'question',
+    title: "Confirm Manuscript Approval",
+    text: "Are you sure you want to approve this manuscript?",
+    icon: "question",
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#dc3545',
-    confirmButtonText: 'Yes, Approve it!',
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: "Yes, Approve it!",
   }).then((result) => {
     if (result.value) {
       $.ajax({
-        url: 'controllers/manuscriptController.php',
-        type: 'POST',
+        url: "controllers/manuscriptController.php",
+        type: "POST",
         data: { approveManuscript: 1, manuscriptId: manuscriptId },
         success: function (data) {
           console.log(data);
           if (data == 1) {
-            Swal.fire('Approved!', 'Manuscript has been approved.', 'success');
+            Swal.fire("Approved!", "Manuscript has been approved.", "success");
           } else {
-            Swal.fire('Error!', 'Something went wrong.', 'error');
+            Swal.fire("Error!", "Something went wrong.", "error");
           }
-          $('#pendingManuscriptTable').DataTable().ajax.reload();
+          $("#pendingManuscriptTable").DataTable().ajax.reload();
         },
       });
     }
   });
 });
 
-$('#manuscriptCampus').on('change', function () {
+$(document).on("click", ".decline-pending", function () {
+  let manuscriptId = $(this).data("id");
+
+  Swal.fire({
+    title: "Decline Manuscript Approval",
+    text: "Are you sure you want to decline this manuscript?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: "Yes, Decline it!",
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: "controllers/manuscriptController.php",
+        type: "POST",
+        data: { declineManuscript: 1, manuscriptId: manuscriptId },
+        success: function (data) {
+          console.log(data);
+          if (data == 1) {
+            Swal.fire("Declined!", "Manuscript has been declined.", "success");
+          } else {
+            Swal.fire("Error!", "Something went wrong.", "error");
+          }
+          $("#pendingManuscriptTable").DataTable().ajax.reload();
+        },
+      });
+    }
+  });
+});
+
+$("#manuscriptCampus").on("change", function () {
   let campus = $(this).val();
 
   $.ajax({
-    url: 'controllers/newInformationController.php',
-    method: 'POST',
+    url: "controllers/newInformationController.php",
+    method: "POST",
     data: {
       campus: campus,
       getCampus: 1,
     },
-    dataType: 'json',
+    dataType: "json",
     success: function (data) {
-      $('#manuscriptDept').html(data);
+      $("#manuscriptDept").html(data);
     },
   });
 });
