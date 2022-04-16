@@ -41,3 +41,7 @@ if (isset($_POST['view'])) {
     }
     echo $info->getNotification($srCode);
 }
+
+if(isset($_POST['getAllUsers'])){
+    echo $info->getAllUsers();
+}

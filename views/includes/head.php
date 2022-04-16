@@ -27,6 +27,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     <!-- Vendor CSS Files -->
     <link href="./assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="./assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">

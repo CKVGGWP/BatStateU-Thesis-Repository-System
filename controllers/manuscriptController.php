@@ -6,6 +6,7 @@ include('../models/manuscript.php');
 session_start();
 
 $manuscript = new Manuscript();
+
 if (isset($_POST['getManuscript'])) {
     echo $manuscript->getManuscriptTable();
 }

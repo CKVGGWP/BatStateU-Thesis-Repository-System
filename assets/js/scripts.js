@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  echarts.init(document.querySelector('#trafficChart')).setOption({
+  echarts.init(document.querySelector('#totalUsersPiseGraph')).setOption({
     tooltip: {
       trigger: 'item',
     },

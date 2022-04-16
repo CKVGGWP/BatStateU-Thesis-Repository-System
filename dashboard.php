@@ -69,5 +69,6 @@
 <script src="./assets/js/accountManagementAdmin.js"></script>
 <script src="./assets/js/manuscript.js"></script>
 <script src="./assets/js/upload.js"></script>
+<script src="./assets/js/dashboard.js"></script>
 
 </html>

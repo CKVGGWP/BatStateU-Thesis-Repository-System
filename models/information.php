@@ -325,4 +325,28 @@ class Information extends Database
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
     }
+
+    public function getAllUsers()
+    {
+        $sql = "SELECT COUNT(*) AS `count`,
+                c.campusName 
+                FROM user_details u 
+                LEFT JOIN campus c ON u.campusID = c.id
+                GROUP BY campusID";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $count[] = $row['count'];
+                $campus[] = $row['campusName'];
+            }
+            $total[] = array_sum($count);
+            $data = array($count, $campus, $total);
+            return json_encode($data);
+        } else {
+            return false;
+        }
+    }
 }
