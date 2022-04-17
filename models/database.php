@@ -81,6 +81,43 @@ class Database
         }
     }
 
+    protected function getAuthorByID($manuscriptID)
+    {
+        $sql = "SELECT author FROM manuscript WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $manuscriptID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['author'];
+    }
+
+    protected function getSRCodeByNames($names)
+    {
+        $names = "'" . str_replace(",", "','", $names) . "'";
+        $sql = "SELECT id FROM user_details WHERE concat_ws(' ', firstName, lastName) IN (" . $names . ")";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $id = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $id[] = $row['id'];
+        }
+
+        return $id;
+    }
+
+    protected function lastManuscriptID()
+    {
+        $sql = "SELECT id FROM manuscript ORDER BY id DESC LIMIT 1";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['id'];
+    }
+
     protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
 
     protected function connect()

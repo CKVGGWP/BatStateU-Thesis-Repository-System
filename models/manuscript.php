@@ -46,7 +46,7 @@ class Manuscript extends Database
                 lEFT JOIN department d ON m.department = d.id
                 WHERE m.status = 1";
 
-        if($recent != '') {
+        if ($recent != '') {
             $sql .= " AND actionDate >= NOW() - INTERVAL 7 DAY";
         }
         $stmt = $this->connect()->prepare($sql);
@@ -58,19 +58,19 @@ class Manuscript extends Database
         while ($row = $result->fetch_assoc()) {
             extract($row);
             $totalData++;
-            if($recent != '') {
+            if ($recent != '') {
                 $data[] = [
                     $totalData,
                     "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
-                    $author,
-                    $actionDate = ((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate))))/60/60/24) == 0 ? 'Today' : ((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate))))/60/60/24) . ' days ago',
+                    str_replace(",", "<br>", $author),
+                    $actionDate = ((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate)))) / 60 / 60 / 24) == 0 ? 'Today' : ((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate)))) / 60 / 60 / 24) . ' days ago',
 
                 ];
             } else {
                 $data[] = [
                     $totalData,
                     "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
-                    $author,
+                    str_replace(",", "<br>", $author) ?? $author,
                     $yearPub,
                     $campusName,
                     $departmentName,
@@ -80,6 +80,11 @@ class Manuscript extends Database
                     ',
                 ];
             }
+
+
+            $authors = explode(',', $author);
+            $firstName = explode(' ', $authors[0]);
+            $firstName = $firstName[0];
         }
 
         $json_data = array(
@@ -107,7 +112,7 @@ class Manuscript extends Database
             $data[] = [
                 $totalData,
                 "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
-                str_replace(";", "<br>", $author),
+                str_replace(",", "<br>", $author) ?? $author,
                 $yearPub,
                 '<button type="button" class="btn btn-primary btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">DOWNLOAD</button>
                 ',
@@ -150,7 +155,7 @@ class Manuscript extends Database
             $data[] = [
                 $totalData,
                 "<a href='#viewJournalModal' class='view-journal' data-bs-toggle='modal' data-id = '" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
-                $author,
+                str_replace(",", "<br>", $author) ?? $author,
                 $yearPub,
                 $campusName,
                 $departmentName,
@@ -198,7 +203,7 @@ class Manuscript extends Database
                 $totalData,
                 $time = (new DateTime($time))->format('F d, Y - h:i A'),
                 $manuscriptTitle,
-                $author,
+                str_replace(",", "<br>", $author) ?? $author,
                 $name,
                 '
                     <button type="button" class="btn btn-success btn-sm approve-request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">APPROVE</button>
@@ -303,13 +308,15 @@ class Manuscript extends Database
         } else {
             return 0;
         }
+
+        return $this->insertNotification($manuscriptId,  $status = ($status == 1) ? "Approved" : "Declined");
     }
 
     private function insertNotification($manuscriptId, $status, $request = "")
     {
-        $srCode = $this->getSRCode("manuscript", "srCode", "id", $manuscriptId);
+        // $srCode = $this->getSRCode("manuscript", "srCode", "id", $manuscriptId);
         $title = $this->getManuscriptTitle($manuscriptId);
-        $id = $this->getID($srCode);
+        $id = $this->getSRCodeByNames($this->getAuthorByID($manuscriptId));
 
         if ($request == "") {
             $type = ($status == "Approved") ? $this->typeID[2] : $this->typeID[3];
@@ -325,11 +332,14 @@ class Manuscript extends Database
             $message .= ($status == "Approved") ? $this->messages[4] : $this->messages[5] . " Insert Reason Here";
         }
         $dateNow = dateTimeNow();
-        $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
-            . " VALUES (?, ?, ?, ?, ?)";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("issss", $id, $type, $message, $this->redirect[2], $dateNow);
-        $stmt->execute();
+
+        foreach ($id as $key => $value) {
+            $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
+                . " VALUES (?, ?, ?, ?, ?)";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param("issss", $value, $type, $message, $this->redirect[2], $dateNow);
+            $stmt->execute();
+        }
 
         if ($stmt->affected_rows > 0) {
             $data = array(

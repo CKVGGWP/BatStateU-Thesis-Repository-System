@@ -238,7 +238,8 @@ class Information extends Database
     public function getUserByCampus($campID)
     {
         $sql = "SELECT 
-                CONCAT(firstName, ' ', middleName, ' ', lastName) AS fullName                FROM user_details
+                concat_ws(' ', firstName, lastName) AS fullName               
+                FROM user_details
                 WHERE campusID = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $campID);

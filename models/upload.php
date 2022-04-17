@@ -86,7 +86,67 @@ class Upload extends Database
         $stmt->execute();
         $stmt->close();
 
-        $this->insertNotification($title);
+        if ($this->insertGroup($this->lastManuscriptID())) {
+            return $this->insertNotification($title);
+        } else {
+            return false;
+        }
+    }
+
+    private function insertGroup($lastID)
+    {
+        if ($this->checkGroup($lastID) == true) {
+            exit();
+        }
+
+        $groupNumber = $this->createGroupNumber();
+        $id = $this->getSRCodeByNames($this->getAuthorByID($lastID));
+
+        foreach ($id as $key => $value) {
+            $sql = "INSERT INTO groupings(userID, groupNumber, manuscriptID) VALUES (? , ? , ?)";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param('iii', $value, $groupNumber, $lastID);
+            $stmt->execute();
+        }
+
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function checkGroup($manuscriptID)
+    {
+        $sql = "SELECT * FROM groupings WHERE manuscriptID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $manuscriptID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function createGroupNumber()
+    {
+        $sql = "SELECT * FROM groupings ORDER BY groupNumber DESC LIMIT 1";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $groupNumber = $row['groupNumber'] + 1;
+            }
+        } else {
+            $groupNumber = 1;
+        }
+
+        return $groupNumber;
     }
 
     private function getAdmin()

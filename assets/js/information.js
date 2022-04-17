@@ -481,7 +481,7 @@ $(document).ready(function () {
     if (inputtrim != input.val()) {
       if (inputcommas != currentcommas) {
         var lsIndex = inputtrim.lastIndexOf(separator);
-        var str = lsIndex != -1 ? inputtrim.substr(0, lsIndex) + ", " : "";
+        var str = lsIndex != -1 ? inputtrim.substr(0, lsIndex) + "," : "";
         filldatalist(str);
         inputcommas = currentcommas;
       }
