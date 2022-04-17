@@ -1,4 +1,39 @@
 $(document).ready(function () {
+  let recentlyAddedManuscript = $('#recentlyAddedManuscript').DataTable({
+    lengthChange: false,
+    // searching: false,
+    processing: true,
+    // ordering: false,
+    // serverSide: true,
+    bInfo: false,
+    ajax: {
+      url: 'controllers/manuscriptController.php', // json datasource
+      type: 'POST', // method  , by default get
+      data: {
+        getRecentAddedManuscript: true,
+        recent: 1,
+      },
+
+      // success: function (row, data, index) {
+      // console.log(row);
+      // },
+
+      error: function (data) {
+        console.log(data);
+        // error handling
+      },
+    },
+    createdRow: function (row, data, index) {},
+    columnDefs: [],
+    fixedColumns: false,
+    deferRender: true,
+    scrollY: 200,
+    // scrollX: false,
+    // scroller: {
+    //   loadingIndicator: true,
+    // },
+    stateSave: false,
+  });
   //   countPendingApproval
   $.ajax({
     url: 'controllers/manuscriptController.php',
@@ -26,6 +61,7 @@ $(document).ready(function () {
   });
 });
 
+//total users pie graph
 var options = {
   series: getUsers(1),
 

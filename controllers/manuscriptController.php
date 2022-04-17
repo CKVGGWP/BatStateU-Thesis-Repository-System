@@ -68,3 +68,8 @@ if (isset($_POST['manuscriptRequest'])) {
 if (isset($_POST['getPendingManuscript'])) {
     echo $manuscript->getManuscriptButton();
 }
+
+if (isset($_POST['getRecentAddedManuscript'])) {
+    $recent = $_POST['recent'];
+    echo $manuscript->getManuscriptTable($recent);
+}

@@ -30,7 +30,7 @@ class Manuscript extends Database
     }
 
     // MANUSCRIPT TABLE
-    public function getManuscriptTable()
+    public function getManuscriptTable($recent = '')
     {
         $sql = "SELECT
                 m.id,
@@ -38,12 +38,17 @@ class Manuscript extends Database
                 m.author,
                 m.yearPub,
                 m.dateUploaded,
+                m.actionDate,
                 c.campusName,
                 d.departmentName
                 FROM manuscript m
                 LEFT JOIN campus c ON m.campus = c.id
                 lEFT JOIN department d ON m.department = d.id
                 WHERE m.status = 1";
+
+        if($recent != '') {
+            $sql .= " AND actionDate >= NOW() - INTERVAL 7 DAY";
+        }
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -52,18 +57,27 @@ class Manuscript extends Database
         while ($row = $result->fetch_assoc()) {
             extract($row);
             $totalData++;
-            $data[] = [
-                $totalData,
-                "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
-                $author,
-                $yearPub,
-                $campusName,
-                $departmentName,
-                $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
-                '   <button type="button" class="btn btn-warning btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#editManuscriptModal">EDIT</button>
-                    <button type="button" class="btn btn-danger btn-sm delete" data-id="' . $id . '">DELETE</button>
-                ',
-            ];
+            if($recent != '') {
+                $data[] = [
+                    $totalData,
+                    "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                    $author,
+                    $actionDate = (new DateTime($actionDate))->format('F d, Y'),
+                ];
+            } else {
+                $data[] = [
+                    $totalData,
+                    "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                    $author,
+                    $yearPub,
+                    $campusName,
+                    $departmentName,
+                    $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
+                    '   <button type="button" class="btn btn-warning btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#editManuscriptModal">EDIT</button>
+                        <button type="button" class="btn btn-danger btn-sm delete" data-id="' . $id . '">DELETE</button>
+                    ',
+                ];
+            }
         }
 
         $json_data = array(
