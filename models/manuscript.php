@@ -53,6 +53,7 @@ class Manuscript extends Database
         $stmt->execute();
         $result = $stmt->get_result();
         $totalData = 0;
+        $now = date('Y-m-d');
         $data = [];
         while ($row = $result->fetch_assoc()) {
             extract($row);
@@ -62,7 +63,8 @@ class Manuscript extends Database
                     $totalData,
                     "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                     $author,
-                    $actionDate = (new DateTime($actionDate))->format('F d, Y'),
+                    $actionDate = ((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate))))/60/60/24) == 0 ? 'Today' : ((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate))))/60/60/24) . ' days ago',
+
                 ];
             } else {
                 $data[] = [
