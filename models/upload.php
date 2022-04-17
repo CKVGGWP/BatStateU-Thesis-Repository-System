@@ -176,8 +176,4 @@ class Upload extends Database
         $stmt->execute();
         $stmt->close();
     }
-
-    private function groupNumber($id)
-    {
-    }
 }
