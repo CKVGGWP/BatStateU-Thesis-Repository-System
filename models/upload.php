@@ -96,6 +96,7 @@ class Upload extends Database
     private function insertGroup($lastID)
     {
         if ($this->checkGroup($lastID) == true) {
+            return true;
             exit();
         }
 
