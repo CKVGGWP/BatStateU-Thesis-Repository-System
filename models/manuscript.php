@@ -275,11 +275,11 @@ class Manuscript extends Database
         }
     }
 
-    public function updatePendingManuscript($manuscriptId, $status)
+    public function updatePendingManuscript($manuscriptId, $status, $date)
     {
-        $sql = "UPDATE manuscript SET status = ? WHERE id = ?";
+        $sql = "UPDATE manuscript SET status = ?, actionDate = ? WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("ii", $status, $manuscriptId);
+        $stmt->bind_param("isi", $status, $date, $manuscriptId);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {

@@ -19,7 +19,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Manuscript Request Status</h5>
 
-                                <table class="table table-borderless table-sm table-hover text-center">
+                                <table class="table table-borderless table-sm table-hover text-center dt-responsive">
                                     <thead>
                                         <tr>
                                             <th scope="col">Title</th>
@@ -38,7 +38,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Manuscript Upload Status</h5>
 
-                                <table class="table table-borderless table-sm table-hover text-center" id="userManuscriptUploadStatus">
+                                <table class="table table-borderless table-sm table-hover text-center dt-responsive" id="userManuscriptUploadStatus">
                                     <thead>
                                         <tr>
                                             <th scope="col">Title</th>

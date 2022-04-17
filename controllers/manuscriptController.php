@@ -49,7 +49,7 @@ if (isset($_POST['updateManuscript'])) {
 if (isset($_POST['updatePendingManuscript'])) {
     $manuscriptId = $_POST['manuscriptId'];
     $status = $_POST['status'];
-    echo $manuscript->updatePendingManuscript($manuscriptId, $status);
+    echo $manuscript->updatePendingManuscript($manuscriptId, $status, date('Y-m-d H:i:s'));
 }
 
 
