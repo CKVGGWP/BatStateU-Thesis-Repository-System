@@ -42,6 +42,16 @@ if (isset($_POST['view'])) {
     echo $info->getNotification($srCode);
 }
 
-if(isset($_POST['getAllUsers'])){
+if (isset($_POST['getAllUsers'])) {
     echo $info->getAllUsers();
+}
+
+if (isset($_POST['getIP'])) {
+    $ip = $_POST['ip'];
+
+    echo $info->insertIP($ip);
+}
+
+if (isset($_POST['ipChart'])) {
+    echo $info->getIPChart();
 }
