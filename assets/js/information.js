@@ -1,3 +1,9 @@
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip({
+    placement: "top",
+  });
+});
+
 $("#campus").on("change", function () {
   let campus = $(this).val();
 
@@ -426,3 +432,60 @@ if ($("#notifications").length > 0) {
     });
   });
 }
+
+$(document).ready(function () {
+  // Get the IP address of the user
+  $.getJSON("https://api.ipify.org?format=json", function (data) {
+    if (
+      getParameterByName("title") != "" &&
+      getParameterByName("title") != "Create Account" &&
+      getParameterByName("title") != "Verify Account" &&
+      getParameterByName("title") != "Forgot Password"
+    ) {
+      $.ajax({
+        url: "controllers/newInformationController.php",
+        method: "POST",
+        data: {
+          getIP: true,
+          ip: data.ip,
+        },
+        success: function (response) {
+          console.log(response);
+        },
+      });
+    }
+  });
+
+  let datalist = jQuery("datalist");
+  let options = jQuery("datalist option");
+  let optionsarray = jQuery.map(options, function (option) {
+    return option.value;
+  });
+  let input = jQuery("input[list]");
+  let inputcommas = (input.val().match(/,/g) || []).length;
+  let separator = ",";
+
+  function filldatalist(prefix) {
+    if (input.val().indexOf(separator) > -1 && options.length > 0) {
+      datalist.empty();
+      for (i = 0; i < optionsarray.length; i++) {
+        if (prefix.indexOf(optionsarray[i]) < 0) {
+          datalist.append('<option value="' + prefix + optionsarray[i] + '">');
+        }
+      }
+    }
+  }
+  input.bind("change paste keyup", function () {
+    var inputtrim = input.val().replace(/^\s+|\s+$/g, "");
+    var currentcommas = (input.val().match(/,/g) || []).length;
+    if (inputtrim != input.val()) {
+      if (inputcommas != currentcommas) {
+        var lsIndex = inputtrim.lastIndexOf(separator);
+        var str = lsIndex != -1 ? inputtrim.substr(0, lsIndex) + ", " : "";
+        filldatalist(str);
+        inputcommas = currentcommas;
+      }
+      input.val(inputtrim);
+    }
+  });
+});

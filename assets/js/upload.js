@@ -11,6 +11,14 @@ $("#adminUpload").on("submit", function (e) {
   var abstract = $("#abstract").prop("files")[0];
   var journal = $("#journal").prop("files")[0];
 
+  if (authors.includes(",")) {
+    authors = authors.split(",");
+  } else {
+    authors = [authors];
+  }
+
+  console.log(authors);
+
   if (title == "") {
     Swal.fire({
       icon: "error",

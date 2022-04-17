@@ -59,14 +59,14 @@
                         <div class="card info-card customers-card">
 
                             <div class="card-body">
-                                <h5 class="card-title">Website Traffic</h5>
+                                <h5 class="card-title">Total Page Visitors</h5>
 
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-pie-chart"></i>
+                                        <i class="fa-solid fa-users"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>1244</h6>
+                                        <h6 id="pageVisitor"></h6>
                                     </div>
                                 </div>
 

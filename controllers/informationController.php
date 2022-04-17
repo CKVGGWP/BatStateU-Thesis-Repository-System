@@ -26,4 +26,6 @@ if ($id != '') {
     $campID = $user['campID'];
 
     $campusNotIncluded = $info->getCampuses($campID);
+
+    $userByCampus = $info->getUserByCampus(3);
 }

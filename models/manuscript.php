@@ -380,9 +380,11 @@ class Manuscript extends Database
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $button .= '<a href="dashboard.php?title=Pending Manuscripts" class="btn btn-dark btn-sm my-3">Pending Manuscript <span class="badge bg-primary badge-number">' . $row['nums'] . '</span></a>';
-        } else {
-            $button .= '<a href="dashboard.php?title=Pending Manuscripts" class="btn btn-dark btn-sm my-3">Pending Manuscript</a>';
+            if ($row['nums'] != 0) {
+                $button .= '<a href="dashboard.php?title=Pending Manuscripts" class="btn btn-dark btn-sm my-3">Pending Manuscript <span class="badge bg-primary badge-number">' . $row['nums'] . '</span></a>';
+            } else {
+                $button .= '<a href="dashboard.php?title=Pending Manuscripts" class="btn btn-dark btn-sm my-3">Pending Manuscript</a>';
+            }
         }
 
         return json_encode($button);

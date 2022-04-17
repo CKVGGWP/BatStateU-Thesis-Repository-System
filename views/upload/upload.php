@@ -30,7 +30,12 @@
               </div>
               <div class="col-md-6">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="authors" placeholder="Authors">
+                  <input type="text" class="form-control" list="authorList" id="authors" placeholder="Authors" multiple data-toggle="tooltip" title="Use a comma (,) if you wish to input multiple authors">
+                  <datalist id="authorList">
+                    <?php foreach ($userByCampus as $key => $row) : ?>
+                      <option value="<?php echo $row['fullName']; ?>"><?php echo $row['fullName']; ?></option>
+                    <?php endforeach; ?>
+                  </datalist>
                   <label for="authors">Authors</label>
                 </div>
               </div>

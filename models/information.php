@@ -175,6 +175,99 @@ class Information extends Database
         }
     }
 
+    public function insertIP($ip)
+    {
+        if ($this->checkIPExists($ip) == true) {
+            return false;
+            exit();
+        }
+
+        $sql = "INSERT INTO websiteTraffic (ipAddress) VALUES (?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $ip);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getIPChart()
+    {
+        $sql = "SELECT COUNT(ipAddress) AS nums FROM websiteTraffic";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $count = $row['nums'];
+        } else {
+            $count = 0;
+        }
+
+        return $count;
+    }
+
+    public function getAllUsers()
+    {
+        $sql = "SELECT COUNT(*) AS `count`,
+                c.campusName 
+                FROM user_details u 
+                LEFT JOIN campus c ON u.campusID = c.id
+                GROUP BY campusID";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $count[] = $row['count'];
+                $campus[] = $row['campusName'];
+            }
+            $total[] = array_sum($count);
+            $data = array($count, $campus, $total);
+            return json_encode($data);
+        } else {
+            return false;
+        }
+    }
+
+    public function getUserByCampus($campID)
+    {
+        $sql = "SELECT 
+                CONCAT(firstName, ' ', middleName, ' ', lastName) AS fullName                FROM user_details
+                WHERE campusID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $campID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+
+    private function checkIPExists($ip)
+    {
+        $sql = "SELECT * FROM websiteTraffic WHERE ipAddress = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $ip);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private function emailBySRCode($srCode)
     {
         $sql = "SELECT email FROM user_details WHERE srCode = ?";
@@ -321,30 +414,6 @@ class Information extends Database
             }
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        }
-    }
-
-    public function getAllUsers()
-    {
-        $sql = "SELECT COUNT(*) AS `count`,
-                c.campusName 
-                FROM user_details u 
-                LEFT JOIN campus c ON u.campusID = c.id
-                GROUP BY campusID";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $count[] = $row['count'];
-                $campus[] = $row['campusName'];
-            }
-            $total[] = array_sum($count);
-            $data = array($count, $campus, $total);
-            return json_encode($data);
-        } else {
-            return false;
         }
     }
 }
