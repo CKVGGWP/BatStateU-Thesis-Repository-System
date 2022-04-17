@@ -263,12 +263,12 @@ class Manuscript extends Database
 
         if ($stmt->affected_rows > 0) {
             $data = [
-                "success" => 1,
+                "success" => true,
                 "message" => $manuscriptTitle . " updated successfully"
             ];
         } else {
             $data = [
-                "success" => 0,
+                "success" => false,
                 "message" => "Error updating " . $manuscriptTitle,
                 "error" => "Something went wrong! Error: " . $stmt->error
             ];
@@ -283,8 +283,7 @@ class Manuscript extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return 1;
-            $this->insertNotification($manuscriptId,  $status = ($status == 1) ? "Approved" : "Declined");
+            return $this->insertNotification($manuscriptId,  $status = ($status == 1) ? "Approved" : "Declined");
         } else {
             return 0;
         }
@@ -305,9 +304,9 @@ class Manuscript extends Database
         $message = $title;
 
         if ($request == "") {
-            $message .= ($status == "Approved") ? $this->messages[4] : $this->messages[5] . " Insert Reason Here";
-        } else {
             $message .= ($status == "Approved") ? $this->messages[2] : $this->messages[3] . " Insert Reason Here";
+        } else {
+            $message .= ($status == "Approved") ? $this->messages[4] : $this->messages[5] . " Insert Reason Here";
         }
         $dateNow = dateTimeNow();
         $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
@@ -318,12 +317,12 @@ class Manuscript extends Database
 
         if ($stmt->affected_rows > 0) {
             $data = array(
-                "success" => 1,
+                "success" => true,
                 "title" => $title,
             );
         } else {
             $data = array(
-                "success" => 0,
+                "success" => false,
                 "title" => $title,
                 "error" => mysqli_errno($this->connect()),
             );
@@ -351,7 +350,7 @@ class Manuscript extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            $this->insertNotification($id, $status = ($status == 1) ? "Approved" : "Declined", $request);
+            return $this->insertNotification($id, $status = ($status == 1) ? "Approved" : "Declined", $request);
         } else {
             return 0;
         }

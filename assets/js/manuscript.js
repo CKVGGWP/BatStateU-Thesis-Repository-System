@@ -297,8 +297,9 @@ $("#updateManuscript").click(function (e) {
       manuscriptCampus: manuscriptCampus,
       manuscriptDept: manuscriptDept,
     },
+    dataType: "json",
     success: function (data) {
-      if (data.success == 1) {
+      if (data.success == true) {
         Swal.fire("Updated!", data.message, "success");
       } else {
         Swal.fire("Error!", data.message, "error");
@@ -332,9 +333,10 @@ $(document).on("click", ".approved-pending", function () {
           manuscriptId: manuscriptId,
           status: 1,
         },
+        dataType: "json",
         success: function (data) {
           console.log(data);
-          if (data.success == 1) {
+          if (data.success == true) {
             Swal.fire(
               "Approved!",
               data.title + " has been approved.",
@@ -375,9 +377,10 @@ $(document).on("click", ".decline-pending", function () {
           manuscriptId: manuscriptId,
           status: 2,
         },
+        dataType: "json",
         success: function (data) {
           console.log(data);
-          if (data.success == 1) {
+          if (data.success == true) {
             Swal.fire(
               "Declined!",
               data.title + " has been declined.",
@@ -418,7 +421,7 @@ $(document).on("click", ".approve-request", function () {
   let id = $(this).data("id");
 
   Swal.fire({
-    title: "Confirm Request Approval",
+    title: "Confirm Request of Approval",
     text: "Are you sure you want to approve this request?",
     icon: "question",
     showCancelButton: true,
@@ -435,8 +438,9 @@ $(document).on("click", ".approve-request", function () {
           id: id,
           status: 1,
         },
+        dataType: "json",
         success: function (data) {
-          if (data.success == 1) {
+          if (data.success == true) {
             Swal.fire(
               "Approved!",
               data.title + " request has been approved.",
@@ -461,7 +465,7 @@ $(document).on("click", ".decline-request", function () {
   let id = $(this).data("id");
 
   Swal.fire({
-    title: "Declined Request Approval",
+    title: "Decline Request of Approval",
     text: "Are you sure you want to decline this request?",
     icon: "question",
     showCancelButton: true,
@@ -478,8 +482,10 @@ $(document).on("click", ".decline-request", function () {
           id: id,
           status: 2,
         },
+        dataType: "json",
         success: function (data) {
-          if (data.success == 1) {
+          console.log(data);
+          if (data.success == true) {
             Swal.fire(
               "Declined!",
               data.title + " request has been Declined.",
