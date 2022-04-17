@@ -4,7 +4,8 @@ $("#adminUpload").on("submit", function (e) {
 
   var title = $("#title").val();
   var yearPub = $("#yearPub").val();
-  var authors = $("#authors").val();
+  var authors = $("#registeredAuthors").val();
+  var unregisteredAuthors = $("#unregisteredAuthors").val();
   var department = $("#department").length > 0 ? $("#department").val() : "";
   var program = $("#program").length > 0 ? $("#program").val() : "";
 
@@ -15,6 +16,12 @@ $("#adminUpload").on("submit", function (e) {
     authors = authors.split(",");
   } else {
     authors = [authors];
+  }
+
+  if (unregisteredAuthors.includes(",")) {
+    unregisteredAuthors = unregisteredAuthors.split(",");
+  } else {
+    unregisteredAuthors = [unregisteredAuthors];
   }
 
   console.log(authors);

@@ -14,69 +14,92 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Upload</h5>
-
+            <ul class="nav nav-tabs nav-tabs-bordered">
+              <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#manuscriptPane">Manuscript Details</button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fileUploadPane">File Upload</button>
+              </li>
+            </ul>
             <form class="row g-3" id="adminUpload" enctype="multipart/form-data">
-              <div class="col-md-12">
-                <div class="form-floating">
-                  <textarea type="text" class="form-control" id="title" placeholder="Title"></textarea>
-                  <label for="title">Title</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="text" class="form-control" id="yearPub" placeholder="Year of Publication">
-                  <label for="yearPub">Year of Publication</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-floating">
-                  <input type="text" class="form-control" list="authorList" id="authors" placeholder="Authors" multiple data-toggle="tooltip" title="Use a comma (,) if you wish to input multiple authors">
-                  <datalist id="authorList">
-                    <?php foreach ($userByCampus as $key => $row) : ?>
-                      <option value="<?php echo $row['fullName']; ?>"><?php echo $row['fullName']; ?></option>
-                    <?php endforeach; ?>
-                  </datalist>
-                  <label for="authors">Authors</label>
-                </div>
-              </div>
-              <?php if ($role == 'Admin') : ?>
-                <div class="col-md-6">
-                  <div class="form-floating">
-                    <select class="form-select" id="department" placeholder="Department">
-                      <?php foreach ($campuses as $key => $row) : ?>
-                        <option value="<?= $row['id'] ?>"><?= $row['campusName'] ?></option>
-                      <?php endforeach; ?>
-                    </select>
-                    <label for="yearPub">Department</label>
+              <div class="tab-content pt-2">
+                <div class="tab-pane fade show active profile-edit pt-3" id="manuscriptPane">
+                  <div class="col-md-12">
+                    <div class="form-floating">
+                      <textarea type="text" class="form-control" id="title" placeholder="Title"></textarea>
+                      <label for="title">Title</label>
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-floating">
-                    <input type="text" class="form-control" id="program" placeholder="Program">
-                    <label for="program">Program</label>
+                  <div class="col-md-12 my-2">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="yearPub" placeholder="Year of Publication">
+                      <label for="yearPub">Year of Publication</label>
+                    </div>
                   </div>
+                  <div class="col-md-12 row mb-2">
+                    <div class="col-md-6">
+                      <div class="form-floating">
+                        <select class="form-control" id="registeredAuthors" placeholder="Registered Authors" multiple data-toggle="tooltip" title="Use a comma (,) if you wish to input multiple authors. (For accounts that are registered in the system)">
+                          <!-- <label for="authors">Registered Authors</label> -->
+                          <?php foreach ($userByCampus as $key => $rows) : ?>
+                            <option value="<?php echo $rows['fullName']; ?>"><?php echo $rows['fullName']; ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-floating">
+                        <input type="text" class="form-control" id="unregisteredAuthors" placeholder="Unregistered Authors" data-toggle="tooltip" title="Use a comma (,) if you wish to input multiple authors. (For authors that has no account in the system)">
+                        <label for="authors">Unregistered Authors</label>
+                      </div>
+                    </div>
+                  </div>
+                  <?php if ($role == 'Admin') : ?>
+                    <div class="col-md-12 row">
+                      <div class="col-md-6">
+                        <div class="form-floating">
+                          <select class="form-select" id="department" placeholder="Department">
+                            <?php foreach ($departments as $key => $row) : ?>
+                              <option value="<?= $row['id'] ?>"><?= $row['departmentName'] ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                          <label for="yearPub">Department</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="program" placeholder="Program">
+                          <label for="program">Program</label>
+                        </div>
+                      </div>
+                    </div>
+                  <?php endif; ?>
                 </div>
-              <?php endif; ?>
-              <div class="col-md-6">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Abstract</label>
-                <div class="col-md-12">
-                  <input class="form-control" type="file" id="abstract" accept="application/pdf">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <label for="inputNumber" class="col-sm-2 col-form-label">Journal</label>
-                <div class="col-md-12">
-                  <input class="form-control" type="file" id="journal" accept="application/pdf">
-                </div>
-              </div>
-              <div class="text-center">
-                <button type="submit" class="btn btn-danger w-25 mt-3 rounded-pill" id="uploadFiles">UPLOAD</button>
-              </div>
-            </form>
 
+                <div class="tab-pane fade pt-3" id="fileUploadPane">
+                  <div class="col-md-12 row">
+                    <div class="col-md-6">
+                      <label for="inputNumber" class="col-sm-2 col-form-label">Abstract</label>
+                      <div class="col-md-12">
+                        <input class="form-control" type="file" id="abstract" accept="application/pdf">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputNumber" class="col-sm-2 col-form-label">Journal</label>
+                      <div class="col-md-12">
+                        <input class="form-control" type="file" id="journal" accept="application/pdf">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-danger w-25 mt-3 rounded-pill" id="uploadFiles">UPLOAD</button>
+                  </div>
+                </div>
+              </div><!-- End Bordered Tabs -->
+            </form>
           </div>
         </div>
-
       </div>
     </div>
   </section>

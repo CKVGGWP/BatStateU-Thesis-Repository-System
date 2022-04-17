@@ -11,7 +11,7 @@ $srCode = isset($_SESSION['srCode']) ? $_SESSION['srCode'] : '';
 
 if (isset($_POST['getCampus'])) {
     $campus = $_POST['campus'];
-    echo $info->getDeptByCampus($campus);
+    echo $info->getDeptByCampus($campus, "options");
 }
 
 if (isset($_POST['saveInfo'])) {

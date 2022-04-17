@@ -456,6 +456,17 @@ $(document).ready(function () {
     }
   });
 
+  $("#registeredAuthors").select2({
+    placeholder: "Select Registered Author(s)",
+    allowClear: true,
+    tags: true,
+    tokenSeparators: [","],
+    closeOnSelect: false,
+    containerCssClass: ":all:",
+    dropdownCssClass: ":all:",
+    width: "100%",
+  });
+
   let datalist = jQuery("datalist");
   let options = jQuery("datalist option");
   let optionsarray = jQuery.map(options, function (option) {

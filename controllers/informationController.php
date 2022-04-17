@@ -9,6 +9,8 @@ $id = isset($_SESSION['srCode']) ? $_SESSION['srCode'] : '';
 
 $campuses = $info->getCampuses();
 
+$departments = $info->getDeptByCampus(3);
+
 if ($id != '') {
     $user = $info->getUserBySession($id);
 
