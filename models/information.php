@@ -169,17 +169,18 @@ class Information extends Database
                 $notif .= "<hr class='dropdown-divider'>";
                 $notif .= "</li>";
             }
-        } else {
-            $notif .= '<li class="notification-item d-flex align-items-center justify-content-center">';
-            $notif .= '<i class="fa-regular fa-bell"></i>';
-            $notif .= '<div>';
-            $notif .= '<h4>You have no notifications yet!</h4>';
-            $notif .= '</div>';
-            $notif .= '</li>';
-            $notif .= "<li>";
-            $notif .= "<hr class='dropdown-divider'>";
-            $notif .= "</li>";
         }
+        // else {
+        //     $notif .= '<li class="notification-item d-flex align-items-center justify-content-center">';
+        //     // $notif .= '<i class="fa-regular fa-bell"></i>';
+        //     // $notif .= '<div>';
+        //     // $notif .= '<h4>You have no notifications yet!</h4>';
+        //     // $notif .= '</div>';
+        //     $notif .= '</li>';
+        //     $notif .= "<li>";
+        //     $notif .= "<hr class='dropdown-divider'>";
+        //     $notif .= "</li>";
+        // }
 
         $header = "You have " . $this->countNotification($srCode) . " new notification(s)";
         $header .= ($this->countNotification($srCode) > 0) ? '<a href="#" id="markAllBTN"><span class="badge rounded-pill bg-info p-2 ms-2">Mark all as Read</span></a>' : '';
@@ -273,7 +274,8 @@ class Information extends Database
         $sql = "SELECT 
                 concat_ws(' ', firstName, lastName) AS fullName               
                 FROM user_details
-                WHERE campusID = ?";
+                WHERE campusID = ?
+                AND role != '1'";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $campID);
         $stmt->execute();

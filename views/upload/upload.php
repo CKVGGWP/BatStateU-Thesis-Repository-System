@@ -34,7 +34,7 @@
                   <div class="col-md-12 row my-2">
                     <div class="col-md-6">
                       <label for="authors">Authors</label>
-                      <select class="form-control" id="registeredAuthors" placeholder="Registered Authors" multiple>
+                      <select class="form-control" id="registeredAuthors" placeholder="Authors" multiple>
                         <?php foreach ($userByCampus as $key => $rows) : ?>
                           <option value="<?php echo $rows['fullName']; ?>"><?php echo $rows['fullName']; ?></option>
                         <?php endforeach; ?>
@@ -62,7 +62,8 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-floating">
-                          <input type="text" class="form-control" id="program" placeholder="Program">
+                          <select class="form-control" id="program" placeholder="Program">
+                          </select>
                           <label for="program">Program</label>
                         </div>
                       </div>
@@ -99,45 +100,45 @@
     </div>
   </section>
   <div class="modal fade" id="abstractPreviewModal" tabindex="-1" role="dialog" aria-labelledby="previewModal" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <div class="row">
-              <div class="col-4">
-                <h5 class="modal-title" id="abstractPreviewModalTitle">Abstract</h5>
-              </div>
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <div class="col-4">
+              <h5 class="modal-title" id="abstractPreviewModalTitle">Abstract</h5>
             </div>
+          </div>
 
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <iframe src="" type="application/pdf" id="abstractPreview" style="height:700px;width:100%"></iframe>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <iframe src="" type="application/pdf" id="abstractPreview" style="height:700px;width:100%"></iframe>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
-    <div class="modal fade" id="journalPreviewModal" tabindex="-1" role="dialog" aria-labelledby="journalPreviewModal" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <div class="row">
-              <div class="col-4">
-                <h5 class="modal-title" id="journalPreviewModalTitle">Journal</h5>
-              </div>
+  </div>
+  <div class="modal fade" id="journalPreviewModal" tabindex="-1" role="dialog" aria-labelledby="journalPreviewModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <div class="col-4">
+              <h5 class="modal-title" id="journalPreviewModalTitle">Journal</h5>
             </div>
+          </div>
 
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <iframe src="" type="application/pdf" id="journalPreview" style="height:700px;width:100%"></iframe>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <iframe src="" type="application/pdf" id="journalPreview" style="height:700px;width:100%"></iframe>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
+  </div>
 </main><!-- End #main -->
