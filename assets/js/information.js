@@ -76,6 +76,23 @@ $('#editAccountCampus').on('change', function () {
   });
 });
 
+$("#editDepartment").on("change", function () {
+  let department = $(this).val();
+
+  $.ajax({
+    url: "controllers/newInformationController.php",
+    method: "POST",
+    data: {
+      department: department,
+      getDepartment: true,
+    },
+    dataType: "json",
+    success: function (data) {
+      $("#editProgram").html(data);
+    },
+  });
+});
+
 $('#saveInfo').on('submit', function (e) {
   e.preventDefault();
 

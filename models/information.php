@@ -20,6 +20,34 @@ class Information extends Database
         return $campuses;
     }
 
+    public function getProgByDept($id, $purpose = '')
+    {
+        $sql = "SELECT * FROM program WHERE department = ? ORDER BY programName ASC";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $prog = [];
+        $option = '';
+
+        if ($purpose == "options") {
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $option .= '<option value="' . $row['id'] . '">' . $row['programName'] . '</option>';
+                }
+            } else {
+                $option .= '<option value="">No Program found</option>';
+            }
+
+            return json_encode($option);
+        } else if ($purpose == "") {
+            while ($row = $result->fetch_assoc()) {
+                $prog[] = $row;
+            }
+            return $prog;
+        }
+    }
+    
     public function getDeptByCampus($id, $purpose = '')
     {
         $sql = "SELECT * FROM department WHERE campusID = ? ORDER BY departmentName ASC";

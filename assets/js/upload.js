@@ -127,6 +127,10 @@ $('#adminUpload').on('submit', function (e) {
   }
 });
 
+$('.btnNext').click(function () {
+  $('.nav-item > .nav-link active').next('li').find('button').trigger('click');
+});
+
 $('#abstract').on('change', function () {
   $('#abstractView').attr('hidden', false);
   let src = window.URL.createObjectURL(this.files[0]);

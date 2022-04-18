@@ -69,11 +69,18 @@
                     </div>
                   <?php endif; ?>
                   <div class="col-md-6 mt-2">
-                      <label for="tags">Tags</label>
-                      <select class="form-control" id="tags" placeholder="Tags" multiple>
-                      </select>
+                    <label for="tags">Tags</label>
+                    <select class="form-control" id="tags" placeholder="Tags" multiple>
+                    </select>
 
+                  </div>
+
+                  <div class="tab-content my-2 d-md-flex justify-content-md-end">
+                    <div class="tab-pane active" id="manuscriptPane">
+                      <a class="btn btn-danger btnNext">Next</a>
                     </div>
+                  </div>
+
                 </div>
 
                 <div class="tab-pane fade pt-3" id="fileUploadPane">
