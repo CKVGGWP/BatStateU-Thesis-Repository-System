@@ -128,7 +128,7 @@
                   <option value="<?php echo $deptID; ?>"><?php echo $department; ?></option>
                 </select>
               </div>
-              <div class="form-group col-md-12">
+              <div class="form-group col-md-12 mt-2">
                 <label for="editProgram">Program</label>
                 <select class="form-control" id="editProgram" name="editProgram">
                   <option value="<?php echo $programID; ?>"><?php echo $programName; ?></option>
