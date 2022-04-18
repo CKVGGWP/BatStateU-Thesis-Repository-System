@@ -84,12 +84,14 @@
                       <div class="col-md-12">
                         <input class="form-control" type="file" id="abstract" accept="application/pdf">
                       </div>
+                      <a href="#abstractPreviewModal" data-bs-toggle="modal" >View file</a>
                     </div>
                     <div class="col-md-6">
                       <label for="inputNumber" class="col-sm-2 col-form-label">Journal</label>
                       <div class="col-md-12">
                         <input class="form-control" type="file" id="journal" accept="application/pdf">
                       </div>
+                      <a href="#journalPreviewModal" data-bs-toggle="modal">View file</a>
                     </div>
                   </div>
                   <div class="text-center">
@@ -103,5 +105,46 @@
       </div>
     </div>
   </section>
+  <div class="modal fade" id="abstractPreviewModal" tabindex="-1" role="dialog" aria-labelledby="previewModal" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="row">
+              <div class="col-4">
+                <h5 class="modal-title" id="abstractPreviewModalTitle">Abstract</h5>
+              </div>
+            </div>
 
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <iframe src="" type="application/pdf" id="abstractPreview" style="height:600px;width:100%"></iframe>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="journalPreviewModal" tabindex="-1" role="dialog" aria-labelledby="journalPreviewModal" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="row">
+              <div class="col-4">
+                <h5 class="modal-title" id="journalPreviewModalTitle">Journal</h5>
+              </div>
+            </div>
+
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <iframe src="" type="application/pdf" id="journalPreview" style="height:600px;width:100%"></iframe>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </main><!-- End #main -->
