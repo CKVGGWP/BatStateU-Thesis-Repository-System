@@ -519,3 +519,35 @@ if ($('#pendingManuscriptButton').length > 0) {
     },
   });
 }
+
+$(document).on("click", ".request", function () {
+  let manuscriptId = $(this).data("id");
+  Swal.fire({
+    title: "Request of Manuscript",
+    text: "You are about to request for this manuscript.",
+    icon: "info",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: "Request",
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: "controllers/manuscriptController.php",
+        method: "POST",
+        data: {
+          manuscriptId : manuscriptId,
+          requestManuscript: true,
+        },
+        dataType: "json",
+        success: function (data) {
+          Swal.fire({
+            title: "Success!",
+            text: "Please wait for the admin to approve your request.",
+            icon: "success",
+          });
+        },
+      });
+    }
+  });
+});
