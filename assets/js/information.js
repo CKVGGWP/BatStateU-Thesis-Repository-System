@@ -4,12 +4,15 @@ $(function () {
   });
 });
 
+<<<<<<< Updated upstream
 $(".btnNext").on("click", function () {
   $("#manuscriptPane").removeClass("active show");
   $("#fileUploadPane").addClass("active show");
   $("#manuscriptPanes").removeClass("active");
   $("#fileUploadPanes").addClass("active");
 });
+=======
+>>>>>>> Stashed changes
 
 $("#campus").on("change", function () {
   let campus = $(this).val();

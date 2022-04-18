@@ -100,12 +100,48 @@ class Manuscript extends Database
 
     public function getBrowseManuscriptTable()
     {
-        $sql = "SELECT * FROM manuscript WHERE status = 1";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1')";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
         $totalData = 0;
         $data = [];
+        while ($row = $result->fetch_assoc()) {
+            extract($row);
+            $totalData++;
+            $data[] = [
+                $totalData,
+                "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                str_replace(",", "<br>", $author) ?? $author,
+                $yearPub,
+                '<button type="button" class="btn btn-primary btn-sm edit download" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">DOWNlOAD</button>
+                ',
+            ];
+        }
+
+        //PENDING MANUSCRIPTS
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '0')";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            extract($row);
+            $totalData++;
+            $data[] = [
+                $totalData,
+                "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                str_replace(",", "<br>", $author) ?? $author,
+                $yearPub,
+                '<button type="button" class="btn btn-primary btn-sm edit PENDING" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">PENDING</button>
+                ',
+            ];
+        }
+
+        //NOT REQUESTED MANUSCRIPTS
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
             extract($row);
             $totalData++;
@@ -272,6 +308,30 @@ class Manuscript extends Database
         } else {
             return 0;
         }
+    }
+
+    public function requestManuscript($srCode, $manuscriptId)
+    {
+        $token = md5(uniqid(rand(), true));
+        $sql = "INSERT INTO manuscript_token(id, manuscriptID, userID, status, token, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, 0, 0)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("iss", $manuscriptId, $srCode, $token);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $data = [
+                "success" => true,
+                "message" => "Inserted successfully",
+                "error" => "Something went wrong! Error: " . $stmt->error
+            ];
+        } else {
+            $data = [
+                "success" => false,
+                "message" => "Error inserting",
+                "error" => "Something went wrong! Error: " . $stmt->error
+            ];
+        }
+        return json_encode($data);
     }
 
     public function updateManuscript($data)

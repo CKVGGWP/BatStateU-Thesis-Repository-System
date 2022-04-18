@@ -22,7 +22,7 @@ class Information extends Database
 
     public function getProgByDept($id, $purpose = '')
     {
-        $sql = "SELECT * FROM program WHERE deptID = ? ORDER BY programName ASC";
+        $sql = "SELECT * FROM program WHERE department = ? ORDER BY programName ASC";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $id);
         $stmt->execute();
@@ -47,7 +47,7 @@ class Information extends Database
             return $prog;
         }
     }
-
+    
     public function getDeptByCampus($id, $purpose = '')
     {
         $sql = "SELECT * FROM department WHERE campusID = ? ORDER BY departmentName ASC";

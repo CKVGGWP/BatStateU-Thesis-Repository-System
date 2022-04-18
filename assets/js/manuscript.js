@@ -541,6 +541,7 @@ $(document).on("click", ".request", function () {
         },
         dataType: "json",
         success: function (data) {
+          console.log(data);
           Swal.fire({
             title: "Success!",
             text: "Please wait for the admin to approve your request.",

@@ -23,6 +23,12 @@ if (isset($_POST['pendingManuscript'])) {
     echo $manuscript->getPendingManuscriptTable();
 }
 
+if (isset($_POST['requestManuscript'])) {
+    $srCode = $_SESSION['srCode'];
+    $manuscriptId = $_POST['manuscriptId'];
+    echo $manuscript->requestManuscript($srCode, $manuscriptId);
+}
+
 if (isset($_POST['manuscriptDetails'])) {
     $manuscriptId = $_POST['manuscriptId'];
     echo $manuscript->getManuscriptDetails($manuscriptId);

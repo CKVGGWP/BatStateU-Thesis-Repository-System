@@ -30,8 +30,13 @@ class Accounts extends Database
                     $srCode,
                     $name,
                     $campusName,
+<<<<<<< Updated upstream
                     ($programName == null) ? '-' : $programName,
                     ($departmentName == null) ? '-' : $departmentName,
+=======
+                    $programName,
+                    $departmentName,
+>>>>>>> Stashed changes
                     $email,
                     $role == 1 ? 'Admin' : 'User',
                     '<div class="btn-group-vertical">
