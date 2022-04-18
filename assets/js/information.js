@@ -504,7 +504,7 @@ $(document).ready(function () {
   });
 
   $("#registeredAuthors").select2({
-    placeholder: "Select Author(s)",
+    placeholder: "Select/Input Author(s)",
     allowClear: true,
     tags: true,
     tokenSeparators: [","],
@@ -515,7 +515,7 @@ $(document).ready(function () {
   });
 
   $("#tags").select2({
-    placeholder: "Tag(s)",
+    placeholder: "Manuscript Tag(s)",
     allowClear: true,
     tags: true,
     tokenSeparators: [","],
@@ -525,36 +525,36 @@ $(document).ready(function () {
     width: "100%",
   });
 
-  let datalist = jQuery("datalist");
-  let options = jQuery("datalist option");
-  let optionsarray = jQuery.map(options, function (option) {
-    return option.value;
-  });
-  let input = jQuery("input[list]");
-  let inputcommas = (input.val().match(/,/g) || []).length;
-  let separator = ",";
+  // let datalist = jQuery("datalist");
+  // let options = jQuery("datalist option");
+  // let optionsarray = jQuery.map(options, function (option) {
+  //   return option.value;
+  // });
+  // let input = jQuery("input[list]");
+  // let inputcommas = (input.val().match(/,/g) || []).length;
+  // let separator = ",";
 
-  function filldatalist(prefix) {
-    if (input.val().indexOf(separator) > -1 && options.length > 0) {
-      datalist.empty();
-      for (i = 0; i < optionsarray.length; i++) {
-        if (prefix.indexOf(optionsarray[i]) < 0) {
-          datalist.append('<option value="' + prefix + optionsarray[i] + '">');
-        }
-      }
-    }
-  }
-  input.bind("change paste keyup", function () {
-    var inputtrim = input.val().replace(/^\s+|\s+$/g, "");
-    var currentcommas = (input.val().match(/,/g) || []).length;
-    if (inputtrim != input.val()) {
-      if (inputcommas != currentcommas) {
-        var lsIndex = inputtrim.lastIndexOf(separator);
-        var str = lsIndex != -1 ? inputtrim.substr(0, lsIndex) + "," : "";
-        filldatalist(str);
-        inputcommas = currentcommas;
-      }
-      input.val(inputtrim);
-    }
-  });
+  // function filldatalist(prefix) {
+  //   if (input.val().indexOf(separator) > -1 && options.length > 0) {
+  //     datalist.empty();
+  //     for (i = 0; i < optionsarray.length; i++) {
+  //       if (prefix.indexOf(optionsarray[i]) < 0) {
+  //         datalist.append('<option value="' + prefix + optionsarray[i] + '">');
+  //       }
+  //     }
+  //   }
+  // }
+  // input.bind("change paste keyup", function () {
+  //   var inputtrim = input.val().replace(/^\s+|\s+$/g, "");
+  //   var currentcommas = (input.val().match(/,/g) || []).length;
+  //   if (inputtrim != input.val()) {
+  //     if (inputcommas != currentcommas) {
+  //       var lsIndex = inputtrim.lastIndexOf(separator);
+  //       var str = lsIndex != -1 ? inputtrim.substr(0, lsIndex) + "," : "";
+  //       filldatalist(str);
+  //       inputcommas = currentcommas;
+  //     }
+  //     input.val(inputtrim);
+  //   }
+  // });
 });
