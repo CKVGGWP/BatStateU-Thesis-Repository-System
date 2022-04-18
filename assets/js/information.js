@@ -1,77 +1,84 @@
 $(function () {
   $('[data-toggle="tooltip"]').tooltip({
-    placement: 'top',
+    placement: "top",
   });
 });
 
-$('#campus').on('change', function () {
+$(".btnNext").on("click", function () {
+  $("#manuscriptPane").removeClass("active show");
+  $("#fileUploadPane").addClass("active show");
+  $("#manuscriptPanes").removeClass("active");
+  $("#fileUploadPanes").addClass("active");
+});
+
+$("#campus").on("change", function () {
   let campus = $(this).val();
 
-  if ($('#campus').val() == '3') {
-    $('#programDiv').removeClass('d-none');
+  if ($("#campus").val() == "3") {
+    $("#programDiv").removeClass("d-none");
   } else {
-    $('#programDiv').addClass('d-none');
+    $("#programDiv").addClass("d-none");
   }
 
   $.ajax({
-    url: 'controllers/newInformationController.php',
-    method: 'POST',
+    url: "controllers/newInformationController.php",
+    method: "POST",
     data: {
       campus: campus,
       getCampus: true,
     },
-    dataType: 'json',
+    dataType: "json",
     success: function (data) {
-      $('#department').html(data);
+      $("#department").html(data);
     },
   });
 });
 
-$('#department').on('change', function () {
+$("#department").on("change", function () {
   $.ajax({
-    url: 'controllers/newInformationController.php',
-    method: 'POST',
+    url: "controllers/newInformationController.php",
+    method: "POST",
     data: {
       department: $(this).val(),
       getProgram: true,
     },
-    dataType: 'json',
+    dataType: "json",
     success: function (data) {
-      $('#program').html(data);
+      $("#program").html(data);
     },
   });
 });
 
-$('#userCampus').on('change', function () {
+$("#userCampus").on("change", function () {
   let campus = $(this).val();
 
   $.ajax({
-    url: 'controllers/newInformationController.php',
-    method: 'POST',
+    url: "controllers/newInformationController.php",
+    method: "POST",
     data: {
       campus: campus,
       getCampus: true,
     },
-    dataType: 'json',
+    dataType: "json",
     success: function (data) {
-      $('#userDepartment').html(data);
+      $("#userDepartment").html(data);
     },
   });
 });
 
-$('#editAccountCampus').on('change', function () {
+$("#editAccountCampus").on("change", function () {
   let campus = $(this).val();
 
   $.ajax({
-    url: 'controllers/newInformationController.php',
-    method: 'POST',
+    url: "controllers/newInformationController.php",
+    method: "POST",
     data: {
       campus: campus,
       getCampus: true,
     },
-    dataType: 'json',
+    dataType: "json",
     success: function (data) {
-      $('#editDepartment').html(data);
+      $("#editDepartment").html(data);
     },
   });
 });
@@ -93,80 +100,80 @@ $("#editDepartment").on("change", function () {
   });
 });
 
-$('#saveInfo').on('submit', function (e) {
+$("#saveInfo").on("submit", function (e) {
   e.preventDefault();
 
-  let srCode = $('#srCode').val();
-  let email = $('#email').val();
-  let firstName = $('#firstName').val();
-  let middleName = $('#middleName').val();
-  let lastName = $('#lastName').val();
-  let userCampus = $('#userCampus').length > 0 ? $('#userCampus').val() : 0;
-  let userDepartment = $('#userDepartment').val();
+  let srCode = $("#srCode").val();
+  let email = $("#email").val();
+  let firstName = $("#firstName").val();
+  let middleName = $("#middleName").val();
+  let lastName = $("#lastName").val();
+  let userCampus = $("#userCampus").length > 0 ? $("#userCampus").val() : 0;
+  let userDepartment = $("#userDepartment").val();
 
-  if (email == '') {
+  if (email == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please enter your email address.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your email address.",
     }).then((result) => {
       email.focus();
-      email.addClass('is-invalid');
+      email.addClass("is-invalid");
     });
   } else if (emailValidation(email) == false) {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please enter a valid email address.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter a valid email address.",
     }).then((result) => {
       email.focus();
-      email.addClass('is-invalid');
+      email.addClass("is-invalid");
     });
-  } else if (firstName == '') {
+  } else if (firstName == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please enter your first name.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your first name.",
     }).then((result) => {
       firstName.focus();
-      firstName.addClass('is-invalid');
+      firstName.addClass("is-invalid");
     });
-  } else if (lastName == '') {
+  } else if (lastName == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please enter your last name.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your last name.",
     }).then((result) => {
       lastName.focus();
-      lastName.addClass('is-invalid');
+      lastName.addClass("is-invalid");
     });
-  } else if (userCampus == '') {
+  } else if (userCampus == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please select your campus.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please select your campus.",
     }).then((result) => {
       userCampus.focus();
-      userCampus.addClass('is-invalid');
+      userCampus.addClass("is-invalid");
     });
-  } else if (userDepartment == '') {
+  } else if (userDepartment == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please select your department.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please select your department.",
     }).then((result) => {
       userDepartment.focus();
-      userDepartment.addClass('is-invalid');
+      userDepartment.addClass("is-invalid");
     });
   } else {
-    $('#saveInfoButton').blur();
-    $('#saveInfoButton').attr('disabled', true);
-    $('#saveInfoButton').html(
+    $("#saveInfoButton").blur();
+    $("#saveInfoButton").attr("disabled", true);
+    $("#saveInfoButton").html(
       '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
     );
     $.ajax({
-      url: 'controllers/newInformationController.php',
-      method: 'POST',
+      url: "controllers/newInformationController.php",
+      method: "POST",
       data: {
         srCode: srCode,
         email: email,
@@ -179,33 +186,33 @@ $('#saveInfo').on('submit', function (e) {
       },
       success: function (response) {
         console.log(response);
-        $('#saveInfoButton').attr('disabled', false);
-        $('#saveInfoButton').html('Save Changes');
+        $("#saveInfoButton").attr("disabled", false);
+        $("#saveInfoButton").html("Save Changes");
         if (response == 1) {
           Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Email Already Exists!',
+            icon: "error",
+            title: "Error",
+            text: "Email Already Exists!",
           });
         } else if (response == 2) {
           Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong with the server. Please try again later.',
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong with the server. Please try again later.",
           });
         } else if (response == 3) {
           Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Information Updated Successfully!',
+            icon: "success",
+            title: "Success",
+            text: "Information Updated Successfully!",
           });
         } else if (response == 4) {
           Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Information Updated Successfully! Please verify your new email address.',
+            icon: "success",
+            title: "Success",
+            text: "Information Updated Successfully! Please verify your new email address.",
           }).then((result) => {
-            window.location.href = 'controllers/signoutController.php';
+            window.location.href = "controllers/signoutController.php";
           });
         }
       },
@@ -213,58 +220,58 @@ $('#saveInfo').on('submit', function (e) {
   }
 });
 
-$('#changePassForm').on('submit', function (e) {
+$("#changePassForm").on("submit", function (e) {
   e.preventDefault();
 
-  let currentPassword = $('#currentPassword').val();
-  let newPassword = $('#newPassword').val();
-  let renewPassword = $('#renewPassword').val();
+  let currentPassword = $("#currentPassword").val();
+  let newPassword = $("#newPassword").val();
+  let renewPassword = $("#renewPassword").val();
 
-  if (currentPassword == '') {
+  if (currentPassword == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please enter your current password.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your current password.",
     }).then((result) => {
       currentPassword.focus();
-      currentPassword.addClass('is-invalid');
+      currentPassword.addClass("is-invalid");
     });
-  } else if (newPassword == '') {
+  } else if (newPassword == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please enter your new password.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your new password.",
     }).then((result) => {
       newPassword.focus();
-      newPassword.addClass('is-invalid');
+      newPassword.addClass("is-invalid");
     });
-  } else if (renewPassword == '') {
+  } else if (renewPassword == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please confirm your new password.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please confirm your new password.",
     }).then((result) => {
       renewPassword.focus();
-      renewPassword.addClass('is-invalid');
+      renewPassword.addClass("is-invalid");
     });
   } else if (newPassword != renewPassword) {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'New password and confirm password do not match.',
+      icon: "error",
+      title: "Oops...",
+      text: "New password and confirm password do not match.",
     }).then((result) => {
       renewPassword.focus();
-      renewPassword.addClass('is-invalid');
+      renewPassword.addClass("is-invalid");
     });
   } else {
-    $('#changePassButton').blur();
-    $('#changePassButton').attr('disabled', true);
-    $('#changePassButton').html(
+    $("#changePassButton").blur();
+    $("#changePassButton").attr("disabled", true);
+    $("#changePassButton").html(
       '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Changing...'
     );
     $.ajax({
-      url: 'controllers/newInformationController.php',
-      method: 'POST',
+      url: "controllers/newInformationController.php",
+      method: "POST",
       data: {
         currentPassword: currentPassword,
         newPassword: newPassword,
@@ -273,27 +280,27 @@ $('#changePassForm').on('submit', function (e) {
       },
       success: function (response) {
         console.log(response);
-        $('#changePassButton').attr('disabled', false);
-        $('#changePassButton').html('Change Password');
+        $("#changePassButton").attr("disabled", false);
+        $("#changePassButton").html("Change Password");
         if (response == 1) {
           Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Current password is incorrect.',
+            icon: "error",
+            title: "Error",
+            text: "Current password is incorrect.",
           });
         } else if (response == 2) {
           Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong with the server. Please try again later.',
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong with the server. Please try again later.",
           });
         } else if (response == 4) {
           Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Password Updated Successfully! Please login back again to your account.',
+            icon: "success",
+            title: "Success",
+            text: "Password Updated Successfully! Please login back again to your account.",
           }).then((result) => {
-            window.location.href = 'controllers/signoutController.php';
+            window.location.href = "controllers/signoutController.php";
           });
         }
       },
@@ -301,81 +308,82 @@ $('#changePassForm').on('submit', function (e) {
   }
 });
 
-$(document).on('submit', '#editAccountForm', function (e) {
+$(document).on("submit", "#editAccountForm", function (e) {
   e.preventDefault();
 
-  let editAccountID = $('#editAccountID').val();
-  let editEmail = $('#editEmail').val();
-  let editFirstName = $('#editFirstName').val();
-  let editMiddleName = $('#editMiddleName').val();
-  let editLastName = $('#editLastName').val();
-  let editAccountCampus = $('#editAccountCampus').val();
-  let editDepartment = $('#editDepartment').val();
+  let editAccountID = $("#editAccountID").val();
+  let editEmail = $("#editEmail").val();
+  let editFirstName = $("#editFirstName").val();
+  let editMiddleName = $("#editMiddleName").val();
+  let editLastName = $("#editLastName").val();
+  let editAccountCampus = $("#editAccountCampus").val();
+  let editDepartment = $("#editDepartment").val();
+  let program = $("#editProgram").val();
 
-  if (editEmail == '') {
+  if (editEmail == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please enter your email address.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your email address.",
     }).then((result) => {
       email.focus();
-      email.addClass('is-invalid');
+      email.addClass("is-invalid");
     });
   } else if (emailValidation(editEmail) == false) {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please enter a valid email address.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter a valid email address.",
     }).then((result) => {
       email.focus();
-      email.addClass('is-invalid');
+      email.addClass("is-invalid");
     });
-  } else if (editFirstName == '') {
+  } else if (editFirstName == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please enter your first name.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your first name.",
     }).then((result) => {
       firstName.focus();
-      firstName.addClass('is-invalid');
+      firstName.addClass("is-invalid");
     });
-  } else if (editLastName == '') {
+  } else if (editLastName == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please enter your last name.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your last name.",
     }).then((result) => {
       lastName.focus();
-      lastName.addClass('is-invalid');
+      lastName.addClass("is-invalid");
     });
-  } else if (editAccountCampus == '') {
+  } else if (editAccountCampus == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please select your campus.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please select your campus.",
     }).then((result) => {
       userCampus.focus();
-      userCampus.addClass('is-invalid');
+      userCampus.addClass("is-invalid");
     });
-  } else if (editDepartment == '') {
+  } else if (editDepartment == "") {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Please select your department.',
+      icon: "error",
+      title: "Oops...",
+      text: "Please select your department.",
     }).then((result) => {
       userDepartment.focus();
-      userDepartment.addClass('is-invalid');
+      userDepartment.addClass("is-invalid");
     });
   } else {
-    $('#closeModal').attr('disabled', true);
-    $('#editAccountSubmit').blur();
-    $('#editAccountSubmit').attr('disabled', true);
-    $('#editAccountSubmit').html(
+    $("#closeModal").attr("disabled", true);
+    $("#editAccountSubmit").blur();
+    $("#editAccountSubmit").attr("disabled", true);
+    $("#editAccountSubmit").html(
       '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
     );
     $.ajax({
-      url: 'controllers/newInformationController.php',
-      method: 'POST',
+      url: "controllers/newInformationController.php",
+      method: "POST",
       data: {
         srCode: editAccountID,
         email: editEmail,
@@ -384,41 +392,42 @@ $(document).on('submit', '#editAccountForm', function (e) {
         lastName: editLastName,
         userCampus: editAccountCampus,
         userDepartment: editDepartment,
+        userProgram: program,
         saveInfo: true,
       },
       success: function (response) {
         console.log(response);
-        $('#editAccountSubmit').attr('disabled', false);
-        $('#closeModal').attr('disabled', false);
-        $('#editAccountSubmit').html('Save Changes');
+        $("#editAccountSubmit").attr("disabled", false);
+        $("#closeModal").attr("disabled", false);
+        $("#editAccountSubmit").html("Save Changes");
         if (response == 1) {
           Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Email Already Exists!',
+            icon: "error",
+            title: "Error",
+            text: "Email Already Exists!",
           });
         } else if (response == 2) {
           Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Something went wrong with the server. Please try again later.',
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong with the server. Please try again later.",
           });
         } else if (response == 3) {
           Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Information Updated Successfully!',
+            icon: "success",
+            title: "Success",
+            text: "Information Updated Successfully!",
           }).then((result) => {
             location.reload();
           });
         } else if (response == 4) {
           Swal.fire({
-            icon: 'success',
-            title: 'Success',
+            icon: "success",
+            title: "Success",
             text:
               "Information Updated Successfully! We've sent a verification email to " +
               editEmail +
-              '.',
+              ".",
           }).then((result) => {
             location.reload();
           });
@@ -428,19 +437,19 @@ $(document).on('submit', '#editAccountForm', function (e) {
   }
 });
 
-if ($('#notifications').length > 0) {
-  function loadNotifications(view = '') {
+if ($("#notifications").length > 0) {
+  function loadNotifications(view = "") {
     $.ajax({
-      url: 'controllers/newInformationController.php',
-      method: 'POST',
+      url: "controllers/newInformationController.php",
+      method: "POST",
       data: { view: view },
-      dataType: 'json',
+      dataType: "json",
       success: function (data) {
         // console.log(data);
-        $('#countHeader').html(data.countHeader);
-        $('#notificationDIV').html(data.notifications);
+        $("#countHeader").html(data.countHeader);
+        $("#notificationDIV").html(data.notifications);
         if (data.countNotifications > 0) {
-          $('#notifbadge').html(data.countNotifications);
+          $("#notifbadge").html(data.countNotifications);
         }
       },
     });
@@ -448,21 +457,21 @@ if ($('#notifications').length > 0) {
 
   loadNotifications();
 
-  $(document).on('click', '#notifications', function () {
-    $('#notifbadge').html('');
-    loadNotifications('view');
+  $(document).on("click", "#notifications", function () {
+    $("#notifbadge").html("");
+    loadNotifications("view");
   });
 
   setInterval(function () {
     loadNotifications();
   }, 5000);
 
-  $(document).on('click', '#markAllBTN', function (e) {
+  $(document).on("click", "#markAllBTN", function (e) {
     e.preventDefault();
 
     $.ajax({
-      url: 'controllers/newInformationController.php',
-      method: 'POST',
+      url: "controllers/newInformationController.php",
+      method: "POST",
       data: { markAll: true },
       success: function (response) {
         loadNotifications();
@@ -473,16 +482,16 @@ if ($('#notifications').length > 0) {
 
 $(document).ready(function () {
   // Get the IP address of the user
-  $.getJSON('https://api.ipify.org?format=json', function (data) {
+  $.getJSON("https://api.ipify.org?format=json", function (data) {
     if (
-      getParameterByName('title') != '' &&
-      getParameterByName('title') != 'Create Account' &&
-      getParameterByName('title') != 'Verify Account' &&
-      getParameterByName('title') != 'Forgot Password'
+      getParameterByName("title") != "" &&
+      getParameterByName("title") != "Create Account" &&
+      getParameterByName("title") != "Verify Account" &&
+      getParameterByName("title") != "Forgot Password"
     ) {
       $.ajax({
-        url: 'controllers/newInformationController.php',
-        method: 'POST',
+        url: "controllers/newInformationController.php",
+        method: "POST",
         data: {
           getIP: true,
           ip: data.ip,
@@ -494,36 +503,36 @@ $(document).ready(function () {
     }
   });
 
-  $('#registeredAuthors').select2({
-    placeholder: 'Select Author(s)',
+  $("#registeredAuthors").select2({
+    placeholder: "Select Author(s)",
     allowClear: true,
     tags: true,
-    tokenSeparators: [','],
+    tokenSeparators: [","],
     closeOnSelect: false,
-    containerCssClass: ':all:',
-    dropdownCssClass: ':all:',
-    width: '100%',
+    containerCssClass: ":all:",
+    dropdownCssClass: ":all:",
+    width: "100%",
   });
 
-  $('#tags').select2({
-    placeholder: 'Tag(s)',
+  $("#tags").select2({
+    placeholder: "Tag(s)",
     allowClear: true,
     tags: true,
-    tokenSeparators: [','],
+    tokenSeparators: [","],
     closeOnSelect: false,
-    containerCssClass: ':all:',
-    dropdownCssClass: ':all:',
-    width: '100%',
+    containerCssClass: ":all:",
+    dropdownCssClass: ":all:",
+    width: "100%",
   });
 
-  let datalist = jQuery('datalist');
-  let options = jQuery('datalist option');
+  let datalist = jQuery("datalist");
+  let options = jQuery("datalist option");
   let optionsarray = jQuery.map(options, function (option) {
     return option.value;
   });
-  let input = jQuery('input[list]');
+  let input = jQuery("input[list]");
   let inputcommas = (input.val().match(/,/g) || []).length;
-  let separator = ',';
+  let separator = ",";
 
   function filldatalist(prefix) {
     if (input.val().indexOf(separator) > -1 && options.length > 0) {
@@ -535,13 +544,13 @@ $(document).ready(function () {
       }
     }
   }
-  input.bind('change paste keyup', function () {
-    var inputtrim = input.val().replace(/^\s+|\s+$/g, '');
+  input.bind("change paste keyup", function () {
+    var inputtrim = input.val().replace(/^\s+|\s+$/g, "");
     var currentcommas = (input.val().match(/,/g) || []).length;
     if (inputtrim != input.val()) {
       if (inputcommas != currentcommas) {
         var lsIndex = inputtrim.lastIndexOf(separator);
-        var str = lsIndex != -1 ? inputtrim.substr(0, lsIndex) + ',' : '';
+        var str = lsIndex != -1 ? inputtrim.substr(0, lsIndex) + "," : "";
         filldatalist(str);
         inputcommas = currentcommas;
       }

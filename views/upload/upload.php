@@ -16,10 +16,10 @@
             <h5 class="card-title">Upload</h5>
             <ul class="nav nav-tabs nav-tabs-bordered">
               <li class="nav-item">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#manuscriptPane">Manuscript Details</button>
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#manuscriptPane" id="manuscriptPanes">Manuscript Details</button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fileUploadPane">File Upload</button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fileUploadPane" id="fileUploadPanes">File Upload</button>
               </li>
             </ul>
             <form class="row g-3" id="adminUpload" enctype="multipart/form-data">
@@ -31,15 +31,15 @@
                       <label for="title">Title</label>
                     </div>
                   </div>
-                  <div class="col-md-12 row my-2">
-                    <div class="col-md-5">
+                  <div class="row my-2">
+                    <div class="col-md-5 mb-sm-0 mb-2">
                       <select class="form-control" id="registeredAuthors" placeholder="Authors" multiple>
                         <?php foreach ($userByCampus as $key => $rows) : ?>
                           <option value="<?php echo $rows['fullName']; ?>"><?php echo $rows['fullName']; ?></option>
                         <?php endforeach; ?>
                       </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mb-sm-0 mb-2">
                       <select class="form-control" id="tags" placeholder="Tags" multiple>
                       </select>
                     </div>
@@ -51,8 +51,8 @@
                     </div>
                   </div>
                   <?php if ($role == 'Admin') : ?>
-                    <div class="col-md-12 row">
-                      <div class="col-md-6">
+                    <div class="row">
+                      <div class="col-md-6 mb-sm-0 mb-2">
                         <div class="form-floating">
                           <select class="form-select" id="department" placeholder="Department">
                             <?php foreach ($departments as $key => $row) : ?>

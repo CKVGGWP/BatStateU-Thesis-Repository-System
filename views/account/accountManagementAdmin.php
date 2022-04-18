@@ -113,7 +113,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3">
                 <label for="editAccountCampus">Campus</label>
                 <select class="form-control" id="editAccountCampus" name="editAccountCampus">
                   <option value="<?php echo $campID; ?>" selected><?php echo $campus; ?></option>
@@ -122,13 +122,13 @@
                   <?php endforeach; ?>
                 </select>
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-9">
                 <label for="editDepartment">Department</label>
                 <select class="form-control" id="editDepartment" name="editDepartment">
                   <option value="<?php echo $deptID; ?>"><?php echo $department; ?></option>
                 </select>
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-12">
                 <label for="editProgram">Program</label>
                 <select class="form-control" id="editProgram" name="editProgram">
                   <option value="<?php echo $programID; ?>"><?php echo $programName; ?></option>

@@ -1,61 +1,66 @@
 <main id="main" class="main">
 
-    <div class="pagetitle">
-        <h1>Dashboard</h1>
-        <nav>
-            <?php include('breadcrumbs.php'); ?>
-        </nav>
-    </div><!-- End Page Title -->
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <?php include('breadcrumbs.php'); ?>
+    </nav>
+  </div><!-- End Page Title -->
 
-    <section class="section dashboard">
+  <section class="section dashboard">
+    <div class="row">
+
+      <!-- Left side columns -->
+      <div class="col-lg-12">
         <div class="row">
+          <!-- Manuscript Request Status Card -->
+          <div class="col-xxl-12 col-xl-12">
+            <div class="card recent-sales overflow-auto">
+              <div class="card-body">
+                <h5 class="card-title">Manuscript Request Status</h5>
 
-            <!-- Left side columns -->
-            <div class="col-lg-12">
-                <div class="row">
-                    <!-- Manuscript Request Status Card -->
-                    <div class="col-xxl-12 col-xl-12">
-                        <div class="card recent-sales overflow-auto">
-                            <div class="card-body">
-                                <h5 class="card-title">Manuscript Request Status</h5>
+                <table class="table table-borderless table-sm table-hover text-center dt-responsive">
+                  <thead>
+                    <tr>
+                      <th scope="col">Title</th>
+                      <th scope="col">Author</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
 
-                                <table class="table table-borderless table-sm table-hover text-center dt-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Title</th>
-                                            <th scope="col">Author</th>
-                                            <th scope="col">Status</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+          <?php if ($campus == "Malvar") : ?>
 
-                    <!-- Manuscript Upload Status Card -->
-                     <div class="col-xxl-12 col-xl-12">
-                        <div class="card recent-sales overflow-auto">
-                            <div class="card-body">
-                                <h5 class="card-title">Manuscript Upload Status</h5>
+            <!-- Manuscript Upload Status Card -->
+            <div class="col-xxl-12 col-xl-12">
+              <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                  <h5 class="card-title">Manuscript Upload Status</h5>
 
-                                <table class="table table-borderless table-sm table-hover text-center dt-responsive" id="userManuscriptUploadStatus">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Title</th>
-                                            <th scope="col">Date Uploaded</th>
-                                            <th scope="col">Status</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                  <table class="table table-borderless table-sm table-hover text-center dt-responsive" id="userManuscriptUploadStatus">
+                    <thead>
+                      <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Date Uploaded</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                  </table>
                 </div>
-            </div><!-- End Left side columns -->
-        </div>
-    </section>
+              </div>
+            </div>
 
-    <div class="modal fade" id="viewJournalModal" tabindex="-1" role="dialog" aria-labelledby="viewJournalModal" aria-hidden="true">
+          <?php endif; ?>
+
+        </div>
+      </div><!-- End Left side columns -->
+    </div>
+  </section>
+
+  <div class="modal fade" id="viewJournalModal" tabindex="-1" role="dialog" aria-labelledby="viewJournalModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">

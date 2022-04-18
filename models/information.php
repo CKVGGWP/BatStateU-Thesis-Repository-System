@@ -22,7 +22,7 @@ class Information extends Database
 
     public function getProgByDept($id, $purpose = '')
     {
-        $sql = "SELECT * FROM program WHERE department = ? ORDER BY programName ASC";
+        $sql = "SELECT * FROM program WHERE deptID = ? ORDER BY programName ASC";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $id);
         $stmt->execute();
@@ -47,7 +47,7 @@ class Information extends Database
             return $prog;
         }
     }
-    
+
     public function getDeptByCampus($id, $purpose = '')
     {
         $sql = "SELECT * FROM department WHERE campusID = ? ORDER BY departmentName ASC";
@@ -402,7 +402,7 @@ class Information extends Database
             $sql .= " LEFT JOIN user_token t ON t.userID = u.id";
         }
 
-        $sql .= " SET u.email = ?, u.firstName = ?, u.middleName = ?, u.lastName = ?, u.campusID = ?, u.departmentID = ?";
+        $sql .= " SET u.email = ?, u.firstName = ?, u.middleName = ?, u.lastName = ?, u.campusID = ?, u.departmentID = ?, u.programID = ?";
 
         if ($purpose == 'Email') {
             $sql .= ", u.verifyStatus = '0', t.tokenKey = ?";
@@ -417,9 +417,9 @@ class Information extends Database
         $stmt = $this->connect()->prepare($sql);
         if ($purpose == 'Email') {
             $token = $this->createToken();
-            $stmt->bind_param('ssssiiss', $data['email'], $data['firstName'], $data['middleName'], $data['lastName'], $data['campus'], $data['department'], $token, $data['srCode']);
+            $stmt->bind_param('ssssiiiss', $data['email'], $data['firstName'], $data['middleName'], $data['lastName'], $data['campus'], $data['department'], $data['program'], $token, $data['srCode']);
         } else {
-            $stmt->bind_param('ssssiis', $data['email'], $data['firstName'], $data['middleName'], $data['lastName'], $data['campus'], $data['department'], $data['srCode']);
+            $stmt->bind_param('ssssiiis', $data['email'], $data['firstName'], $data['middleName'], $data['lastName'], $data['campus'], $data['department'], $data['program'], $data['srCode']);
         }
 
         $stmt->execute();

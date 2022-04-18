@@ -27,6 +27,7 @@ if (isset($_POST['saveInfo'])) {
         'lastName'      =>      $_POST['lastName'],
         'campus'        =>      $_POST['userCampus'],
         'department'    =>      isset($_POST['userDepartment']) ? $_POST['userDepartment'] : 3,
+        'program'       =>      isset($_POST['userProgram']) ? $_POST['userProgram'] : '',
         'srCode'        =>      $_POST['srCode']
     );
 

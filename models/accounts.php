@@ -30,8 +30,8 @@ class Accounts extends Database
                     $srCode,
                     $name,
                     $campusName,
-                    $programName,
-                    $departmentName,
+                    ($programName == null) ? '-' : $programName,
+                    ($departmentName == null) ? '-' : $departmentName,
                     $email,
                     $role == 1 ? 'Admin' : 'User',
                     '<div class="btn-group-vertical">

@@ -42,12 +42,16 @@
             </li><!-- End Browse Manuscript Nav -->
         <?php endif; ?>
 
-        <li class="nav-item">
-            <a class="nav-link " href="dashboard.php?title=Upload Manuscript">
-                <i class="bi bi-upload"></i>
-                <span>Upload</span>
-            </a>
-        </li><!-- End Upload Nav -->
+        <?php if ($campus == "Malvar") : ?>
+
+            <li class="nav-item">
+                <a class="nav-link " href="dashboard.php?title=Upload Manuscript">
+                    <i class="bi bi-upload"></i>
+                    <span>Upload</span>
+                </a>
+            </li><!-- End Upload Nav -->
+
+        <?php endif; ?>
     </ul>
 
 </aside><!-- End Sidebar-->
