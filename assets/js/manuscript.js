@@ -184,7 +184,13 @@ $(document).on("click", ".delete", function () {
         data: { deleteManuscript: 1, manuscriptId: manuscriptId },
         success: function (data) {
           if (data == 1) {
-            Swal.fire("Deleted!", "Manuscript has been deleted.", "success");
+            Swal.fire(
+              "Deleted!",
+              "Manuscript has been deleted.",
+              "success"
+            ).then((result) => {
+              location.reload();
+            });
           } else {
             Swal.fire("Error!", "Something went wrong.", "error");
           }
@@ -316,8 +322,8 @@ $(document).on("click", ".approved-pending", function () {
   let manuscriptId = $(this).data("id");
 
   Swal.fire({
-    title: "Confirm Manuscript Approval",
-    text: "Are you sure you want to approve this manuscript?",
+    title: "Approve Manuscript",
+    text: "Are you sure that you want to approve this manuscript?",
     icon: "question",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -341,7 +347,9 @@ $(document).on("click", ".approved-pending", function () {
               "Approved!",
               data.title + " has been approved.",
               "success"
-            );
+            ).then((result) => {
+              location.reload();
+            });
           } else {
             Swal.fire(
               "Error!",
@@ -358,14 +366,14 @@ $(document).on("click", ".approved-pending", function () {
 
 $(document).on("submit", "#manuscriptDisapproval", function (e) {
   e.preventDefault();
-  let manuscriptId = $("#reasonModal").data("id");
+  let manuscriptId = $("li").closest("tr").find(".manuscriptBox").val();
   let reason = $("#reasonForManuscriptDisapproval").val();
   console.log(manuscriptId);
   if (reason == "") {
     Swal.fire("Error!", "Please provide a reason for disapproval", "error");
   } else {
     Swal.fire({
-      title: "Decline Manuscript Approval",
+      title: "Decline Manuscript",
       text: "Are you sure you want to decline this manuscript?",
       icon: "question",
       showCancelButton: true,
@@ -391,7 +399,9 @@ $(document).on("submit", "#manuscriptDisapproval", function (e) {
                 "Declined!",
                 data.title + " has been declined.",
                 "success"
-              );
+              ).then((result) => {
+                location.reload();
+              });
             } else {
               Swal.fire(
                 "Error!",
@@ -428,7 +438,7 @@ $(document).on("click", ".approve-request", function () {
   let id = $(this).data("id");
 
   Swal.fire({
-    title: "Confirm Request of Approval",
+    title: "Approve Request",
     text: "Are you sure you want to approve this request?",
     icon: "question",
     showCancelButton: true,
@@ -452,7 +462,9 @@ $(document).on("click", ".approve-request", function () {
               "Approved!",
               data.title + " request has been approved.",
               "success"
-            );
+            ).then((result) => {
+              location.reload();
+            });
           } else {
             Swal.fire(
               "Error!",
@@ -471,14 +483,14 @@ $(document).on("click", ".approve-request", function () {
 $(document).on("submit", "#requestDisapproval", function (e) {
   e.preventDefault();
 
-  let id = $(".decline-request").data("id");
+  let id = $("li").closest("tr").find(".requestBox").val();
   let reason = $("#reasonForRequestDisapproval").val();
 
   if (reason == "") {
     Swal.fire("Error!", "Please provide a reason for disapproval", "error");
   } else {
     Swal.fire({
-      title: "Decline Request of Approval",
+      title: "Decline Request",
       text: "Are you sure you want to decline this request?",
       icon: "question",
       showCancelButton: true,
@@ -504,7 +516,9 @@ $(document).on("submit", "#requestDisapproval", function (e) {
                 "Declined!",
                 data.title + " request has been Declined.",
                 "success"
-              );
+              ).then((result) => {
+                location.reload();
+              });
             } else {
               Swal.fire(
                 "Error!",
@@ -537,7 +551,7 @@ if ($("#pendingManuscriptButton").length > 0) {
 $(document).on("click", ".request", function () {
   let manuscriptId = $(this).data("id");
   Swal.fire({
-    title: "Request of Manuscript",
+    title: "Manuscript Request",
     text: "You are about to request for this manuscript.",
     icon: "info",
     showCancelButton: true,
@@ -556,13 +570,23 @@ $(document).on("click", ".request", function () {
         dataType: "json",
         success: function (data) {
           console.log(data);
-          Swal.fire({
-            title: "Success!",
-            text: "Please wait for the admin to approve your request.",
-            icon: "success",
-          }).then((result) => {
-            location.reload();
-          });
+          if (data.success == true) {
+            Swal.fire({
+              title: "Success!",
+              text:
+                data.title +
+                " has been requested! Please wait for the admin to approve your request.",
+              icon: "success",
+            }).then((result) => {
+              location.reload();
+            });
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: "Something went wrong. Error: " + data.error,
+              icon: "error",
+            });
+          }
         },
       });
     }

@@ -57,7 +57,7 @@ if (isset($_POST['updatePendingManuscript'])) {
     $manuscriptId = $_POST['manuscriptId'];
     $status = $_POST['status'];
     $date = date('Y-m-d H:i:s');
-    $reason = $_POST['reason'];
+    $reason = isset($_POST['reason']) ? $_POST['reason'] : '';
     echo $manuscript->updatePendingManuscript($manuscriptId, $status, $date, $reason);
 }
 

@@ -223,7 +223,8 @@ class Manuscript extends Database
                 $departmentName,
                 $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
                 '   <button type="button" class="btn btn-success btn-sm approved-pending" data-id="' . $id . '">APPROVE</button>
-                    <button type="button" data-bs-target="#reasonModal" data-bs-toggle="modal" class="btn btn-danger btn-sm" data-id="' . $id . '">DECLINE</button>
+                    <button type="button" data-bs-target="#reasonModal" data-bs-toggle="modal" class="btn btn-danger btn-sm">DECLINE</button>
+                    <input type="hidden" class="manuscriptBox" value="' . $id . '"></input>
                 ',
             ];
         }
@@ -269,7 +270,8 @@ class Manuscript extends Database
                 $name,
                 '
                     <button type="button" class="btn btn-success btn-sm approve-request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">APPROVE</button>
-                    <button type="button" data-bs-target="#reasonRequestModal" data-bs-toggle="modal" class="btn btn-danger btn-sm" data-id="' . $id . '">DECLINE</button>
+                    <button type="button" data-bs-target="#reasonRequestModal" data-bs-toggle="modal" class="btn btn-danger btn-sm">DECLINE</button>
+                    <input type="hidden" class="requestBox" value="' . $id . '"></input>
                 ',
             ];
         }
@@ -324,6 +326,7 @@ class Manuscript extends Database
 
     public function deleteManuscript($manuscriptId)
     {
+        $this->deleteFiles($this->getManuscriptFiles($manuscriptId));
         $sql = "DELETE FROM manuscript WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("i", $manuscriptId);
@@ -345,19 +348,15 @@ class Manuscript extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            $data = [
-                "success" => true,
-                "message" => "Inserted successfully",
-                "error" => "Something went wrong! Error: " . $stmt->error
-            ];
+            return $this->insertNotification($manuscriptId, "Pending", "request");
         } else {
             $data = [
                 "success" => false,
                 "message" => "Error inserting",
                 "error" => "Something went wrong! Error: " . $stmt->error
             ];
+            return json_encode($data);
         }
-        return json_encode($data);
     }
 
     public function updateManuscript($data)
@@ -383,7 +382,7 @@ class Manuscript extends Database
         return json_encode($data);
     }
 
-    public function updatePendingManuscript($manuscriptId, $status, $date, $reason = "")
+    public function updatePendingManuscript($manuscriptId, $status, $date, $reason)
     {
         $sql = "UPDATE manuscript SET status = ?, actionDate = ? WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
@@ -391,21 +390,26 @@ class Manuscript extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return $this->insertNotification($manuscriptId,  $status = ($status == 1) ? "Approved" : "Declined", $reason);
+            return $this->insertNotification($manuscriptId,  $status = ($status == 1) ? "Approved" : "Declined", "", $reason);
         } else {
             return 0;
         }
     }
 
-    private function insertNotification($manuscriptId, $status, $request = "", $reason = "")
+    private function insertNotification($manuscriptId, $status = "", $request = "", $reason = "")
     {
         $title = $this->getManuscriptTitle($manuscriptId);
-        $id = $this->getSRCodeByNames($this->getAuthorByID($manuscriptId));
+
+        if ($status == "Pending") {
+            $id = $this->getSRCode("user_details", "id", "role", "1");
+        } else {
+            $id = $this->getSRCodeByNames($this->getAuthorByID($manuscriptId));
+        }
 
         if ($request == "") {
             $type = ($status == "Approved") ? $this->typeID[2] : $this->typeID[3];
         } else {
-            $type = (($status == "") ? $this->typeID[4] : ($status == "Approved")) ? $this->typeID[5] : $this->typeID[6];
+            $type = (($status == "Pending") ? $this->typeID[4] : ($status == "Approved")) ? $this->typeID[5] : $this->typeID[6];
         }
 
         $message = $title;
@@ -413,7 +417,7 @@ class Manuscript extends Database
         if ($request == "") {
             $message .= ($status == "Approved") ? $this->messages[2] : $this->messages[3] . $reason;
         } else {
-            $message .= (($status == "") ? $title . $this->messages[4] : ($status == "Approved")) ? $title . $this->messages[5] : $title . $this->messages[6] . $reason;
+            $message .= (($status == "Pending") ? $title . $this->messages[4] : ($status == "Approved")) ? $title . $this->messages[5] : $title . $this->messages[6] . $reason;
         }
 
         if ($request == "") {
@@ -444,6 +448,8 @@ class Manuscript extends Database
                 "error" => mysqli_errno($this->connect()),
             );
         }
+
+        $this->addReason($manuscriptId, $reason);
 
         return json_encode($data);
     }
@@ -491,5 +497,34 @@ class Manuscript extends Database
         }
 
         return json_encode($button);
+    }
+
+    private function getManuscriptFiles($id)
+    {
+        $sql = "SELECT abstract, journal FROM manuscript WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
+    private function addReason($id, $reason)
+    {
+        $sql = "UPDATE groupings SET reason = ? WHERE manuscriptID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("si", $reason, $id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

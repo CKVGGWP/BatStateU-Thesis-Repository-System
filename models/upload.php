@@ -7,7 +7,7 @@ class Upload extends Database
     {
         $type = ['journal', 'abstract'];
         foreach ($type as $key => $value) {
-            $path = "../assets/uploads/";
+            $path = $this->directory;
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }

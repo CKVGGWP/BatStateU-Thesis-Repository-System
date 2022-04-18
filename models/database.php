@@ -29,7 +29,7 @@ class Database
         '1' => ' has been uploaded. Please check the list of manuscripts.',
         '2' => ' has been approved!',
         '3' => ' has been rejected! Reason: ',
-        '4' => ' has been requested! Click here to view the list of manuscript being requested.',
+        '4' => ' has been requested! Click here to view the list of manuscripts being requested.',
         '5' => ' request has been approved!',
         '6' => ' request has been rejected! Reason: ',
     );
@@ -73,13 +73,15 @@ class Database
 
         $stmt->execute();
         $result = $stmt->get_result();
+        $col = [];
 
         if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            return $row[$column];
-        } else {
-            return 0;
+            while ($row = $result->fetch_assoc()) {
+                $col[] = $row[$column];
+            }
         }
+
+        return $col;
     }
 
     protected function getAuthorByID($manuscriptID)
@@ -129,7 +131,22 @@ class Database
         return $row['id'];
     }
 
+    protected function deleteFiles($files)
+    {
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                unlink($this->directory . $file);
+            }
+        } else {
+            unlink($this->directory . $files);
+        }
+
+        return true;
+    }
+
     protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
+
+    protected $directory = "../assets/uploads/";
 
     protected function connect()
     {
