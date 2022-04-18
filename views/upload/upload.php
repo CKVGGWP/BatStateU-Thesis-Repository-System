@@ -75,16 +75,16 @@
                     <div class="col-md-6">
                       <label for="inputNumber" class="col-sm-2 col-form-label">Abstract</label>
                       <div class="col-md-12">
-                        <input class="form-control" type="file" id="abstract" accept="application/pdf">
+                        <input class="form-control mb-2" type="file" id="abstract" accept="application/pdf">
                       </div>
-                      <a href="#abstractPreviewModal" data-bs-toggle="modal" >View file</a>
+                      <h5><a href="#abstractPreviewModal" id="abstractView" data-bs-toggle="modal" hidden>View file</a></h5>
                     </div>
                     <div class="col-md-6">
                       <label for="inputNumber" class="col-sm-2 col-form-label">Journal</label>
                       <div class="col-md-12">
-                        <input class="form-control" type="file" id="journal" accept="application/pdf">
+                        <input class="form-control mb-2" type="file" id="journal" accept="application/pdf">
                       </div>
-                      <a href="#journalPreviewModal" data-bs-toggle="modal">View file</a>
+                      <h5><a href="#journalPreviewModal" id="journalView" data-bs-toggle="modal" hidden>View file</a></h5>
                     </div>
                   </div>
                   <div class="text-center">
@@ -111,7 +111,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <iframe src="" type="application/pdf" id="abstractPreview" style="height:600px;width:100%"></iframe>
+            <iframe src="" type="application/pdf" id="abstractPreview" style="height:700px;width:100%"></iframe>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
@@ -132,7 +132,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <iframe src="" type="application/pdf" id="journalPreview" style="height:600px;width:100%"></iframe>
+            <iframe src="" type="application/pdf" id="journalPreview" style="height:700px;width:100%"></iframe>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>

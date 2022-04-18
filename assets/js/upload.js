@@ -127,11 +127,13 @@ $('#adminUpload').on('submit', function (e) {
 });
 
 $('#abstract').on('change', function () {
+  $('#abstractView').attr('hidden', false);
   let src = window.URL.createObjectURL(this.files[0]);
   $('#abstractPreview').attr('src', src);
 });
 
 $('#journal').on('change', function () {
+  $('#journalView').attr('hidden', false);
   let src = window.URL.createObjectURL(this.files[0]);
   $('#journalPreview').attr('src', src);
 });
