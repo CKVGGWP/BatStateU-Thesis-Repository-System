@@ -42,8 +42,8 @@ class Upload extends Database
         $title = $values['title'];
         $yearPub = $values['yearPub'];
         $authors = $values['authors'];
-        $department = $values['department'];
-        $program = isset($values['program']) ? $values['program'] : null;
+        $department = isset($values['department']) ? $values['department'] : 0;
+        $program = isset($values['program']) ? $values['program'] : 0;
         $tags = $values['tags'];
         $dateNow = date("Y-m-d H:i:s");
 
