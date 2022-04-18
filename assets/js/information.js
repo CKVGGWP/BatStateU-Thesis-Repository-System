@@ -7,6 +7,12 @@ $(function () {
 $("#campus").on("change", function () {
   let campus = $(this).val();
 
+  if ($("#campus").val() == "3") {
+    $("#programDiv").removeClass("d-none");
+  } else {
+    $("#programDiv").addClass("d-none");
+  }
+
   $.ajax({
     url: "controllers/newInformationController.php",
     method: "POST",
@@ -17,6 +23,21 @@ $("#campus").on("change", function () {
     dataType: "json",
     success: function (data) {
       $("#department").html(data);
+    },
+  });
+});
+
+$("#department").on("change", function () {
+  $.ajax({
+    url: "controllers/newInformationController.php",
+    method: "POST",
+    data: {
+      department: $(this).val(),
+      getProgram: true,
+    },
+    dataType: "json",
+    success: function (data) {
+      $("#program").html(data);
     },
   });
 });
@@ -63,7 +84,7 @@ $("#saveInfo").on("submit", function (e) {
   let firstName = $("#firstName").val();
   let middleName = $("#middleName").val();
   let lastName = $("#lastName").val();
-  let userCampus = $("#userCampus").val();
+  let userCampus = $("#userCampus").length > 0 ? $("#userCampus").val() : 0;
   let userDepartment = $("#userDepartment").val();
 
   if (email == "") {

@@ -75,6 +75,19 @@
                                         </div>
 
                                     </div>
+
+                                    <div class="col-md-12 col-12 mt-2 d-none" id="programDiv">
+
+                                        <div class="form-floating">
+                                            <select class="form-control" name="program" id="program">
+                                                <option value selected disabled>Please select a Program</option>
+                                            </select>
+                                            <label for="program" class="form-label">Program</label>
+                                        </div>
+                                        <div class="invalid-feedback">Please enter a Program!</div>
+
+                                    </div>
+
                                     <div class="col-md-12 col-12 mt-2">
                                         <div class="form-floating">
                                             <input type="text" class="form-control" id="email" placeholder="Email" pattern=".+@g\.batstate-u\.edu\.ph" required>

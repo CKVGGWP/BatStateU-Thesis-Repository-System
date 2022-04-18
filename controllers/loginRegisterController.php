@@ -22,6 +22,7 @@ if (isset($_POST['register'])) {
         'lastName'      =>     $_POST['lastName'],
         'department'    =>     $_POST['department'],
         'campus'        =>     $_POST['campus'],
+        'program'       =>     isset($_POST['program']) ? $_POST['program'] : '',
     );
 
     echo $loginRegister->register($data);

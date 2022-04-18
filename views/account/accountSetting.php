@@ -107,14 +107,14 @@
                       </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <!-- <div class="row mb-3">
                       <label for="userDepartment" class="col-md-4 col-lg-3 col-form-label">Department</label>
                       <div class="col-md-8 col-lg-9">
                         <select name="userDepartment" id="userDepartment" class="form-select">
-                          <option value="<?php echo $deptID; ?>"><?php echo $department; ?></option>
+                          <option value="$deptID; ?>">$department; ?></option>
                         </select>
                       </div>
-                    </div>
+                    </div> -->
 
                   <?php else : ?>
 
@@ -135,6 +135,19 @@
                         </select>
                       </div>
                     </div>
+
+                    <?php if ($campus == "Malvar") : ?>
+
+                      <div class="row mb-3">
+                        <label for="userProgram" class="col-md-4 col-lg-3 col-form-label">Program</label>
+                        <div class="col-md-8 col-lg-9">
+                          <select name="userProgram" id="userProgram" class="form-select" readonly disabled>
+                            <option value="<?php echo $programID; ?>"><?php echo $programName; ?></option>
+                          </select>
+                        </div>
+                      </div>
+
+                    <?php endif; ?>
 
                   <?php endif; ?>
 

@@ -26,6 +26,8 @@ if ($id != '') {
     $department = $user['departmentName'];
     $deptID = $user['deptID'];
     $campID = $user['campID'];
+    $programID = $user['programID'];
+    $programName = $user['programName'];
 
     $campusNotIncluded = $info->getCampuses($campID);
 

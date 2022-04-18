@@ -21,7 +21,7 @@ if (isset($_POST['saveInfo'])) {
         'middleName'    =>      $_POST['middleName'],
         'lastName'      =>      $_POST['lastName'],
         'campus'        =>      $_POST['userCampus'],
-        'department'    =>      $_POST['userDepartment'],
+        'department'    =>      isset($_POST['userDepartment']) ? $_POST['userDepartment'] : 3,
         'srCode'        =>      $_POST['srCode']
     );
 
@@ -54,4 +54,10 @@ if (isset($_POST['getIP'])) {
 
 if (isset($_POST['ipChart'])) {
     echo $info->getIPChart();
+}
+
+if (isset($_POST['getProgram'])) {
+    $deptID = $_POST['department'];
+
+    echo $info->getProgram($deptID);
 }

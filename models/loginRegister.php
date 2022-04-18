@@ -229,9 +229,9 @@ class LoginRegister extends Database
     private function insertData($data)
     {
         $newPassword = password_hash($data['password'], PASSWORD_DEFAULT);
-        $sql = "INSERT INTO user_details (srCode, email, firstName, middleName, lastName, departmentID, campusID, password, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
+        $sql = "INSERT INTO user_details (srCode, email, firstName, middleName, lastName, departmentID, campusID, programID, password, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("ssssssss", $data['srCode'], $data['email'], $data['firstName'], $data['middleName'], $data['lastName'], $data['department'], $data['campus'], $newPassword);
+        $stmt->bind_param("sssssssss", $data['srCode'], $data['email'], $data['firstName'], $data['middleName'], $data['lastName'], $data['department'], $data['campus'], $data['program'], $newPassword);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {

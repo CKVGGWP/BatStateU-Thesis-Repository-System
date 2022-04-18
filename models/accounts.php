@@ -11,10 +11,12 @@ class Accounts extends Database
                 CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name, 
                 u.role, 
                 d.departmentName, 
-                c.campusName
+                c.campusName,
+                p.programName
                 FROM user_details u 
                 LEFT JOIN department d ON u.departmentID = d.id 
-                LEFT JOIN campus c ON d.campusID = c.id";
+                LEFT JOIN campus c ON d.campusID = c.id
+                LEFT JOIN program p ON u.programID = p.id";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();

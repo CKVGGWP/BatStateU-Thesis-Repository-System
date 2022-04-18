@@ -82,6 +82,7 @@ $("#register").on("submit", function (e) {
   let lastName = $("#lastName").val();
   let department = $("#department").val();
   let campus = $("#campus").val();
+  let program = $("#program").val();
   let password = $("#password").val();
 
   if (srCode == "") {
@@ -173,6 +174,7 @@ $("#register").on("submit", function (e) {
         lastName: lastName,
         department: department,
         campus: campus,
+        program: program,
         password: password,
         register: true,
       },

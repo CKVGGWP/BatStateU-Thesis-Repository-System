@@ -48,11 +48,36 @@ class Information extends Database
         }
     }
 
+    public function getProgram($id)
+    {
+        $sql = "SELECT * FROM program WHERE deptID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $option = '';
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $option .= '<option value="' . $row['id'] . '">' . $row['programName'] . '</option>';
+            }
+        } else {
+            $option .= '<option value="">No program found</option>';
+        }
+
+        return json_encode($option);
+    }
+
     public function getUserBySession($id)
     {
-        $sql = "SELECT *, c.id AS campID, d.id AS deptID FROM user_details u 
+        $sql = "SELECT *, 
+                c.id AS campID, 
+                d.id AS deptID, 
+                p.id AS programID 
+                FROM user_details u 
                 LEFT JOIN campus c ON c.id = u.campusID 
                 LEFT JOIN department d ON d.id = u.departmentID
+                LEFT JOIN program p ON p.id = u.programID
                 WHERE u.srCode = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $id);
