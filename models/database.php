@@ -29,8 +29,9 @@ class Database
         '1' => ' has been uploaded. Please check the list of manuscripts.',
         '2' => ' has been approved!',
         '3' => ' has been rejected! Reason: ',
-        '4' => ' request has been approved!',
-        '5' => ' request has been rejected! Reason: ',
+        '4' => ' has been requested! Click here to view the list of manuscript being requested.',
+        '5' => ' request has been approved!',
+        '6' => ' request has been rejected! Reason: ',
     );
 
     protected function hashPassword($password)

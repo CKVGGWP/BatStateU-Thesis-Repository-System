@@ -218,7 +218,7 @@ class Manuscript extends Database
                 $departmentName,
                 $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
                 '   <button type="button" class="btn btn-success btn-sm approved-pending" data-id="' . $id . '">APPROVE</button>
-                    <button type="button" class="btn btn-danger btn-sm decline-pending" data-id="' . $id . '">DECLINE</button>
+                    <button data-bs-target="#reasonModal" data-bs-toggle="modal" class="btn btn-danger btn-sm" data-id="' . $id . '">DECLINE</button>
                 ',
             ];
         }
@@ -333,7 +333,7 @@ class Manuscript extends Database
 
     public function requestManuscript($srCode, $manuscriptId)
     {
-        $token = md5(uniqid(rand(), true));
+        $token = $this->createToken();
         $sql = "INSERT INTO manuscript_token(id, manuscriptID, userID, status, token, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, 0, 0)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("iss", $manuscriptId, $srCode, $token);
@@ -394,32 +394,38 @@ class Manuscript extends Database
         return $this->insertNotification($manuscriptId,  $status = ($status == 1) ? "Approved" : "Declined");
     }
 
-    private function insertNotification($manuscriptId, $status, $request = "")
+    private function insertNotification($manuscriptId, $status, $request = "", $reason = "")
     {
-        // $srCode = $this->getSRCode("manuscript", "srCode", "id", $manuscriptId);
         $title = $this->getManuscriptTitle($manuscriptId);
         $id = $this->getSRCodeByNames($this->getAuthorByID($manuscriptId));
 
         if ($request == "") {
             $type = ($status == "Approved") ? $this->typeID[2] : $this->typeID[3];
         } else {
-            $type = ($status == "Approved") ? $this->typeID[5] : $this->typeID[6];
+            $type = (($status == "") ? $this->typeID[4] : ($status == "Approved")) ? $this->typeID[5] : $this->typeID[6];
         }
 
         $message = $title;
 
         if ($request == "") {
-            $message .= ($status == "Approved") ? $this->messages[2] : $this->messages[3] . " Insert Reason Here";
+            $message .= ($status == "Approved") ? $this->messages[2] : $this->messages[3] . $reason;
         } else {
-            $message .= ($status == "Approved") ? $this->messages[4] : $this->messages[5] . " Insert Reason Here";
+            $message .= (($status == "") ? $title . $this->messages[4] : ($status == "Approved")) ? $title . $this->messages[5] : $title . $this->messages[6] . $reason;
         }
+
+        if ($request == "") {
+            $redirect = $this->redirect[2];
+        } else {
+            $redirect = $this->redirect[1];
+        }
+
         $dateNow = dateTimeNow();
 
         foreach ($id as $key => $value) {
             $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
                 . " VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->connect()->prepare($sql);
-            $stmt->bind_param("issss", $value, $type, $message, $this->redirect[2], $dateNow);
+            $stmt->bind_param("issss", $value, $type, $message, $redirect, $dateNow);
             $stmt->execute();
         }
 
