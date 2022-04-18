@@ -478,7 +478,7 @@ $(document).ready(function () {
   });
 
   $('#registeredAuthors').select2({
-    placeholder: 'Select Registered Author(s)',
+    placeholder: 'Select Author(s)',
     allowClear: true,
     tags: true,
     tokenSeparators: [','],

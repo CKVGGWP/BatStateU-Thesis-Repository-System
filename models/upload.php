@@ -64,9 +64,14 @@ class Upload extends Database
 
         $dateNow = date("Y-m-d H:i:s");
 
-        $sql = "SELECT *, c.id AS campID, d.id AS deptID FROM user_details u 
+        $sql = "SELECT *, 
+                c.id AS campID, 
+                d.id AS deptID,
+                p.id AS programID
+                FROM user_details u 
                 LEFT JOIN campus c ON c.id = u.campusID 
                 LEFT JOIN department d ON d.id = u.departmentID
+                LEFT JOIN program p ON p.id = u.programID
                 WHERE u.srCode = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $srCode);
@@ -75,14 +80,15 @@ class Upload extends Database
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $program = $row['campID'];
+                $program = $row['programID'];
                 $department = $row['deptID'];
+                $campus = $row['campID'];
             }
         }
 
-        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, dateUploaded, srCode, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , '0')";
+        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , '0')";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('sssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $program, $dateNow, $srCode);
+        $stmt->bind_param('sssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode);
         $stmt->execute();
         $stmt->close();
 
