@@ -30,6 +30,10 @@
 
             <?php include "views/account/accountManagementAdmin.php"; ?>
 
+        <?php elseif ($_GET['title'] == "Admin Management") : ?>
+
+            <?php include "views/account/adminManagement.php"; ?>
+
         <?php elseif ($_GET['title'] == "View Request") : ?>
 
             <?php include "views/dashboard/requestAdmin.php"; ?>

@@ -440,6 +440,159 @@ $(document).on("submit", "#editAccountForm", function (e) {
   }
 });
 
+$(document).on("submit", "#createAdmin", function (e) {
+  e.preventDefault();
+
+  let createID = $("#createID").val();
+  let createEmail = $("#createEmail").val();
+  let createFirstName = $("#createFirstName").val();
+  let createMiddleName = $("#createMiddleName").val();
+  let createLastName = $("#createLastName").val();
+  let createCampus = $("#createCampus").val();
+  let createPassword = $("#createPassword").val();
+  let createRepeat = $("#createRepeat").val();
+
+  if (createID == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your ID.",
+    }).then((result) => {
+      createID.focus();
+      createID.addClass("is-invalid");
+    });
+  } else if (createEmail == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your email address.",
+    }).then((result) => {
+      createEmail.focus();
+      createEmail.addClass("is-invalid");
+    });
+  } else if (emailValidation(createEmail) == false) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter a valid email address.",
+    }).then((result) => {
+      createEmail.focus();
+      createEmail.addClass("is-invalid");
+    });
+  } else if (createFirstName == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your first name.",
+    }).then((result) => {
+      createFirstName.focus();
+      createFirstName.addClass("is-invalid");
+    });
+  } else if (createLastName == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your last name.",
+    }).then((result) => {
+      createLastName.focus();
+      createLastName.addClass("is-invalid");
+    });
+  } else if (createCampus == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please select your campus.",
+    }).then((result) => {
+      createCampus.focus();
+      createCampus.addClass("is-invalid");
+    });
+  } else if (createPassword == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please enter your password.",
+    }).then((result) => {
+      createPassword.focus();
+      createPassword.addClass("is-invalid");
+    });
+  } else if (createRepeat == "") {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Please repeat your password.",
+    }).then((result) => {
+      repeat.focus();
+      repeat.addClass("is-invalid");
+    });
+  } else if (createPassword != createRepeat) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Passwords do not match.",
+    }).then((result) => {
+      createRepeat.focus();
+      createRepeat.addClass("is-invalid");
+    });
+  } else {
+    $("#closeCreate").attr("disabled", true);
+    $("#createSubmit").blur();
+    $("#createSubmit").attr("disabled", true);
+    $("#createSubmit").html(
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating...'
+    );
+    $.ajax({
+      url: "controllers/newInformationController.php",
+      method: "POST",
+      data: {
+        createID: createID,
+        createEmail: createEmail,
+        createFirstName: createFirstName,
+        createMiddleName: createMiddleName,
+        createLastName: createLastName,
+        createCampus: createCampus,
+        createPassword: createPassword,
+        createAdmin: true,
+      },
+      success: function (response) {
+        console.log(response);
+        $("#createSubmit").attr("disabled", false);
+        $("#closeCreate").attr("disabled", false);
+        $("#createSubmit").html("Create Account");
+        if (response == 1) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Email Already Exists!",
+          });
+        } else if (response == 2) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong with the server. Please try again later.",
+          });
+        } else if (response == 3) {
+          Swal.fire({
+            icon: "error",
+            title: "error",
+            text: "ID already exists!",
+          });
+        } else if (response == 4) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text:
+              "Admin Account Created Successfully! We've sent a verification email to " +
+              createEmail +
+              ".",
+          }).then((result) => {
+            location.reload();
+          });
+        }
+      },
+    });
+  }
+});
+
 if ($("#notifications").length > 0) {
   function loadNotifications(view = "") {
     $.ajax({
@@ -527,37 +680,4 @@ $(document).ready(function () {
     dropdownCssClass: ":all:",
     width: "100%",
   });
-
-  // let datalist = jQuery("datalist");
-  // let options = jQuery("datalist option");
-  // let optionsarray = jQuery.map(options, function (option) {
-  //   return option.value;
-  // });
-  // let input = jQuery("input[list]");
-  // let inputcommas = (input.val().match(/,/g) || []).length;
-  // let separator = ",";
-
-  // function filldatalist(prefix) {
-  //   if (input.val().indexOf(separator) > -1 && options.length > 0) {
-  //     datalist.empty();
-  //     for (i = 0; i < optionsarray.length; i++) {
-  //       if (prefix.indexOf(optionsarray[i]) < 0) {
-  //         datalist.append('<option value="' + prefix + optionsarray[i] + '">');
-  //       }
-  //     }
-  //   }
-  // }
-  // input.bind("change paste keyup", function () {
-  //   var inputtrim = input.val().replace(/^\s+|\s+$/g, "");
-  //   var currentcommas = (input.val().match(/,/g) || []).length;
-  //   if (inputtrim != input.val()) {
-  //     if (inputcommas != currentcommas) {
-  //       var lsIndex = inputtrim.lastIndexOf(separator);
-  //       var str = lsIndex != -1 ? inputtrim.substr(0, lsIndex) + "," : "";
-  //       filldatalist(str);
-  //       inputcommas = currentcommas;
-  //     }
-  //     input.val(inputtrim);
-  //   }
-  // });
 });

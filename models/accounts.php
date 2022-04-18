@@ -3,7 +3,7 @@
 class Accounts extends Database
 {
     //-----------------------GET TABLE
-    public function getAccountsTable()
+    public function getAccountsTable($role)
     {
         $sql = "SELECT 
                 u.srCode, 
@@ -15,8 +15,9 @@ class Accounts extends Database
                 p.programName
                 FROM user_details u 
                 LEFT JOIN department d ON u.departmentID = d.id 
-                LEFT JOIN campus c ON d.campusID = c.id
-                LEFT JOIN program p ON u.programID = p.id";
+                LEFT JOIN campus c ON u.campusID = c.id
+                LEFT JOIN program p ON u.programID = p.id
+                WHERE u.role = '$role'";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -25,26 +26,36 @@ class Accounts extends Database
             while ($row = $result->fetch_assoc()) {
                 extract($row);
                 $totalData++;
-                $data[] = [
-                    $totalData,
-                    $srCode,
-                    $name,
-                    $campusName,
-<<<<<<< Updated upstream
-                    ($programName == null) ? '-' : $programName,
-                    ($departmentName == null) ? '-' : $departmentName,
-=======
-                    $programName,
-                    $departmentName,
->>>>>>> Stashed changes
-                    $email,
-                    $role == 1 ? 'Admin' : 'User',
-                    '<div class="btn-group-vertical">
+                if ($role == 0) {
+                    $data[] = [
+                        $totalData,
+                        $srCode,
+                        $name,
+                        $campusName,
+                        ($programName == null) ? '-' : $programName,
+                        ($departmentName == 0) ? 'Library' : $departmentName,
+                        $email,
+                        $role == 1 ? 'Admin' : 'User',
+                        '<div class="btn-group-vertical">
                         <button type="button" class="btn btn-warning btn-sm mb-2 editUser" data-srCode="' . $srCode . '" data-bs-toggle="modal" data-bs-target="#editAccounts">EDIT</button>
                         <button type="button" class="btn btn-danger btn-sm deleteUser" data-srCode="' . $srCode . '">DELETE</button>
                     </div>'
 
-                ];
+                    ];
+                } else {
+                    $data[] = [
+                        $totalData,
+                        $srCode,
+                        $name,
+                        $campusName,
+                        $email,
+                        '<div class="btn-group-vertical">
+                        <button type="button" class="btn btn-warning btn-sm mb-2 editUser" data-srCode="' . $srCode . '" data-bs-toggle="modal" data-bs-target="#editAccounts">EDIT</button>
+                        <button type="button" class="btn btn-danger btn-sm deleteUser" data-srCode="' . $srCode . '">DELETE</button>
+                    </div>'
+
+                    ];
+                }
             }
 
             $json_data = array(
@@ -62,7 +73,17 @@ class Accounts extends Database
     //----------------------GET ACCOUNT DETAILS
     public function getAccountDetails($srCode)
     {
-        $sql = "SELECT u.srCode, u.email, u.firstName, u.middleName, u.lastName, d.departmentName, c.campusName, p.programName
+        $sql = "SELECT 
+                u.srCode, 
+                u.email, 
+                u.firstName, 
+                u.middleName, 
+                u.lastName,
+                d.id AS deptID, 
+                d.departmentName, 
+                c.campusName,
+                p.id AS programID, 
+                p.programName
                 FROM user_details u 
                 LEFT JOIN department d ON u.departmentID = d.id 
                 LEFT JOIN campus c ON d.campusID = c.id
@@ -82,7 +103,9 @@ class Accounts extends Database
                     $middleName,
                     $lastName,
                     $campusName,
+                    $deptID,
                     $departmentName,
+                    $programID,
                     $programName,
                 ];
             }

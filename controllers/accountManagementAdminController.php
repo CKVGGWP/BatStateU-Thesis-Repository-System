@@ -9,7 +9,13 @@ $session = isset($_SESSION['srCode']) ? $_SESSION['srCode'] : '';
 
 $accounts = new Accounts();
 if (isset($_POST['getAccounts'])) {
-    echo $accounts->getAccountsTable();
+    $title = $_POST['title'];
+
+    if ($title == "Account Management") {
+        echo $accounts->getAccountsTable(0);
+    } else {
+        echo $accounts->getAccountsTable(1);
+    }
 }
 
 // Get Account Details

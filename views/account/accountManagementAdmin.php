@@ -1,7 +1,7 @@
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h1>Account Management</h1>
+    <h1>User Management</h1>
     <nav>
       <?php include('views/dashboard/breadcrumbs.php'); ?>
     </nav>
@@ -20,7 +20,7 @@
               </button> -->
 
             </div>
-            <p>List of Registered Accounts on the System</p>
+            <p>List of Registered User Accounts on the System</p>
 
             <!-- Table with stripped rows -->
             <table class="table table-hover dt-responsive nowrap text-center" id="accountManagementTable">
@@ -83,7 +83,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editAccount">Edit Account</h5>
+          <h5 class="modal-title" id="editAccount">Edit User Account</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="editAccountForm" method="post">
@@ -125,13 +125,11 @@
               <div class="form-group col-md-9">
                 <label for="editDepartment">Department</label>
                 <select class="form-control" id="editDepartment" name="editDepartment">
-                  <option value="<?php echo $deptID; ?>"><?php echo $department; ?></option>
                 </select>
               </div>
               <div class="form-group col-md-12 mt-2">
                 <label for="editProgram">Program</label>
                 <select class="form-control" id="editProgram" name="editProgram">
-                  <option value="<?php echo $programID; ?>"><?php echo $programName; ?></option>
                 </select>
               </div>
             </div>

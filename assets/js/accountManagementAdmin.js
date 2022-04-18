@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  let title = getParameterByName("title");
   let dataTable = $("#accountManagementTable").DataTable({
     // lengthChange: false,
     // searching: false,
@@ -9,7 +10,7 @@ $(document).ready(function () {
     ajax: {
       url: "controllers/accountManagementAdminController.php", // json datasource
       type: "POST", // method  , by default get
-      data: { getAccounts: true },
+      data: { getAccounts: true, title: title },
 
       // success: function (row, data, index) {
       // console.log(row);
@@ -100,6 +101,20 @@ $(document).on("click", ".editUser", function () {
       $("#editFirstName").val(dataObject[0][2]);
       $("#editMiddleName").val(dataObject[0][3]);
       $("#editLastName").val(dataObject[0][4]);
+      $("#editDepartment").html(
+        '<option value="' +
+          dataObject[0][6] +
+          '" selected>' +
+          dataObject[0][7] +
+          "</option>"
+      );
+      $("#editProgram").html(
+        '<option value="' +
+          dataObject[0][8] +
+          '" selected>' +
+          dataObject[0][9] +
+          "</option>"
+      );
     },
   });
 });

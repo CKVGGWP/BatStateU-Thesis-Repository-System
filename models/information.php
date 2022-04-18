@@ -135,6 +135,21 @@ class Information extends Database
         }
     }
 
+    public function createAdmin($data)
+    {
+        if ($this->emailExists($data['email']) == true) {
+            return 1;
+            exit();
+        }
+
+        if ($this->checkIDExists($data['id']) == true) {
+            return 3;
+            exit();
+        }
+
+        return $this->insertAdminAccount($data);
+    }
+
     public function changePassword($current, $new, $srCode)
     {
         if ($this->verifyPassword($current, $srCode) == false) {
@@ -143,6 +158,78 @@ class Information extends Database
         }
 
         return $this->updatePassword($new, $srCode);
+    }
+
+    public function checkAdmin($srCode)
+    {
+        if (in_array($srCode, $this->getAdminSRCode())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function insertAdminAccount($data)
+    {
+        $password = $this->hashPassword($data['password']);
+        $sql = "INSERT INTO user_details (srCode, email, firstName, middleName, lastName, campusID, password, role) VALUES (?, ?, ?, ?, ?, ?, ?, '1')";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('sssssis', $data['id'], $data['email'], $data['firstName'], $data['middleName'],  $data['lastName'], $data['campus'], $password);
+        $stmt->execute();
+        $last_id = $stmt->insert_id;
+
+        if ($last_id > 0) {
+            return $this->insertNewToken($last_id, $data['email'], $data['firstName'] . ' ' . $data['lastName'], $data['id']);
+        } else {
+            return false;
+        }
+    }
+
+    private function insertNewToken($lastID, $email, $name, $srCode)
+    {
+        $token = $this->createToken();
+        $sql = "INSERT INTO user_token (userId, tokenKey, purpose) VALUES (?, ?, 'Email')";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('is', $lastID, $token);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return $this->sendEmail($email, $token, $name, $srCode, "Create Account");
+        } else {
+            return false;
+        }
+    }
+
+    private function checkIDExists($id)
+    {
+        $sql = "SELECT * FROM user_details WHERE srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        if (is_int($id)) {
+            $stmt->bind_param('i', $id);
+        } else {
+            $stmt->bind_param('s', $id);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function getAdminSRCode()
+    {
+        $sql = "SELECT srCode FROM user_details WHERE role = '1'";
+        $result = $this->connect()->query($sql);
+        $id = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $id[] = $row;
+        }
+
+        return $id;
     }
 
     private function countNotification($srCode)
@@ -336,7 +423,11 @@ class Information extends Database
     {
         $sql = "SELECT email FROM user_details WHERE srCode = ?";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $srCode);
+        if (is_int($srCode)) {
+            $stmt->bind_param('i', $srCode);
+        } else {
+            $stmt->bind_param('s', $srCode);
+        }
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -456,19 +547,23 @@ class Information extends Database
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
             if ($type == "verify") {
-                $mail->Subject = 'Account Verification - BatStateU-Malvar Thesis Repository System';
+                $mail->Subject = 'Account Verification - BatStateU-Malvar Thesis Repository and Management System';
                 $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
-                $email_text = "<span>This is to inform you that you have successfully changed your email! Please <a href='" . $this->url . "verify.php?tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to verify your new email address.</span><br><br>";
+                $email_text = "<span>This is to inform you that you have successfully changed your email! Please <a href='" . $this->url . "index.php?title=Verify Account&tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to verify your new email address.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
-                $email_template = $email_header . $email_text . $email_footer;
             } else if ($type == "change") {
-                $mail->Subject = 'Password Has Been Changed - BatStateU-Malvar Thesis Repository System';
+                $mail->Subject = 'Password Has Been Changed - BatStateU-Malvar Thesis Repository and Management System';
                 $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
                 $email_text = "<span>This is to inform you that you have recently changed your password. If you did not do this change, contact us immediately.</span><br><br>";
                 $email_footer = "This is a system generated message. Please do not reply.";
-                $email_template = $email_header . $email_text . $email_footer;
+            } else if ($type == "Create Account") {
+                $mail->Subject = 'Administrator Account Created - BatStateU-Malvar Thesis Repository and Management System';
+                $email_header = "<h3>Hi " . "<b>" . $name . "</b>" . ',</h3>';
+                $email_text = "<span>This is to inform you that an administrator account has been created using your email. Please <a href='" . $this->url . "index.php?title=Verify Account&tokenKey=" . $tokenKey . "&srCode=" . $srCode . "'>click here</a> to verify your account</span><br><br>";
+                $email_footer = "This is a system generated message. Please do not reply.";
             }
 
+            $email_template = $email_header . $email_text . $email_footer;
             $mail->Body = $email_template;
 
             if ($mail->send()) {
