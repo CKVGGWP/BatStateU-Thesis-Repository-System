@@ -294,6 +294,7 @@ class Manuscript extends Database
                 "error" => "Something went wrong! Error: " . $stmt->error
             ];
         }
+        return json_encode($data);
     }
 
     public function updatePendingManuscript($manuscriptId, $status, $date)

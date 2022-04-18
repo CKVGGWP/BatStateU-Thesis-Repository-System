@@ -105,7 +105,7 @@
         </div>
         <div class="modal-body">
           <form id="" method="POST" autocomplete="off" class="m-2">
-            <input type="hidden" id="">
+            <input type="hidden" id="manuscriptId">
             <div class="row">
               <div class="col-12">
                 <div class="form-group">
