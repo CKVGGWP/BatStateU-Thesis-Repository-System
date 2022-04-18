@@ -43,11 +43,11 @@ class Upload extends Database
         $yearPub = $values['yearPub'];
         $authors = $values['authors'];
         $department = $values['department'];
-        $program = $values['program'];
+        $program = isset($values['program']) ? $values['program'] : null;
         $tags = $values['tags'];
         $dateNow = date("Y-m-d H:i:s");
 
-        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, dateUploaded, actionDate, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , '1')";
+        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, campus, department, program, dateUploaded, actionDate, srCode, tags, status) VALUES (? , ? , ? , ? , ? , '3', ? , ? , ? , ? , ? , ? , '1')";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('sssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $program, $dateNow, $dateNow, $srCode, $tags);
         $stmt->execute();
