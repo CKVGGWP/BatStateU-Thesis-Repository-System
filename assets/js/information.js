@@ -4,15 +4,12 @@ $(function () {
   });
 });
 
-<<<<<<< Updated upstream
 $(".btnNext").on("click", function () {
   $("#manuscriptPane").removeClass("active show");
   $("#fileUploadPane").addClass("active show");
   $("#manuscriptPanes").removeClass("active");
   $("#fileUploadPanes").addClass("active");
 });
-=======
->>>>>>> Stashed changes
 
 $("#campus").on("change", function () {
   let campus = $(this).val();
@@ -113,6 +110,7 @@ $("#saveInfo").on("submit", function (e) {
   let lastName = $("#lastName").val();
   let userCampus = $("#userCampus").length > 0 ? $("#userCampus").val() : 0;
   let userDepartment = $("#userDepartment").val();
+  let userProgram = $("#userProgram").val();
 
   if (email == "") {
     Swal.fire({
@@ -185,6 +183,7 @@ $("#saveInfo").on("submit", function (e) {
         lastName: lastName,
         userCampus: userCampus,
         userDepartment: userDepartment,
+        userProgram: userProgram,
         saveInfo: true,
       },
       success: function (response) {
