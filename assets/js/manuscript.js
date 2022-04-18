@@ -546,6 +546,8 @@ $(document).on("click", ".request", function () {
             title: "Success!",
             text: "Please wait for the admin to approve your request.",
             icon: "success",
+          }).then((result) => {
+            location.reload();
           });
         },
       });

@@ -100,6 +100,7 @@ class Manuscript extends Database
 
     public function getBrowseManuscriptTable()
     {
+        //REQUESTED MANUSCRIPT
         $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1')";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
@@ -132,7 +133,7 @@ class Manuscript extends Database
                 "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 str_replace(",", "<br>", $author) ?? $author,
                 $yearPub,
-                '<button type="button" class="btn btn-primary btn-sm edit PENDING" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">PENDING</button>
+                '<button disabled type="button" class="btn btn-warning btn-sm edit PENDING" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">PENDING</button>
                 ',
             ];
         }
@@ -150,7 +151,7 @@ class Manuscript extends Database
                 "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 str_replace(",", "<br>", $author) ?? $author,
                 $yearPub,
-                '<button type="button" class="btn btn-primary btn-sm edit request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">REQUEST</button>
+                '<button type="button" class="btn btn-danger btn-sm edit request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">REQUEST</button>
                 ',
             ];
         }
