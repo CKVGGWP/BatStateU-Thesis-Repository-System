@@ -1,5 +1,8 @@
 $('.btnNext').click(function () {
-  $('.nav-tabs-bordered > .nav-item').next('li').find('button').trigger('click');
+  $('.nav-tabs-bordered > .nav-item')
+    .next('li')
+    .find('button')
+    .trigger('click');
 });
 
 //upload from adminUpload
@@ -104,6 +107,7 @@ $('#adminUpload').on('submit', function (e) {
           cache: false,
           processData: false,
           success: function (data) {
+            console.log(data);
             $('#uploadFiles').html('UPLOAD');
             $('#uploadFiles').attr('disabled', false);
             // console.log(data);
@@ -113,7 +117,7 @@ $('#adminUpload').on('submit', function (e) {
               showConfirmButton: false,
               timer: 1500,
             }).then((result) => {
-              location.reload();
+              // location.reload();
             });
           },
           error: function (data) {

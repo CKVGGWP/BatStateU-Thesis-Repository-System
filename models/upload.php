@@ -63,6 +63,7 @@ class Upload extends Database
         $yearPub = $values['yearPub'];
         $authors = $values['authors'];
         $tags = $values['tags'];
+        $status = 0;
 
         $dateNow = date("Y-m-d H:i:s");
 
@@ -88,17 +89,18 @@ class Upload extends Database
             }
         }
 
-        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , '0')";
+        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('ssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags);
+        $stmt->bind_param('sssssssssssi', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags, $status);
         $stmt->execute();
         $stmt->close();
 
-        if ($this->insertGroup($this->lastManuscriptID())) {
-            return $this->insertNotification($title);
-        } else {
-            return false;
-        }
+        // if ($this->insertGroup($this->lastManuscriptID())) {
+        //     return $this->insertNotification($title);
+        // } else {
+        //     return false;
+        // }
+        return print_r($values);
     }
 
     private function insertGroup($lastID)
