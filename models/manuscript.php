@@ -98,7 +98,7 @@ class Manuscript extends Database
         return json_encode($json_data);  // send data as json format
     }
 
-    
+
     public function getBrowseManuscriptTable($srCode)
     {
         //REQUESTED MANUSCRIPT
@@ -223,7 +223,7 @@ class Manuscript extends Database
                 $departmentName,
                 $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
                 '   <button type="button" class="btn btn-success btn-sm approved-pending" data-id="' . $id . '">APPROVE</button>
-                    <button data-bs-target="#reasonModal" data-bs-toggle="modal" class="btn btn-danger btn-sm" data-id="' . $id . '">DECLINE</button>
+                    <button type="button" data-bs-target="#reasonModal" data-bs-toggle="modal" class="btn btn-danger btn-sm" data-id="' . $id . '">DECLINE</button>
                 ',
             ];
         }
@@ -269,7 +269,7 @@ class Manuscript extends Database
                 $name,
                 '
                     <button type="button" class="btn btn-success btn-sm approve-request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">APPROVE</button>
-                    <button type="button" class="btn btn-danger btn-sm decline-request" data-id="' . $id . '">DECLINE</button>
+                    <button type="button" data-bs-target="#reasonRequestModal" data-bs-toggle="modal" class="btn btn-danger btn-sm" data-id="' . $id . '">DECLINE</button>
                 ',
             ];
         }
@@ -383,7 +383,7 @@ class Manuscript extends Database
         return json_encode($data);
     }
 
-    public function updatePendingManuscript($manuscriptId, $status, $date)
+    public function updatePendingManuscript($manuscriptId, $status, $date, $reason = "")
     {
         $sql = "UPDATE manuscript SET status = ?, actionDate = ? WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
@@ -391,12 +391,10 @@ class Manuscript extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            return $this->insertNotification($manuscriptId,  $status = ($status == 1) ? "Approved" : "Declined");
+            return $this->insertNotification($manuscriptId,  $status = ($status == 1) ? "Approved" : "Declined", $reason);
         } else {
             return 0;
         }
-
-        return $this->insertNotification($manuscriptId,  $status = ($status == 1) ? "Approved" : "Declined");
     }
 
     private function insertNotification($manuscriptId, $status, $request = "", $reason = "")

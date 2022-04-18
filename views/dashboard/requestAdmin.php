@@ -77,4 +77,30 @@
     </div>
   </div>
 
+  <!-- Reason Modal -->
+
+  <div class="modal fade" id="reasonRequestModal" tabindex="-1" role="dialog" aria-labelledby="reasonRequestModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <h5 class="modal-title">Reason for Request Disapproval</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" id="requestDisapproval">
+          <div class="modal-body">
+            <div class="form-group row">
+              <textarea class="form-control" name="reasonForRequestDisapproval" id="reasonForRequestDisapproval" placeholder="Please state the reason why you are declining this request."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-danger decline-request">Decline Request</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </main><!-- End #main -->

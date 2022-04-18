@@ -468,49 +468,56 @@ $(document).on("click", ".approve-request", function () {
   });
 });
 
-$(document).on("click", ".decline-request", function () {
-  let id = $(this).data("id");
+$(document).on("submit", "#requestDisapproval", function (e) {
+  e.preventDefault();
 
-  Swal.fire({
-    title: "Decline Request of Approval",
-    text: "Are you sure you want to decline this request?",
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#dc3545",
-    confirmButtonText: "Yes, Declined it!",
-  }).then((result) => {
-    if (result.value) {
-      $.ajax({
-        url: "controllers/manuscriptController.php",
-        type: "POST",
-        data: {
-          manuscriptRequest: 1,
-          id: id,
-          status: 2,
-        },
-        dataType: "json",
-        success: function (data) {
-          console.log(data);
-          if (data.success == true) {
-            Swal.fire(
-              "Declined!",
-              data.title + " request has been Declined.",
-              "success"
-            );
-          } else {
-            Swal.fire(
-              "Error!",
-              "Something went wrong. Error: " + data.error,
-              "error"
-            );
-          }
+  let id = $(".decline-request").data("id");
+  let reason = $("#reasonForRequestDisapproval").val();
 
-          $("#requestAdminTable").DataTable().ajax.reload();
-        },
-      });
-    }
-  });
+  if (reason == "") {
+    Swal.fire("Error!", "Please provide a reason for disapproval", "error");
+  } else {
+    Swal.fire({
+      title: "Decline Request of Approval",
+      text: "Are you sure you want to decline this request?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#dc3545",
+      confirmButtonText: "Yes, Declined it!",
+    }).then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: "controllers/manuscriptController.php",
+          type: "POST",
+          data: {
+            manuscriptRequest: 1,
+            id: id,
+            reason: reason,
+            status: 2,
+          },
+          dataType: "json",
+          success: function (data) {
+            console.log(data);
+            if (data.success == true) {
+              Swal.fire(
+                "Declined!",
+                data.title + " request has been Declined.",
+                "success"
+              );
+            } else {
+              Swal.fire(
+                "Error!",
+                "Something went wrong. Error: " + data.error,
+                "error"
+              );
+            }
+            $("#requestAdminTable").DataTable().ajax.reload();
+          },
+        });
+      }
+    });
+  }
 });
 
 if ($("#pendingManuscriptButton").length > 0) {

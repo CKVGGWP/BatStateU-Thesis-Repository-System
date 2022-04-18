@@ -84,7 +84,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-outline-danger decline-pending">Decline</button>
+            <button type="submit" class="btn btn-outline-danger decline-pending">Decline Manuscript</button>
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </form>
