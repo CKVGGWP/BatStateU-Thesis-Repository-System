@@ -14,6 +14,11 @@ if (isset($_POST['getCampus'])) {
     echo $info->getDeptByCampus($campus, "options");
 }
 
+if (isset($_POST['getDepartment'])) {
+    $department = $_POST['department'];
+    echo $info->getProgByDept($department, "options");
+}
+
 if (isset($_POST['saveInfo'])) {
     $data = array(
         'email'         =>      $_POST['email'],

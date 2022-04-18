@@ -30,6 +30,7 @@
                   <th scope="col">ID</th>
                   <th scope="col">Name</th>
                   <th scope="col">Campus</th>
+                  <th scope="col">Program</th>
                   <th scope="col">Department</th>
                   <th scope="col">Email</th>
                   <th scope="col">Role</th>
@@ -125,6 +126,12 @@
                 <label for="editDepartment">Department</label>
                 <select class="form-control" id="editDepartment" name="editDepartment">
                   <option value="<?php echo $deptID; ?>"><?php echo $department; ?></option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="editProgram">Program</label>
+                <select class="form-control" id="editProgram" name="editProgram">
+                  <option value="<?php echo $programID; ?>"><?php echo $programName; ?></option>
                 </select>
               </div>
             </div>

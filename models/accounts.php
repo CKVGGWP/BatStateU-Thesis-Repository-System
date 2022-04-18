@@ -30,6 +30,7 @@ class Accounts extends Database
                     $srCode,
                     $name,
                     $campusName,
+                    $programName,
                     $departmentName,
                     $email,
                     $role == 1 ? 'Admin' : 'User',
@@ -56,10 +57,11 @@ class Accounts extends Database
     //----------------------GET ACCOUNT DETAILS
     public function getAccountDetails($srCode)
     {
-        $sql = "SELECT u.srCode, u.email, u.firstName, u.middleName, u.lastName, d.departmentName, c.campusName
+        $sql = "SELECT u.srCode, u.email, u.firstName, u.middleName, u.lastName, d.departmentName, c.campusName, p.programName
                 FROM user_details u 
                 LEFT JOIN department d ON u.departmentID = d.id 
                 LEFT JOIN campus c ON d.campusID = c.id
+                LEFT JOIN program p ON u.programID = p.id
                 WHERE u.srCode = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $srCode);
@@ -76,6 +78,7 @@ class Accounts extends Database
                     $lastName,
                     $campusName,
                     $departmentName,
+                    $programName,
                 ];
             }
             return json_encode($data);
