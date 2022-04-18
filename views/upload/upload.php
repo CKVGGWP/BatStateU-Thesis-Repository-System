@@ -32,15 +32,18 @@
                     </div>
                   </div>
                   <div class="col-md-12 row my-2">
-                    <div class="col-md-6">
-                      <label for="authors">Authors</label>
+                    <div class="col-md-5">
                       <select class="form-control" id="registeredAuthors" placeholder="Authors" multiple>
                         <?php foreach ($userByCampus as $key => $rows) : ?>
                           <option value="<?php echo $rows['fullName']; ?>"><?php echo $rows['fullName']; ?></option>
                         <?php endforeach; ?>
                       </select>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                      <select class="form-control" id="tags" placeholder="Tags" multiple>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
                       <div class="form-floating">
                         <input type="text" class="form-control" id="yearPub" placeholder="Year of Publication">
                         <label for="yearPub">Year of Publication</label>
@@ -68,12 +71,6 @@
                       </div>
                     </div>
                   <?php endif; ?>
-                  <div class="col-md-6 mt-2">
-                    <label for="tags">Tags</label>
-                    <select class="form-control" id="tags" placeholder="Tags" multiple>
-                    </select>
-
-                  </div>
 
                   <div class="tab-content my-2 d-md-flex justify-content-md-end">
                     <div class="tab-pane active" id="manuscriptPane">

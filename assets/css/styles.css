@@ -36,6 +36,14 @@ h6 {
   opacity: 1;
 }
 
+.select2-search__field {
+  height: 45px !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+  border: 1px solid #ced4da;
+}
+
 /*--------------------------------------------------------------
 # Main
 --------------------------------------------------------------*/
