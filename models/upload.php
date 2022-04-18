@@ -45,7 +45,7 @@ class Upload extends Database
         $department = isset($values['department']) ? $values['department'] : 0;
         $program = isset($values['program']) ? $values['program'] : 0;
         $tags = $values['tags'];
-        $dateNow = date("Y-m-d H:i:s");
+        $dateNow = dateTimeNow();
 
         $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, campus, department, program, dateUploaded, actionDate, srCode, tags, status) VALUES (? , ? , ? , ? , ? , '3', ? , ? , ? , ? , ? , ? , '1')";
         $stmt = $this->connect()->prepare($sql);
