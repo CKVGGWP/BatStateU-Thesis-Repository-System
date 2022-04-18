@@ -39,7 +39,6 @@
                           <option value="<?php echo $rows['fullName']; ?>"><?php echo $rows['fullName']; ?></option>
                         <?php endforeach; ?>
                       </select>
-
                     </div>
                     <div class="col-md-6">
                       <div class="form-floating">
@@ -68,6 +67,12 @@
                       </div>
                     </div>
                   <?php endif; ?>
+                  <div class="col-md-6 mt-2">
+                      <label for="tags">Tags</label>
+                      <select class="form-control" id="tags" placeholder="Tags" multiple>
+                      </select>
+
+                    </div>
                 </div>
 
                 <div class="tab-pane fade pt-3" id="fileUploadPane">
