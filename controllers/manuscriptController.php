@@ -12,7 +12,8 @@ if (isset($_POST['getManuscript'])) {
 }
 
 if (isset($_POST['browseManuscript'])) {
-    echo $manuscript->getBrowseManuscriptTable();
+    $srCode = $_SESSION['srCode'];
+    echo $manuscript->getBrowseManuscriptTable($srCode);
 }
 
 if (isset($_POST['getRequestAdmin'])) {

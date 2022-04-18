@@ -98,11 +98,13 @@ class Manuscript extends Database
         return json_encode($json_data);  // send data as json format
     }
 
-    public function getBrowseManuscriptTable()
+    
+    public function getBrowseManuscriptTable($srCode)
     {
         //REQUESTED MANUSCRIPT
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1')";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
         $stmt->execute();
         $result = $stmt->get_result();
         $totalData = 0;
@@ -121,8 +123,9 @@ class Manuscript extends Database
         }
 
         //PENDING MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '0')";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -139,8 +142,9 @@ class Manuscript extends Database
         }
 
         //DECLINED MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '2')";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '2' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -159,8 +163,9 @@ class Manuscript extends Database
         }
 
         //NOT REQUESTED MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID)";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
