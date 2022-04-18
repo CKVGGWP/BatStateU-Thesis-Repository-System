@@ -89,18 +89,18 @@ class Upload extends Database
             }
         }
 
-        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
+        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , '0')";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('sssssssssssi', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags, $status);
+        $stmt->bind_param('sssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags);
         $stmt->execute();
         $stmt->close();
 
-        // if ($this->insertGroup($this->lastManuscriptID())) {
-        //     return $this->insertNotification($title);
-        // } else {
-        //     return false;
-        // }
-        return print_r($values);
+        if ($this->insertGroup($this->lastManuscriptID())) {
+            return $this->insertNotification($title);
+        } else {
+            return false;
+        }
+        // return print_r($values);
     }
 
     private function insertGroup($lastID)
