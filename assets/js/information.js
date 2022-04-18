@@ -4,6 +4,7 @@ $(function () {
   });
 });
 
+<<<<<<< Updated upstream
 $('.btnNext').on('click', function () {
   $('#manuscriptPane').removeClass('active show');
   $('#fileUploadPane').addClass('active show');
@@ -12,6 +13,10 @@ $('.btnNext').on('click', function () {
 });
 
 $('#campus').on('change', function () {
+=======
+
+$("#campus").on("change", function () {
+>>>>>>> Stashed changes
   let campus = $(this).val();
 
   if ($('#campus').val() == '3') {
@@ -100,7 +105,28 @@ $('#editDepartment').on('change', function () {
   });
 });
 
+<<<<<<< Updated upstream
 $('#saveInfo').on('submit', function (e) {
+=======
+$("#editDepartment").on("change", function () {
+  let department = $(this).val();
+
+  $.ajax({
+    url: "controllers/newInformationController.php",
+    method: "POST",
+    data: {
+      department: department,
+      getDepartment: true,
+    },
+    dataType: "json",
+    success: function (data) {
+      $("#editProgram").html(data);
+    },
+  });
+});
+
+$("#saveInfo").on("submit", function (e) {
+>>>>>>> Stashed changes
   e.preventDefault();
 
   let srCode = $('#srCode').val();

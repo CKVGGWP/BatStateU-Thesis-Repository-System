@@ -132,6 +132,12 @@
                 <select class="form-control" id="editProgram" name="editProgram">
                 </select>
               </div>
+              <div class="form-group col-md-6">
+                <label for="editProgram">Program</label>
+                <select class="form-control" id="editProgram" name="editProgram">
+                  <option value="<?php echo $progID; ?>"><?php echo $program; ?></option>
+                </select>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
