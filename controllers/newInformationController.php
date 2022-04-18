@@ -34,6 +34,20 @@ if (isset($_POST['saveInfo'])) {
     echo $info->updateInfo($data);
 }
 
+if (isset($_POST['createAdmin'])) {
+    $data = array(
+        'id'            =>      $_POST['createID'],
+        'email'         =>      $_POST['createEmail'],
+        'firstName'     =>      $_POST['createFirstName'],
+        'middleName'    =>      $_POST['createMiddleName'],
+        'lastName'      =>      $_POST['createLastName'],
+        'campus'        =>      $_POST['createCampus'],
+        'password'      =>      $_POST['createPassword'],
+    );
+
+    echo $info->createAdmin($data);
+}
+
 if (isset($_POST['changePass'])) {
     $currentPassword = $_POST['currentPassword'];
     $newPassword = $_POST['newPassword'];

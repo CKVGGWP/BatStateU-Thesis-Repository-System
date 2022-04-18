@@ -118,6 +118,16 @@ class Database
         return $row['id'];
     }
 
+    protected function lastUserID()
+    {
+        $sql = "SELECT id FROM user_details ORDER BY id DESC LIMIT 1";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['id'];
+    }
+
     protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
 
     protected function connect()

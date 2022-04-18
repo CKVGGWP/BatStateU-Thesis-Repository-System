@@ -16,7 +16,10 @@ $title = isset($_GET['title']) ? $_GET['title'] : 'Dashboard';
         <li class="breadcrumb-item active">Account Settings</li>
     <?php elseif ($title == "Account Management") : ?>
         <li class="breadcrumb-item">Accounts</li>
-        <li class="breadcrumb-item active">Account Management</li>
+        <li class="breadcrumb-item active">User Management</li>
+    <?php elseif ($title == "Admin Management") : ?>
+        <li class="breadcrumb-item">Accounts</li>
+        <li class="breadcrumb-item active">Admin Management</li>
     <?php elseif ($title == "Upload Manuscript") : ?>
         <li class="breadcrumb-item">Manuscript</li>
         <li class="breadcrumb-item active">Upload</li>
