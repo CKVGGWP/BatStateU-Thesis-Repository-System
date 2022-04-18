@@ -1,3 +1,7 @@
+$('.btnNext').click(function () {
+  $('.nav-tabs-bordered > .nav-item').next('li').find('button').trigger('click');
+});
+
 //upload from adminUpload
 $('#adminUpload').on('submit', function (e) {
   e.preventDefault();
