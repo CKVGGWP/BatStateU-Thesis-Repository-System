@@ -452,7 +452,7 @@ class Manuscript extends Database
 
     public function updateManuscriptRequest($id, $status, $request)
     {
-        $sql = "UPDATE manuscript_token SET status = ? WHERE id = ?";
+        $sql = "UPDATE manuscript_token SET status = ?, dateApproved = now() WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("ii", $status, $id);
         $stmt->execute();
