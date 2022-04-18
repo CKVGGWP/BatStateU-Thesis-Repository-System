@@ -44,11 +44,12 @@ class Upload extends Database
         $authors = $values['authors'];
         $department = $values['department'];
         $program = $values['program'];
+        $tags = $values['tags'];
         $dateNow = date("Y-m-d H:i:s");
 
-        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, dateUploaded, actionDate, srCode, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , '1')";
+        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, dateUploaded, actionDate, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , '1')";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('ssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $program, $dateNow, $dateNow, $srCode);
+        $stmt->bind_param('sssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $program, $dateNow, $dateNow, $srCode, $tags);
         $stmt->execute();
         $stmt->close();
     }
@@ -61,6 +62,7 @@ class Upload extends Database
         $title = $values['title'];
         $yearPub = $values['yearPub'];
         $authors = $values['authors'];
+        $tags = $values['tags'];
 
         $dateNow = date("Y-m-d H:i:s");
 
@@ -86,9 +88,9 @@ class Upload extends Database
             }
         }
 
-        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , '0')";
+        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , '0')";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('sssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode);
+        $stmt->bind_param('ssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags);
         $stmt->execute();
         $stmt->close();
 
