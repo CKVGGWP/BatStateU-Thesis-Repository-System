@@ -240,12 +240,30 @@ function manuscriptDetails(manuscriptId) {
     },
     success: function (response) {
       var resp = JSON.parse(response);
+      console.log(resp);
+
+      let authors = resp.author;
+
+      // if (authors.includes(',')) {
+      //   authors = authors.split(',');
+      // } else {
+      //   authors = [authors];
+      // }
+
+      // let n = 0;
+      // while (n <= authors.length) {
+      //   var newOption = new Option(authors[n], false);
+      //   $('#editManuscriptAuthors').append(newOption).trigger('change');
+      //   n++;
+      // }
+
+      // $('#editManuscriptAuthors').val(resp.author).trigger('change');
 
       $('#manuscriptId').val(resp.id);
       $('#manuscriptTitle').val(resp.manuscriptTitle);
-      $('#manuscriptAuthors').val(resp.author);
       $('#manuscriptYearPub').val(resp.yearPub);
       $('#manuscriptCampus').val(resp.campus);
+      $('#manuscriptAuthors').val(resp.author);
       $('#manuscriptDept').html(
         '<option selected value="' +
           resp.department +
@@ -520,32 +538,32 @@ if ($('#pendingManuscriptButton').length > 0) {
   });
 }
 
-$(document).on("click", ".request", function () {
-  let manuscriptId = $(this).data("id");
+$(document).on('click', '.request', function () {
+  let manuscriptId = $(this).data('id');
   Swal.fire({
-    title: "Request of Manuscript",
-    text: "You are about to request for this manuscript.",
-    icon: "info",
+    title: 'Request of Manuscript',
+    text: 'You are about to request for this manuscript.',
+    icon: 'info',
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#dc3545",
-    confirmButtonText: "Request",
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#dc3545',
+    confirmButtonText: 'Request',
   }).then((result) => {
     if (result.value) {
       $.ajax({
-        url: "controllers/manuscriptController.php",
-        method: "POST",
+        url: 'controllers/manuscriptController.php',
+        method: 'POST',
         data: {
-          manuscriptId : manuscriptId,
+          manuscriptId: manuscriptId,
           requestManuscript: true,
         },
-        dataType: "json",
+        dataType: 'json',
         success: function (data) {
           console.log(data);
           Swal.fire({
-            title: "Success!",
-            text: "Please wait for the admin to approve your request.",
-            icon: "success",
+            title: 'Success!',
+            text: 'Please wait for the admin to approve your request.',
+            icon: 'success',
           }).then((result) => {
             location.reload();
           });
@@ -553,4 +571,16 @@ $(document).on("click", ".request", function () {
       });
     }
   });
+});
+
+$('#editManuscriptAuthors').select2({
+  placeholder: 'Select/Input Author(s)',
+  allowClear: true,
+  tags: true,
+  tokenSeparators: [','],
+  closeOnSelect: false,
+  containerCssClass: ':all:',
+  dropdownCssClass: ':all:',
+  width: '100%',
+  dropdownParent: $('#editManuscriptModal'),
 });

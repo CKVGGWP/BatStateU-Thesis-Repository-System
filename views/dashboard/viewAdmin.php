@@ -121,9 +121,10 @@
             <div class="row my-2">
               <div class="form-group col-md-6 col-12">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="manuscriptAuthors" placeholder="Authors">
-                  <label for="manuscriptAuthors">Authors</label>
-                  <div class="invalid-feedback">Please enter a valid Authors.</div>
+                  <textarea type="text" class="form-control" id="manuscriptAuthors" placeholder="Authors"></textarea>
+                    <!-- <select class="form-control" id="editManuscriptAuthors" placeholder="Authors" multiple>
+                     
+                    </select> -->
                 </div>
               </div>
               <div class="form-group col-md-6 col-12">
