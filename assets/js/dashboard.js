@@ -165,35 +165,50 @@ function getUsers(value) {
   }
 }
 
-
 //Total Manuscripts Bar Graph
 var options2 = {
-  series: [{
-    data: getManuscripts(),
-  }],
-  
+  series: [
+    {
+      name: 'Total Manuscripts',
+      data: getManuscripts(2),
+    },
+  ],
+
   xaxis: {
-    categories: ["CABEIHM", "CAS", "CICS", "CIT", "COE", "CTE"],
+    categories: ['CABEIHM', 'CAS', 'CICS', 'CIT', 'COE', 'CTE'],
   },
   chart: {
-    type: "bar",
-    width: "100%",
-    height: "300px",
-    fontFamily: "Poppins",
+    type: 'bar',
+    width: '100%',
+    height: '300px',
+    fontFamily: 'Poppins',
   },
 
   plotOptions: {
     bar: {
-        distributed: true
-    }
+      distributed: true,
+    },
   },
-  
+  yaxis: {
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+    labels: {
+      show: true,
+      formatter: function (val) {
+        return val;
+      },
+    },
+  },
   legend: {
     show: false,
-    position: "bottom",
-    horizontalAlign: "center",
-    fontSize: "12px",
-    fontFamily: "Poppins",
+    position: 'bottom',
+    horizontalAlign: 'center',
+    fontSize: '12px',
+    fontFamily: 'Poppins',
     fontWeight: 400,
     offsetX: -25,
     offsetY: 0,
@@ -207,7 +222,7 @@ var options2 = {
   },
 
   noData: {
-    text: "Loading...",
+    text: 'Loading...',
   },
   responsive: [
     {
@@ -222,29 +237,32 @@ var options2 = {
 };
 
 var chart2 = new ApexCharts(
-  document.querySelector("#totalManuscriptsBarGraph"),
+  document.querySelector('#totalManuscriptsBarGraph'),
   options2
 );
 chart2.render();
 
-function getManuscripts() {
-  let allManuscripts = "";
-  let resp = [];
+function getManuscripts(value) {
+  let dept = null;
+  let count = null;
   $.ajax({
     async: false,
     url: 'controllers/newInformationController.php',
     type: 'POST',
-    dataType: 'json',
+    // dataType: 'json',
     data: {
-      getAllManuscripts: true,
+      getAllManuscripts: 1,
     },
     success: function (data) {
-      // resp = JSON.parse(data);
-      console.log(data[0]);
-      return data[0];
+      let resp = JSON.parse(data);
+      dept = resp[0];
+      count = resp[1];
     },
   });
-  
 
+  if (value == 1) {
+    return dept;
+  } else {
+    return count;
+  }
 }
-
