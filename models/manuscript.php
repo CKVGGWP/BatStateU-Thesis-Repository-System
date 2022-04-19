@@ -245,7 +245,7 @@ class Manuscript extends Database
         return json_encode($json_data);  // send data as json format
     }
 
-    public function getRequestAdminTable()
+    public function getRequestAdminTable($srCode='')
     {
         $sql = "SELECT 
                 t.id,
@@ -254,12 +254,21 @@ class Manuscript extends Database
                 t.time,
                 m.manuscriptTitle,
                 m.author,
+                t.status,
                 CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name
                 FROM manuscript_token t
                 LEFT JOIN manuscript m ON t.manuscriptID = m.id
-                LEFT JOIN user_details u ON t.userID = u.id
-                WHERE t.status = 0";
-        $stmt = $this->connect()->prepare($sql);
+                LEFT JOIN user_details u ON t.userID = u.id";
+
+        if($srCode == ''){
+            $sql .= " WHERE t.status = 0";
+            $stmt = $this->connect()->prepare($sql);
+        } else {
+            $sql .= " WHERE u.srCode = ?";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param("s", $srCode);
+        }
+
         $stmt->execute();
         $result = $stmt->get_result();
         $totalData = 0;
@@ -267,18 +276,28 @@ class Manuscript extends Database
         while ($row = $result->fetch_assoc()) {
             extract($row);
             $totalData++;
-            $data[] = [
-                $totalData,
-                $time = (new DateTime($time))->format('F d, Y - h:i A'),
-                $manuscriptTitle,
-                str_replace(",", "<br>", $author) ?? $author,
-                $name,
-                '
-                    <button type="button" class="btn btn-success btn-sm approve-request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">APPROVE</button>
-                    <button type="button" data-bs-target="#reasonRequestModal" data-bs-toggle="modal" class="btn btn-danger btn-sm">DECLINE</button>
-                    <input type="hidden" class="requestBox" value="' . $id . '"></input>
-                ',
-            ];
+
+            if($srCode == '')
+            {
+                $data[] = [
+                    $totalData,
+                    $time = (new DateTime($time))->format('F d, Y - h:i A'),
+                    $manuscriptTitle,
+                    str_replace(",", "<br>", $author) ?? $author,
+                    $name,
+                    '
+                        <button type="button" class="btn btn-success btn-sm approve-request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">APPROVE</button>
+                        <button type="button" data-bs-target="#reasonRequestModal" data-bs-toggle="modal" class="btn btn-danger btn-sm">DECLINE</button>
+                        <input type="hidden" class="requestBox" value="' . $id . '"></input>
+                    ',
+                ];
+            } else { 
+                $data[] = [
+                    $manuscriptTitle,
+                    str_replace(",", "<br>", $author) ?? $author,
+                   $status = ($status == 0) ? '<span class="badge bg-warning">PENDING</span>' : (($status == 1) ? '<span class="badge bg-success">APPROVED</span>' : '<span class="badge bg-danger">DECLINED</span>'),
+                ];
+            }
         }
 
         $json_data = array(

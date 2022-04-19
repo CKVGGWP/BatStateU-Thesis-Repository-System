@@ -19,7 +19,7 @@
               <div class="card-body">
                 <h5 class="card-title">Manuscript Request Status</h5>
 
-                <table class="table table-borderless table-sm table-hover text-center dt-responsive">
+                <table class="table table-borderless table-sm table-hover text-center dt-responsive" id="userManuscriptRequestStatus">
                   <thead>
                     <tr>
                       <th scope="col">Title</th>

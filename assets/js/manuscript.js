@@ -170,6 +170,42 @@ $(document).ready(function () {
     // },
     stateSave: false,
   });
+
+  let userManuscriptRequestStatus = $('#userManuscriptRequestStatus').DataTable(
+    {
+      lengthChange: false,
+      // searching: false,
+      processing: true,
+      paging: false,
+      // ordering: false,
+      // serverSide: true,
+      bInfo: false,
+      ajax: {
+        url: 'controllers/manuscriptController.php', // json datasource
+        type: 'POST', // method  , by default get
+        data: { userManuscriptRequestStatus: true },
+
+        // success: function (row, data, index) {
+        // console.log(row);
+        // },
+
+        error: function (data) {
+          console.log(data);
+          // error handling
+        },
+      },
+      createdRow: function (row, data, index) {},
+      columnDefs: [],
+      fixedColumns: false,
+      deferRender: true,
+      // scrollY: 500,
+      // scrollX: false,
+      // scroller: {
+      //   loadingIndicator: true,
+      // },
+      stateSave: false,
+    }
+  );
 });
 
 $(document).on('click', '.delete', function () {

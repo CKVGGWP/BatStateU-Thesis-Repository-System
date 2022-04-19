@@ -81,3 +81,8 @@ if (isset($_POST['getRecentAddedManuscript'])) {
     $recent = $_POST['recent'];
     echo $manuscript->getManuscriptTable($recent);
 }
+
+if (isset($_POST['userManuscriptRequestStatus'])) {
+    $srCode = $_SESSION['srCode'];
+    echo $manuscript->getRequestAdminTable($srCode);
+}
