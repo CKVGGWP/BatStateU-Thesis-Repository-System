@@ -256,10 +256,12 @@ class Manuscript extends Database
 
     public function getRequestAdminTable($srCode = '')
     {
-        $sql = "SELECT 
+        $sql = "SELECT
+                DISTINCT 
                 t.id,
                 t.manuscriptID,
                 t.userID,
+                t.dateRequested,
                 t.time,
                 t.status,
                 m.manuscriptTitle,
@@ -292,7 +294,7 @@ class Manuscript extends Database
             if ($srCode == '') {
                 $data[] = [
                     $totalData,
-                    $time = (new DateTime($time))->format('F d, Y - h:i A'),
+                    $dateRequested = (new DateTime($dateRequested))->format('F d, Y - h:i A'),
                     $manuscriptTitle,
                     str_replace(",", "<br>", $author) ?? $author,
                     $name,
@@ -325,11 +327,13 @@ class Manuscript extends Database
 
     public function getRequestHistoryTable()
     {
-        $sql = "SELECT 
+        $sql = "SELECT
+                DISTINCT 
                 t.id,
                 t.manuscriptID,
                 t.userID,
                 t.time,
+                t.dateRequested,
                 t.status,
                 m.manuscriptTitle,
                 m.author,
@@ -353,7 +357,7 @@ class Manuscript extends Database
             }
             $data[] = [
                 $totalData,
-                $time = (new DateTime($time))->format('F d, Y - h:i A'),
+                $dateRequested = (new DateTime($dateRequested))->format('F d, Y - h:i A'),
                 $manuscriptTitle,
                 str_replace(",", "<br>", $author) ?? $author,
                 $name,
@@ -474,7 +478,7 @@ class Manuscript extends Database
     {
         $token = $this->createOTP();
         $id = $this->getID($srCode);
-        $sql = "INSERT INTO manuscript_token(id, manuscriptID, userID, status, token, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, 0, 0)";
+        $sql = "INSERT INTO manuscript_token(id, manuscriptID, userID, status, token, dateRequested, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, NOW(), 0, 0)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("iis", $manuscriptId, $id, $token);
         $stmt->execute();
@@ -754,6 +758,7 @@ class Manuscript extends Database
             }
         } else {
             $_SESSION['time'] = time();
+            return "Not yet!";
         }
     }
 

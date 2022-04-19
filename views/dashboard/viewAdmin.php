@@ -122,7 +122,7 @@
             <div class="row my-2">
               <div class="form-group col-md-6 col-12">
                 <div class="form-floating">
-                  <textarea type="text" class="form-control" id="manuscriptAuthors" placeholder="Authors"></textarea>
+                  <textarea type="text" class="form-control" id="manuscriptAuthors" placeholder="Authors" data-toggle="tooltip" title="Use a comma (,) when you are going to add multiple authors. Don't put a space after a comma."></textarea>
                   <label for="manuscriptAuthors">Author(s)</label>
                 </div>
               </div>
