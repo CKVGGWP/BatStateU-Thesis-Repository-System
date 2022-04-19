@@ -59,7 +59,7 @@
                         <div class="card info-card customers-card">
 
                             <div class="card-body">
-                                <h5 class="card-title">Total Page Visitors</h5>
+                                <h5 class="card-title">Total Page Visitors</h5><br>
 
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -107,25 +107,16 @@
                 <!-- Total User Card -->
                 <div class="card">
                     <div class="card-body pb-0">
-                        <h5 class="card-title">Total Users <a href="dashboard.php?title=Account Management"><small> View Details</small></a></h5>
-
+                        <h5 class="card-title">Total Users <a href="dashboard.php?title=Account Management"><br><small> View Details</small></a></h5>
                         <div id="totalUsersPieGraph"></div>
                     </div>
                 </div><!-- End Total Users Traffic -->
 
                 <!-- News & Updates Traffic -->
                 <div class="card">
-                    <div class="filter">
-                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                            </li>
-
-                            <li><a class="dropdown-item" href="#">Today</a></li>
-                            <li><a class="dropdown-item" href="#">This Month</a></li>
-                            <li><a class="dropdown-item" href="#">This Year</a></li>
-                        </ul>
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">Manuscripts<a href="dashboard.php?title=View Manuscript"><br><small> View Details</small></a></h5>
+                        <div id="totalManuscriptsBarGraph"></div>
                     </div>
                 </div><!-- End News & Updates -->
 
