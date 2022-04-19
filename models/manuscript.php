@@ -110,7 +110,7 @@ class Manuscript extends Database
         $userId = $this->getID($srCode);
 
         //REQUESTED MANUSCRIPT
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.userID = ?)";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $userId);
         $stmt->execute();
@@ -125,14 +125,14 @@ class Manuscript extends Database
                 "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 str_replace(",", "<br>", $author) ?? $author,
                 $yearPub,
-                '<button type="button" class="btn btn-primary btn-sm edit download" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">DOWNlOAD</button>
+                '<button type="button" class="btn btn-primary btn-sm edit download" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#passwordModal">DOWNlOAD</button>
                 ',
                 $tags,
             ];
         }
 
         //PENDING MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '0' AND manuscript_token.userID = ?)";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '0' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $userId);
         $stmt->execute();
@@ -153,7 +153,7 @@ class Manuscript extends Database
         }
 
         //DECLINED MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '2' AND manuscript_token.userID = ?)";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '2' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $userId);
         $stmt->execute();
@@ -175,7 +175,7 @@ class Manuscript extends Database
         }
 
         //NOT REQUESTED MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.userID = ?)";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $userId);
         $stmt->execute();
@@ -218,8 +218,8 @@ class Manuscript extends Database
                 FROM manuscript m
                 LEFT JOIN campus c ON m.campus = c.id
                 lEFT JOIN department d ON m.department = d.id
-                WHERE m.status = 0";        
-        
+                WHERE m.status = 0";
+
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -413,7 +413,8 @@ class Manuscript extends Database
         return json_encode($json_data);  // send data as json format
     }
 
-    public function getGroupNumber($srCode) {
+    public function getGroupNumber($srCode)
+    {
         $sql = "SELECT
                 g.groupNumber
                 FROM groupings g 
@@ -425,35 +426,10 @@ class Manuscript extends Database
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         extract($row);
-        
-        $pending = $this->getPendingManuscriptByGroup($groupNumber);
-        $approve = $this->getApproveManuscriptByGroup($groupNumber);
-        
-        if($pending > 0){
-            $data = [
-                "pending" => $pending,
-                "approve" => false,
-                "message" => "You have pending manuscript!",
-            ];
-        } else if ($approve > 0) {
-            $data = [
-                "pending" => false,
-                "approve" => $approve,
-                "message" => "Your manuscript is already approved!",
-            ];
-        } else {
-            $data = [
-                "pending" => false,
-                "approve" => false,
-                "message" => "Please upload your manuscript!",
-            ];
-        }
-
-        return json_encode($data);
-        
+        return $this->getPendingManuscriptByGroup($groupNumber);
     }
 
-    private function getPendingManuscriptByGroup($groupNumber)
+    public function getPendingManuscriptByGroup($groupNumber)
     {
         $sql = "SELECT 
                 m.id
@@ -464,23 +440,19 @@ class Manuscript extends Database
         $stmt->bind_param("i", $groupNumber);
         $stmt->execute();
         $result = $stmt->get_result();
-        
-        return $result->num_rows;
-    }
+        $totalData = 0;
+        while ($row = $result->fetch_assoc()) {
+            extract($row);
+            $totalData++;
+        }
 
-    private function getApproveManuscriptByGroup($groupNumber)
-    {
-        $sql = "SELECT 
-                m.id
-                FROM groupings g 
-                LEFT JOIN manuscript m ON g.manuscriptID = m.id
-                WHERE m.status = 1 AND g.groupNumber = ?";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("i", $groupNumber);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        return $result->num_rows;
+        $json_data = array(
+            "draw"            => 1,   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+            "recordsTotal"    => intval($totalData),  // total number of records
+            "recordsFiltered" => intval($totalData), // total number of records after searching, if there is no searching then totalFiltered = totalData
+        );
+
+        return json_encode($json_data);  // send data as json format
     }
 
     public function deleteManuscript($manuscriptId)
@@ -633,11 +605,13 @@ class Manuscript extends Database
 
         $message .= ($status == "Approved") ? $this->messages[5] : $this->messages[6] . $reason;
 
-        $redirect = $this->redirect[4];
+        $redirect = $this->redirect[4] . "&password=" . $token . "";
 
         $dateNow = dateTimeNow();
 
         $details = $this->getUserDetails($id);
+
+        $this->updateTime($token);
 
         if (is_array($id)) {
             foreach ($id as $key => $value) {
@@ -664,6 +638,20 @@ class Manuscript extends Database
                 "error" => mysqli_errno($this->connect()),
             );
             return json_encode($data);
+        }
+    }
+
+    private function updateTime($token)
+    {
+        $sql = "UPDATE manuscript_token SET time = 300 WHERE token = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -712,6 +700,79 @@ class Manuscript extends Database
         }
 
         return json_encode($button);
+    }
+
+    public function checkPassword($password, $id)
+    {
+        $userID = $this->getID($id);
+
+        if ($this->checkSessionTime($password, $userID) != false) {
+            return 1;
+            exit();
+        }
+
+        $sql = "SELECT manuscriptID, time FROM manuscript_token WHERE token = ? AND userID = ? AND isValid = '0'";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("si", $password, $userID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $this->updateToken($row['manuscriptID'], $password, $userID);
+        } else {
+            return 0;
+        }
+    }
+
+    private function checkSessionTime($password, $id)
+    {
+        $date = time() - $_SESSION['time'];
+        if ($date > 300) {
+            $sql = "UPDATE manuscript_token SET isValid = '1' WHERE token = ? AND userID = ?";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param("si", $password, $id);
+            $stmt->execute();
+
+            if ($stmt->affected_rows > 0) {
+                return 2;
+            } else {
+                return false;
+            }
+        } else {
+            $_SESSION['time'] = time();
+        }
+    }
+
+    private function updateToken($manuscriptID, $password, $id)
+    {
+        $sql = "UPDATE manuscript_token SET isValid = '1' WHERE token = ? AND userID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("si", $password, $id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return $this->getManuscript($manuscriptID);
+        } else {
+            return 0;
+        }
+    }
+
+    private function getManuscript($id)
+    {
+        $sql = "SELECT journal FROM manuscript WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $row = $result->fetch_assoc();
+
+        if (file_exists($this->directory . $row['journal'])) {
+            return $this->url . "assets/uploads/" . $row['journal'];
+        } else {
+            return 0;
+        }
     }
 
     private function getManuscriptTokenData($id)
@@ -799,7 +860,7 @@ class Manuscript extends Database
             $mail->Subject = 'Manuscript Request - BatStateU-Malvar Thesis Repository and Management System';
             $email_header = "<h3>Hi " . "<b>" . $details[0]['name'] . "</b>" . ',</h3>';
             $email_text = "<span>This is to inform you that your request for the manuscript titled " . $title . " has been approved!</span><br><br>";
-            $email_text2 = "<span>Your password is " . $token . " .This is only available for 5 minutes. <a href='" . $this->url . "dashboard.php?title=Browse Manuscript'>Click here</a> to view your requested manuscript.</span><br><br>";
+            $email_text2 = "<span>Your password is " . $token . " .This is only available for 5 minutes. <a href='" . $this->url . "dashboard.php?title=Browse Manuscript&password=" . $token . "'>Click here</a> to view your requested manuscript.</span><br><br>";
             $email_footer = "This is a system generated message. Please do not reply.";
             $email_template = $email_header . $email_text . $email_text2 .  $email_footer;
             $mail->Body = $email_template;

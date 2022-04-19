@@ -224,6 +224,7 @@ class LoginRegister extends Database
         $sessionID = $this->getSessionID($email);
         $_SESSION['srCode'] = $sessionID['srCode'];
         $_SESSION['role'] = $sessionID['role'];
+        $_SESSION['time'] = time();
     }
 
     private function insertData($data)

@@ -35,7 +35,7 @@
       </div>
     </div>
   </section>
- <div class="modal fade" id="viewAbstractModal" tabindex="-1" role="dialog" aria-labelledby="editAccount" aria-hidden="true">
+  <div class="modal fade" id="viewAbstractModal" tabindex="-1" role="dialog" aria-labelledby="editAccount" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -48,6 +48,29 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Manuscript Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="manuscriptPassword" method="POST">
+          <div class="modal-body">
+            <div class="form-floating">
+              <input id="OTP" type="password" class="form-control" placeholder="One-Time-Password">
+              <label for="password">One-Time-Password</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger btn-md" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-outline-primary btn-md">Submit</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

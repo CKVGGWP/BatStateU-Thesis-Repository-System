@@ -5,6 +5,8 @@ include('../models/manuscript.php');
 
 session_start();
 
+$usersID = isset($_SESSION['srCode']) ? $_SESSION['srCode'] : '';
+
 $manuscript = new Manuscript();
 
 if (isset($_POST['getManuscript'])) {
@@ -95,4 +97,10 @@ if (isset($_POST['userManuscriptRequestStatus'])) {
 if (isset($_POST['getPendingByGroup'])) {
     $srCode = $_SESSION['srCode'];
     echo $manuscript->getGroupNumber($srCode);
+}
+
+if (isset($_POST['checkManuscriptPassword'])) {
+    $pass = $_POST['password'];
+
+    echo $manuscript->checkPassword($pass, $usersID);
 }
