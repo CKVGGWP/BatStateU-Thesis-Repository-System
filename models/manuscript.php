@@ -1,5 +1,8 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 class Manuscript extends Database
 {
     public function getManuscriptDetails($manuscriptId)
@@ -65,7 +68,7 @@ class Manuscript extends Database
                     "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                     str_replace(",", "<br>", $author),
                     $actionDate = ((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate)))) / 60 / 60 / 24) == 0 ? 'Today' : (((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate)))) / 60 / 60 / 24) == 1 ? 'Yesterday' : ((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate)))) / 60 / 60 / 24) . ' days ago'),
-                    
+
 
                 ];
             } else {
@@ -544,7 +547,6 @@ class Manuscript extends Database
 
     private function insertRequestNotification($manuscriptData, $status, $reason)
     {
-
         $title = $this->getManuscriptTitle($manuscriptData[0]['manuscriptID']);
 
         if ($manuscriptData[0]['groupID'] == 0) {
@@ -552,6 +554,8 @@ class Manuscript extends Database
         } else {
             $id = $this->getIdByGroupNumber($manuscriptData[0]['groupID']);
         }
+
+        $token = $this->getToken($manuscriptData[0]['manuscriptID']);
 
         $type = ($status == "Approved") ? $this->typeID[5] : $this->typeID[6];
 
@@ -562,6 +566,8 @@ class Manuscript extends Database
         $redirect = $this->redirect[4];
 
         $dateNow = dateTimeNow();
+
+        $details = $this->getUserDetails($id);
 
         if (is_array($id)) {
             foreach ($id as $key => $value) {
@@ -580,19 +586,15 @@ class Manuscript extends Database
         }
 
         if ($stmt->affected_rows > 0) {
-            $data = array(
-                "success" => true,
-                "title" => $title,
-            );
+            return $this->sendEmail($details, $title, $token);
         } else {
             $data = array(
                 "success" => false,
                 "title" => $title,
                 "error" => mysqli_errno($this->connect()),
             );
+            return json_encode($data);
         }
-
-        return json_encode($data);
     }
 
     private function getManuscriptTitle($manuscriptID)
@@ -663,6 +665,17 @@ class Manuscript extends Database
         return $data;
     }
 
+    private function getToken($id)
+    {
+        $sql = "SELECT token FROM manuscript_token WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['token'];
+    }
+
     private function getManuscriptFiles($id)
     {
         $sql = "SELECT abstract, journal FROM manuscript WHERE id = ?";
@@ -689,6 +702,48 @@ class Manuscript extends Database
             return true;
         } else {
             return false;
+        }
+    }
+
+    private function sendEmail($details, $title, $token)
+    {
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail->SMTPDebug = 0; //SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = EMAIL;                     //SMTP username
+            $mail->Password   = PASSWORD;                               //SMTP password
+            $mail->SMTPSecure = "tls";            //Enable implicit TLS encryption
+            $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+            //Recipients
+            $mail->setFrom(EMAIL, 'BatStateU JPLPC-Malvar Thesis Repository and Management System');
+            $mail->addAddress($details[0]['email']);     //Add a recipient
+
+            //Content
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = 'Manuscript Request - BatStateU-Malvar Thesis Repository and Management System';
+            $email_header = "<h3>Hi " . "<b>" . $details[0]['name'] . "</b>" . ',</h3>';
+            $email_text = "<span>This is to inform you that your request for the manuscript titled " . $title . " has been approved!</span><br><br>";
+            $email_text2 = "<span>Your token key password is " . $token . " .This is only available for 5 minutes. <a href='" . $this->url . "/dashboard.php?title=Browse Manuscript'>Click here</a> to view your requested manuscript.</span><br><br>";
+            $email_footer = "This is a system generated message. Please do not reply.";
+            $email_template = $email_header . $email_text . $email_text2 .  $email_footer;
+            $mail->Body = $email_template;
+
+            if ($mail->send()) {
+                $data = array(
+                    "success" => true,
+                    "title" => $title,
+                );
+                return json_encode($data);
+            } else {
+                return $mail->ErrorInfo;
+            }
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
     }
 }

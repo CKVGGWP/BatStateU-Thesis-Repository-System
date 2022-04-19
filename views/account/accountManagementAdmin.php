@@ -15,9 +15,6 @@
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <h5 class="card-title">Users</h5>
-              <!-- <button type="button" class="h-25 btn btn-dark btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#accountPendings">Pending Accounts
-                <span class="badge bg-danger">69</span>
-              </button> -->
 
             </div>
             <p>List of Registered User Accounts on the System</p>
@@ -47,38 +44,6 @@
     </div>
   </section>
 
-  <!-- Create a modal with a table -->
-  <!-- <div class="modal fade" id="accountPendings" tabindex="-1" role="dialog" aria-labelledby="accountPendings" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="accountPendings">Pending Accounts</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <table class="table table-hover dt-responsive nowrap text-center" id="accountPendingTable">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Campus</th>
-                <th scope="col">Department</th>
-                <th scope="col">Email</th>
-                <th scope="col">Role</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-  <!-- Create a modal for edit accounts -->
   <div class="modal fade" id="editAccounts" tabindex="-1" role="dialog" aria-labelledby="editAccount" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -127,15 +92,9 @@
                 <select class="form-control" id="editDepartment" name="editDepartment">
                 </select>
               </div>
-              <div class="form-group col-md-12 mt-2">
+              <div class="form-group col-md-12">
                 <label for="editProgram">Program</label>
                 <select class="form-control" id="editProgram" name="editProgram">
-                </select>
-              </div>
-              <div class="form-group col-md-6">
-                <label for="editProgram">Program</label>
-                <select class="form-control" id="editProgram" name="editProgram">
-                  <option value="<?php echo $progID; ?>"><?php echo $program; ?></option>
                 </select>
               </div>
             </div>

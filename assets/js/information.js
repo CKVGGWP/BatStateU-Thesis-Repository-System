@@ -699,5 +699,6 @@ $(document).ready(function () {
     containerCssClass: ":all:",
     dropdownCssClass: ":all:",
     width: "100%",
+    maximumSelectionLength: 5,
   });
 });
