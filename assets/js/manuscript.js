@@ -54,7 +54,11 @@ $(document).ready(function () {
       },
     },
     createdRow: function (row, data, index) {},
-    columnDefs: [],
+    columnDefs: [{
+      targets: 5,
+      searchable: true,
+      visible: false
+    }],
     fixedColumns: false,
     deferRender: true,
     // scrollY: 500,

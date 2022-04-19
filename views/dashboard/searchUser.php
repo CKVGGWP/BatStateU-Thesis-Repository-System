@@ -23,6 +23,7 @@
                   <th scope="col">Authors</th>
                   <th scope="col">Year Published</th>
                   <th scope="col">Actions</th>
+                  <th scope="col">Tags</th>
                 </tr>
               </thead>
             </table>

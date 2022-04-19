@@ -119,6 +119,7 @@ class Manuscript extends Database
                 $yearPub,
                 '<button type="button" class="btn btn-primary btn-sm edit download" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">DOWNlOAD</button>
                 ',
+                $tags,
             ];
         }
 
@@ -138,6 +139,8 @@ class Manuscript extends Database
                 $yearPub,
                 '<button disabled type="button" class="btn btn-warning btn-sm edit PENDING" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">PENDING</button>
                 ',
+                $tags,
+
             ];
         }
 
@@ -159,6 +162,7 @@ class Manuscript extends Database
                 <button disabled type="button" class="btn btn-dark btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">DECLINED</button>
                 <button type="button" class="btn btn-danger btn-sm edit request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">REQUEST</button>
                 </div>',
+                $tags,
             ];
         }
 
@@ -178,6 +182,7 @@ class Manuscript extends Database
                 $yearPub,
                 '<button type="button" class="btn btn-danger btn-sm edit request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">REQUEST</button>
                 ',
+                $tags,
             ];
         }
 
