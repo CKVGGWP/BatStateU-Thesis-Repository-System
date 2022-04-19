@@ -137,7 +137,7 @@
             <div class="row">
               <div class="form-group col-md-6 col-12">
                 <div class="form-floating">
-                  <select class="form-control" name="manuscriptCampus" id="manuscriptCampus" readonly>
+                  <select class="form-control" name="manuscriptCampus" id="manuscriptCampus" readonly disabled>
                     <option value selected disabled>Please select a Campus</option>
                     <?php foreach ($campuses as $key => $row) : ?>
                       <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
@@ -149,7 +149,7 @@
               </div>
               <div class="form-group col-md-6 col-12">
                 <div class="form-floating">
-                  <select class="form-control" name="manuscriptDept" id="manuscriptDept" readonly>
+                  <select class="form-control" name="manuscriptDept" id="manuscriptDept" readonly disabled>
                   </select>
                   <label for="department" class="form-label">Department</label>
                   <div class="invalid-feedback">Please enter a valid Department.</div>

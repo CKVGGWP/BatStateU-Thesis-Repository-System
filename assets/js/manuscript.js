@@ -454,6 +454,24 @@ $("#updateManuscript").click(function (e) {
   let manuscriptCampus = $("#manuscriptCampus").val();
   let manuscriptDept = $("#manuscriptDept").val();
 
+  if (manuscriptAuthors.includes(", ")) {
+    manuscriptAuthors = manuscriptAuthors.replace(", ", ",");
+  }
+
+  if (manuscriptAuthors.includes(";") || manuscriptAuthors.includes("; ")) {
+    manuscriptAuthors = manuscriptAuthors.replace("; ", ",");
+    manuscriptAuthors = manuscriptAuthors.replace(";", ",");
+  }
+
+  if (manuscriptAuthors.includes(" and ")) {
+    manuscriptAuthors = manuscriptAuthors.replace(" and ", ",");
+  }
+
+  if (manuscriptAuthors.includes("@") || manuscriptAuthors.includes("@ ")) {
+    manuscriptAuthors = manuscriptAuthors.replace("@ ", ",");
+    manuscriptAuthors = manuscriptAuthors.replace("@", ",");
+  }
+
   $.ajax({
     url: "controllers/manuscriptController.php",
     type: "POST",
