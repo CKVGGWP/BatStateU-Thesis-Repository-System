@@ -95,6 +95,26 @@ class Information extends Database
         return json_encode($option);
     }
 
+    public function getUsersByDeptProgram($dept, $program)
+    {
+        $sql = "SELECT concat_ws(' ', firstName, lastName) AS fullName FROM user_details WHERE departmentID = ? AND programID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('ii', $dept, $program);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $options = '';
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $options .= '<option value="' . $row['fullName'] . '">' . $row['fullName'] . '</option>';
+            }
+        } else {
+            $options .= '<option value="">No user found</option>';
+        }
+
+        return json_encode($options);
+    }
+
     public function getUserBySession($id)
     {
         $sql = "SELECT *, 
@@ -166,6 +186,48 @@ class Information extends Database
         } else {
             return false;
         }
+    }
+
+    public function checkManuscript($srCode)
+    {
+        // return $this->getSRCodes($this->getIDByManuscript($this->getManuscript($srCode)));
+        return $srCode;
+    }
+
+    private function getManuscript($srCode)
+    {
+        $sql = "SELECT m.id FROM manuscript m 
+                LEFT JOIN groupings g ON g.manuscriptID = m.id
+                WHERE m.srCode = ? AND m.status = '0'";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['id'];
+        } else {
+            return false;
+        }
+    }
+
+    private function getIDByManuscript($id)
+    {
+        $sql = "SELECT userID FROM groupings WHERE manuscriptID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row['userID'];
+            }
+        }
+
+        return $data;
     }
 
     private function insertAdminAccount($data)
@@ -383,15 +445,16 @@ class Information extends Database
         }
     }
 
-    public function getUserByCampus($campID)
+    public function getUserByCampus($deptID, $progID)
     {
         $sql = "SELECT 
                 concat_ws(' ', firstName, lastName) AS fullName               
                 FROM user_details
-                WHERE campusID = ?
+                WHERE departmentID = ?
+                AND programID = ?
                 AND role != '1'";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $campID);
+        $stmt->bind_param('ii', $deptID, $progID);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = [];

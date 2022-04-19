@@ -81,3 +81,10 @@ if (isset($_POST['getProgram'])) {
 
     echo $info->getProgram($deptID);
 }
+
+if (isset($_POST['getUsers'])) {
+    $dept = $_POST['department'];
+    $program = $_POST['program'];
+
+    echo $info->getUsersByDeptProgram($dept, $program);
+}

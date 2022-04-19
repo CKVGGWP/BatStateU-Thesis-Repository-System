@@ -60,6 +60,61 @@ class Database
         }
     }
 
+    protected function getGroupNumber($id)
+    {
+        $sql = "SELECT groupNumber FROM groupings WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['groupNumber'];
+        } else {
+            return 0;
+        }
+    }
+
+    protected function getIdByGroupNumber($groupNumber)
+    {
+        $sql = "SELECT id FROM groupings WHERE groupNumber = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $groupNumber);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row['id'];
+            }
+            return $data;
+        } else {
+            return 0;
+        }
+    }
+
+    protected function getSRCodes($id)
+    {
+        $sql = "SELECT srCode FROM user_details WHERE id IN (?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', implode(',', $id));
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $data = [];
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row['srCode'];
+            }
+            return $data;
+        } else {
+            return 0;
+        }
+    }
+
     protected function getSRCode($table, $column, $where, $value)
     {
         $sql = "SELECT $column FROM $table WHERE $where = ?";

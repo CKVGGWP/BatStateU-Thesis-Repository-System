@@ -31,30 +31,13 @@
                       <label for="title">Title</label>
                     </div>
                   </div>
-                  <div class="row my-2">
-                    <div class="col-md-5 mb-sm-0 mb-2">
-                      <select class="form-control" id="registeredAuthors" placeholder="Authors" multiple>
-                        <?php foreach ($userByCampus as $key => $rows) : ?>
-                          <option value="<?php echo $rows['fullName']; ?>"><?php echo $rows['fullName']; ?></option>
-                        <?php endforeach; ?>
-                      </select>
-                    </div>
-                    <div class="col-md-4 mb-sm-0 mb-2">
-                      <select class="form-control" id="tags" placeholder="Tags" multiple>
-                      </select>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-floating">
-                        <input type="text" class="form-control" id="yearPub" placeholder="Year of Publication">
-                        <label for="yearPub">Year of Publication</label>
-                      </div>
-                    </div>
-                  </div>
+
                   <?php if ($role == 'Admin') : ?>
-                    <div class="row">
+                    <div class="row mt-2">
                       <div class="col-md-6 mb-sm-0 mb-2">
                         <div class="form-floating">
                           <select class="form-select" id="department" placeholder="Department">
+                            <option value="" selected disabled>Choose a Department</option>
                             <?php foreach ($departments as $key => $row) : ?>
                               <option value="<?= $row['id'] ?>"><?= $row['departmentName'] ?></option>
                             <?php endforeach; ?>
@@ -70,6 +53,47 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="row my-2">
+                      <div class="col-md-5 mb-sm-0 mb-2">
+                        <select class="form-control" id="registeredAuthors" placeholder="Authors" multiple>
+
+                        </select>
+                      </div>
+                      <div class="col-md-4 mb-sm-0 mb-2">
+                        <select class="form-control" id="tags" placeholder="Tags" multiple>
+                        </select>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="yearPub" placeholder="Year of Publication">
+                          <label for="yearPub">Year of Publication</label>
+                        </div>
+                      </div>
+                    </div>
+
+                  <?php else : ?>
+
+                    <div class="row my-2">
+                      <div class="col-md-5 mb-sm-0 mb-2">
+                        <select class="form-control" id="registeredAuthors" placeholder="Authors" multiple>
+                          <?php foreach ($userByCampus as $key => $row) : ?>
+                            <option value="<?= $row['fullName'] ?>"><?= $row['fullName']; ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                      </div>
+                      <div class="col-md-4 mb-sm-0 mb-2">
+                        <select class="form-control" id="tags" placeholder="Tags" multiple>
+                        </select>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-floating">
+                          <input type="text" class="form-control" id="yearPub" placeholder="Year of Publication">
+                          <label for="yearPub">Year of Publication</label>
+                        </div>
+                      </div>
+                    </div>
+
                   <?php endif; ?>
 
                   <div class="tab-content my-2 d-md-flex justify-content-md-end">
@@ -90,7 +114,7 @@
                       <h5><a href="#abstractPreviewModal" id="abstractView" data-bs-toggle="modal" hidden>View file</a></h5>
                     </div>
                     <div class="col-md-6">
-                      <label for="inputNumber" class="col-sm-2 col-form-label">Journal</label>
+                      <label for="inputNumber" class="col-sm-2 col-form-label"><?php echo $checkStatus ?></label>
                       <div class="col-md-12">
                         <input class="form-control mb-2" type="file" id="journal" accept="application/pdf">
                       </div>
@@ -98,7 +122,8 @@
                     </div>
                   </div>
                   <div class="text-center">
-                    <button type="submit" class="btn btn-danger w-25 mt-3 rounded-pill" id="uploadFiles">UPLOAD</button>
+                    <button type="submit" class="btn btn-primary w-25 mt-3 rounded-pill" id="uploadFiles">UPLOAD</button>
+                    <!-- <button class="btn btn-danger w-25 mt-3" disabled>You still have a pending manuscript</button> -->
                   </div>
                 </div>
               </div><!-- End Bordered Tabs -->

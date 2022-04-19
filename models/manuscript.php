@@ -101,10 +101,11 @@ class Manuscript extends Database
 
     public function getBrowseManuscriptTable($srCode)
     {
+        $id = $this->getID($srCode);
         //REQUESTED MANUSCRIPT
         $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $srCode);
+        $stmt->bind_param('i', $id);
         $stmt->execute();
         $result = $stmt->get_result();
         $totalData = 0;
@@ -126,7 +127,7 @@ class Manuscript extends Database
         //PENDING MANUSCRIPTS
         $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $srCode);
+        $stmt->bind_param('i', $id);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -147,7 +148,7 @@ class Manuscript extends Database
         //DECLINED MANUSCRIPTS
         $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '2' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $srCode);
+        $stmt->bind_param('i', $id);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -169,7 +170,7 @@ class Manuscript extends Database
         //NOT REQUESTED MANUSCRIPTS
         $sql = "SELECT * FROM manuscript WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $srCode);
+        $stmt->bind_param('i', $id);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -245,7 +246,7 @@ class Manuscript extends Database
         return json_encode($json_data);  // send data as json format
     }
 
-    public function getRequestAdminTable($srCode='')
+    public function getRequestAdminTable($srCode = '')
     {
         $sql = "SELECT 
                 t.id,
@@ -261,7 +262,7 @@ class Manuscript extends Database
                 LEFT JOIN manuscript m ON t.manuscriptID = m.id
                 LEFT JOIN user_details u ON t.userID = u.id";
 
-        if($srCode == ''){
+        if ($srCode == '') {
             $sql .= " WHERE t.status = 0";
             $stmt = $this->connect()->prepare($sql);
         } else {
@@ -278,8 +279,7 @@ class Manuscript extends Database
             extract($row);
             $totalData++;
 
-            if($srCode == '')
-            {
+            if ($srCode == '') {
                 $data[] = [
                     $totalData,
                     $time = (new DateTime($time))->format('F d, Y - h:i A'),
@@ -292,11 +292,11 @@ class Manuscript extends Database
                         <input type="hidden" class="requestBox" value="' . $id . '"></input>
                     ',
                 ];
-            } else { 
+            } else {
                 $data[] = [
                     $manuscriptTitle,
                     str_replace(",", "<br>", $author) ?? $author,
-                   $status = ($status == 0) ? '<span class="badge bg-warning">PENDING</span>' : (($status == 1) ? '<span class="badge bg-success">APPROVED</span>' : '<span class="badge bg-danger">DECLINED</span>'),
+                    $status = ($status == 0) ? '<span class="badge bg-warning">PENDING</span>' : (($status == 1) ? '<span class="badge bg-success">APPROVED</span>' : '<span class="badge bg-danger">DECLINED</span>'),
                 ];
             }
         }
@@ -312,7 +312,8 @@ class Manuscript extends Database
         return json_encode($json_data);  // send data as json format
     }
 
-    public function getRequestHistoryTable(){
+    public function getRequestHistoryTable()
+    {
         $sql = "SELECT 
                 t.id,
                 t.manuscriptID,
@@ -334,10 +335,9 @@ class Manuscript extends Database
         while ($row = $result->fetch_assoc()) {
             extract($row);
             $totalData++;
-            if($status == 1){
+            if ($status == 1) {
                 $buttonValue = '<button type="button" disabled class="btn btn-success btn-sm">APPROVED</button>';
-            }
-            else{
+            } else {
                 $buttonValue = '<button type="button" disabled class="btn btn-danger btn-sm">DECLINED</button>';
             }
             $data[] = [
@@ -420,9 +420,10 @@ class Manuscript extends Database
     public function requestManuscript($srCode, $manuscriptId)
     {
         $token = $this->createToken();
+        $id = $this->getID($srCode);
         $sql = "INSERT INTO manuscript_token(id, manuscriptID, userID, status, token, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, 0, 0)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("iss", $manuscriptId, $srCode, $token);
+        $stmt->bind_param("iis", $manuscriptId, $id, $token);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -487,15 +488,16 @@ class Manuscript extends Database
         if ($request == "") {
             $type = ($status == "Approved") ? $this->typeID[2] : $this->typeID[3];
         } else {
-            $type = (($status == "Pending") ? $this->typeID[4] : ($status == "Approved")) ? $this->typeID[5] : $this->typeID[6];
+            $type = ($status == "Pending") ? $this->typeID[4] : (($status == "Approved") ? $this->typeID[5] : $this->typeID[6]);
         }
+
 
         $message = $title;
 
         if ($request == "") {
             $message .= ($status == "Approved") ? $this->messages[2] : $this->messages[3] . $reason;
         } else {
-            $message .= (($status == "Pending") ? $title . $this->messages[4] : ($status == "Approved")) ? $title . $this->messages[5] : $title . $this->messages[6] . $reason;
+            $message .= ($status == "Pending") ? $this->messages[4] : (($status == "Approved") ? $this->messages[5] : $this->messages[6] . $reason);
         }
 
         if ($request == "") {
