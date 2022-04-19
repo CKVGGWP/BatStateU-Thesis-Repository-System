@@ -294,13 +294,16 @@ class Manuscript extends Database
 
     public function getManuscriptBySrCode($srCode)
     {
-        $sql = "SELECT 
-                id,
-                manuscriptTitle,
-                dateUploaded,
-                status  
-                FROM manuscript 
-                WHERE srCode = ?";
+        $sql = "SELECT
+                m.id,
+                g.reason,
+                m.manuscriptTitle,
+                m.status,
+                m.dateUploaded
+                FROM groupings g 
+                LEFT JOIN user_details u ON g.userID = u.id
+                LEFT JOIN manuscript m ON g.manuscriptID = m.id
+                WHERE u.srCode = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("s", $srCode);
         $stmt->execute();
@@ -315,6 +318,7 @@ class Manuscript extends Database
                 "<a href='#viewJournalModal' class='view-journal' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 $dateUploaded = (new DateTime($dateUploaded))->format('F d, Y - h:i A'),
                 $status = ($status == 0) ? '<span class="badge bg-warning">PENDING</span>' : (($status == 1) ? '<span class="badge bg-success">APPROVED</span>' : '<span class="badge bg-danger">DECLINED</span>'),
+                $reason
             ];
         }
 

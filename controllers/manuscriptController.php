@@ -61,7 +61,6 @@ if (isset($_POST['updatePendingManuscript'])) {
     echo $manuscript->updatePendingManuscript($manuscriptId, $status, $date, $reason);
 }
 
-
 if (isset($_POST['getUserManuscript'])) {
     $srCode = $_SESSION['srCode'];
     echo $manuscript->getManuscriptBySrCode($srCode);

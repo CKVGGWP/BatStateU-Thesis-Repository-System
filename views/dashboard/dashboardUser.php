@@ -46,6 +46,7 @@
                         <th scope="col">Title</th>
                         <th scope="col">Date Uploaded</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Reason</th>
                       </tr>
                     </thead>
                   </table>
