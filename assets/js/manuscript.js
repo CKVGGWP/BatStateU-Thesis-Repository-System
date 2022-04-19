@@ -291,13 +291,7 @@ $(document).on("click", ".edit", function () {
 $(document).on("submit", "#manuscriptPassword", function (e) {
   e.preventDefault();
 
-  let password;
-
-  if (getParameterByName("password")) {
-    password = getParameterByName("password");
-  } else {
-    password = $("#password").val();
-  }
+  let password = $("#OTP").val();
 
   if (password == "") {
     Swal.fire("Error!", "Please enter your manuscript password.", "error");
