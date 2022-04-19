@@ -153,12 +153,14 @@ $(document).ready(function () {
     data: {
       getPendingByGroup: 1,
     },
+    dataType: 'json',
     success: function (data) {
-      let resp = JSON.parse(data);
-      console.log(resp.recordsTotal);
-      if (resp.recordsTotal > 0) {
+      if (data.pending) {
         $('#uploadFiles').attr('disabled', true);
-        $('#uploadFiles').html('You have pending manuscripts!');
+        $('#uploadFiles').html(data.message);
+      } else if (data.approve) {
+        $('#uploadFiles').attr('disabled', true);
+        $('#uploadFiles').html(data.message);
       }
     },
   });
