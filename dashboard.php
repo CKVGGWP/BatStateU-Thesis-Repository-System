@@ -16,19 +16,6 @@
 
         <?php if ($_GET['title'] == "Dashboard") : ?>
 
-            <?= print_r($_SESSION); ?>
-
-            <!-- Convert time() to readable format -->
-
-            <?php
-
-            $difference = time() - $_SESSION['time'];
-
-            echo $difference;
-
-
-            ?>
-
             <?php if ($_SESSION['role'] == '1') : ?>
 
                 <?php include "views/dashboard/dashboardAdmin.php"; ?>
