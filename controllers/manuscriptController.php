@@ -104,3 +104,7 @@ if (isset($_POST['checkManuscriptPassword'])) {
 
     echo $manuscript->checkPassword($pass, $usersID);
 }
+
+if (isset($_POST['updateTokenValidity'])) {
+    echo $manuscript->updateTokenValidity($usersID);
+}
