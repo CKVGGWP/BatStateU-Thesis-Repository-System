@@ -105,15 +105,16 @@ class Upload extends Database
 
     private function insertGroup($lastID)
     {
-        if ($this->checkGroup($lastID) == true) {
-            return true;
-            exit();
-        }
+        // if ($this->checkGroup($lastID) == true) {
+        //     return true;
+        //     exit();
+        // }
 
-        $groupNumber = $this->createGroupNumber();
+        // $groupNumber = $this->createGroupNumber();
         $id = $this->getSRCodeByNames($this->getAuthorByID($lastID));
 
         foreach ($id as $key => $value) {
+            $groupNumber = $this->checkGroup($value);
             $sql = "INSERT INTO groupings(userID, groupNumber, manuscriptID) VALUES (? , ? , ?)";
             $stmt = $this->connect()->prepare($sql);
             $stmt->bind_param('iii', $value, $groupNumber, $lastID);
@@ -127,18 +128,19 @@ class Upload extends Database
         }
     }
 
-    private function checkGroup($manuscriptID)
+    private function checkGroup($id)
     {
-        $sql = "SELECT * FROM groupings WHERE manuscriptID = ?";
+        $sql = "SELECT groupNumber FROM groupings WHERE userID = ? LIMIT 1";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $manuscriptID);
+        $stmt->bind_param('i', $id);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            return true;
+            $row = $result->fetch_assoc();
+            return $row['groupNumber'];
         } else {
-            return false;
+            return $this->createGroupNumber();
         }
     }
 
