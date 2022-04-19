@@ -643,8 +643,7 @@ class Manuscript extends Database
 
     private function updateTime($token)
     {
-        // 5 minute time
-        $sql = "UPDATE manuscript_token SET time = 500 WHERE token = ?";
+        $sql = "UPDATE manuscript_token SET time = 300 WHERE token = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("s", $token);
         $stmt->execute();
@@ -728,7 +727,8 @@ class Manuscript extends Database
 
     private function checkSessionTime($password, $id)
     {
-        if ($_SESSION['time'] > 300) {
+        $date = time() - $_SESSION['time'];
+        if ($date > 300) {
             $sql = "UPDATE manuscript_token SET isValid = '1' WHERE token = ? AND userID = ?";
             $stmt = $this->connect()->prepare($sql);
             $stmt->bind_param("si", $password, $id);
@@ -739,6 +739,8 @@ class Manuscript extends Database
             } else {
                 return false;
             }
+        } else {
+            $_SESSION['time'] = time();
         }
     }
 
