@@ -252,12 +252,13 @@ class Manuscript extends Database
                 t.manuscriptID,
                 t.userID,
                 t.time,
+                t.status,
                 m.manuscriptTitle,
                 m.author,
                 CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name
                 FROM manuscript_token t
                 LEFT JOIN manuscript m ON t.manuscriptID = m.id
-                LEFT JOIN user_details u ON t.userID = u.id
+                LEFT JOIN user_details u ON t.userID = u.srCode
                 WHERE t.status = 0";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
@@ -278,6 +279,55 @@ class Manuscript extends Database
                     <button type="button" data-bs-target="#reasonRequestModal" data-bs-toggle="modal" class="btn btn-danger btn-sm">DECLINE</button>
                     <input type="hidden" class="requestBox" value="' . $id . '"></input>
                 ',
+            ];
+        }
+
+        $json_data = array(
+            "draw"            => 1,   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+            "recordsTotal"    => intval($totalData),  // total number of records
+            "recordsFiltered" => intval($totalData), // total number of records after searching, if there is no searching then totalFiltered = totalData
+            "data"            => $data   // total data array
+
+        );
+
+        return json_encode($json_data);  // send data as json format
+    }
+
+    public function getRequestHistoryTable(){
+        $sql = "SELECT 
+                t.id,
+                t.manuscriptID,
+                t.userID,
+                t.time,
+                t.status,
+                m.manuscriptTitle,
+                m.author,
+                CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name
+                FROM manuscript_token t
+                LEFT JOIN manuscript m ON t.manuscriptID = m.id
+                LEFT JOIN user_details u ON t.userID = u.srCode
+                WHERE t.status != 0";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $totalData = 0;
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            extract($row);
+            $totalData++;
+            if($status == 1){
+                $buttonValue = '<button type="button" disabled class="btn btn-success btn-sm">APPROVED</button>';
+            }
+            else{
+                $buttonValue = '<button type="button" disabled class="btn btn-danger btn-sm">DECLINED</button>';
+            }
+            $data[] = [
+                $totalData,
+                $time = (new DateTime($time))->format('F d, Y - h:i A'),
+                $manuscriptTitle,
+                str_replace(",", "<br>", $author) ?? $author,
+                $name,
+                $buttonValue,
             ];
         }
 
