@@ -110,7 +110,7 @@ class Manuscript extends Database
         $userId = $this->getID($srCode);
 
         //REQUESTED MANUSCRIPT
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.userID = ?)";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $userId);
         $stmt->execute();
@@ -132,7 +132,7 @@ class Manuscript extends Database
         }
 
         //PENDING MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '0' AND manuscript_token.userID = ?)";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '0' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $userId);
         $stmt->execute();
@@ -153,7 +153,7 @@ class Manuscript extends Database
         }
 
         //DECLINED MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '2' AND manuscript_token.userID = ?)";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '2' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $userId);
         $stmt->execute();
@@ -175,7 +175,7 @@ class Manuscript extends Database
         }
 
         //NOT REQUESTED MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.userID = ?)";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $userId);
         $stmt->execute();
