@@ -91,3 +91,8 @@ if (isset($_POST['userManuscriptRequestStatus'])) {
     $srCode = $_SESSION['srCode'];
     echo $manuscript->getRequestAdminTable($srCode);
 }
+
+if (isset($_POST['getPendingByGroup'])) {
+    $srCode = $_SESSION['srCode'];
+    echo $manuscript->getGroupNumber($srCode);
+}

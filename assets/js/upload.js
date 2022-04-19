@@ -151,7 +151,7 @@ $(document).ready(function () {
     url: 'controllers/manuscriptController.php',
     type: 'POST',
     data: {
-      pendingManuscript: 1,
+      getPendingByGroup: 1,
     },
     success: function (data) {
       let resp = JSON.parse(data);

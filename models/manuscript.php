@@ -205,7 +205,7 @@ class Manuscript extends Database
         return json_encode($json_data);  // send data as json format
     }
 
-    public function getPendingManuscriptTable($srCode = '')
+    public function getPendingManuscriptTable()
     {
         $sql = "SELECT 
                 m.id,
@@ -218,11 +218,7 @@ class Manuscript extends Database
                 FROM manuscript m
                 LEFT JOIN campus c ON m.campus = c.id
                 lEFT JOIN department d ON m.department = d.id
-                WHERE m.status = 0";
-
-        if ($srCode != '') {
-            $sql .= " AND m.srCode = '" . $srCode . "'";
-        }
+                WHERE m.status = 0";        
         
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
@@ -412,6 +408,47 @@ class Manuscript extends Database
             "recordsFiltered" => intval($totalData), // total number of records after searching, if there is no searching then totalFiltered = totalData
             "data"            => $data   // total data array
 
+        );
+
+        return json_encode($json_data);  // send data as json format
+    }
+
+    public function getGroupNumber($srCode) {
+        $sql = "SELECT
+                g.groupNumber
+                FROM groupings g 
+                LEFT JOIN user_details u ON g.userID = u.id
+                WHERE u.srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("s", $srCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        extract($row);
+        return $this->getPendingManuscriptByGroup($groupNumber);
+    }
+
+    public function getPendingManuscriptByGroup($groupNumber)
+    {
+        $sql = "SELECT 
+                m.id
+                FROM groupings g 
+                LEFT JOIN manuscript m ON g.manuscriptID = m.id
+                WHERE m.status = 0 AND g.groupNumber = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $groupNumber);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $totalData = 0;
+        while ($row = $result->fetch_assoc()) {
+            extract($row);
+            $totalData++;
+        }
+
+        $json_data = array(
+            "draw"            => 1,   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
+            "recordsTotal"    => intval($totalData),  // total number of records
+            "recordsFiltered" => intval($totalData), // total number of records after searching, if there is no searching then totalFiltered = totalData
         );
 
         return json_encode($json_data);  // send data as json format
