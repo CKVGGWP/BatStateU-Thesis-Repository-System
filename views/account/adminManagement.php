@@ -89,7 +89,7 @@
                         <div class="form-group">
                             <label for="createCampus">Campus</label>
                             <select class="form-control" id="createCampus" name="createCampus">
-                                <?php foreach ($campusNotIncluded as $key => $row) : ?>
+                                <?php foreach ($campuses as $key => $row) : ?>
                                     <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
                                 <?php endforeach; ?>
                             </select>
