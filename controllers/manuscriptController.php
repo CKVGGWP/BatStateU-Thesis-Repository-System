@@ -16,6 +16,10 @@ if (isset($_POST['browseManuscript'])) {
     echo $manuscript->getBrowseManuscriptTable($srCode);
 }
 
+if (isset($_POST['getRequestHistory'])) {
+    echo $manuscript->getRequestHistoryTable();
+}
+
 if (isset($_POST['getRequestAdmin'])) {
     echo $manuscript->getRequestAdminTable();
 }

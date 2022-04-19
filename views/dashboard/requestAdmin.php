@@ -47,7 +47,7 @@
   </section>
   <!-- Modal for Request History -->
   <div class="modal fade" id="requestHistory" tabindex="-1" role="dialog" aria-labelledby="requestHistory" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="requestHistory">Request History</h5>
@@ -57,7 +57,7 @@
         </div>
         <div class="modal-body">
           <div class="table-responsive">
-            <table class="table table-hover dt-responsive nowrap text-center" id="requestHistory" width="100%">
+            <table class="table table-hover dt-responsive nowrap text-center" id="requestHistoryTable" width="100%">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -65,7 +65,7 @@
                   <th scope="col">Manuscript Title</th>
                   <th scope="col">Authors</th>
                   <th scope="col">Requester</th>
-                  <th scope="col">Actions</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
