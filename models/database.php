@@ -216,7 +216,7 @@ class Database
     {
         $abstract = array_column($files, 'abstract')[0];
         $journal = array_column($files, 'journal')[0];
-        
+
         unlink($this->directory . $abstract);
         unlink($this->directory . $journal);
 
@@ -228,6 +228,11 @@ class Database
         //     unlink($this->directory . $files);
         // }
         return true;
+    }
+
+    protected function createOTP()
+    {
+        return substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 6)), 0, 6);
     }
 
     protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";

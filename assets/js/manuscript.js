@@ -559,7 +559,7 @@ $(document).on("click", ".approve-request", function () {
           id: id,
           status: 1,
         },
-        // dataType: "json",
+        dataType: "json",
         beforeSend: function () {
           Swal.fire({
             title: "Please wait",
