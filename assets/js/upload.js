@@ -145,3 +145,21 @@ $('#journal').on('change', function () {
   let src = window.URL.createObjectURL(this.files[0]);
   $('#journalPreview').attr('src', src);
 });
+
+$(document).ready(function () {
+  $.ajax({
+    url: 'controllers/manuscriptController.php',
+    type: 'POST',
+    data: {
+      pendingManuscript: 1,
+    },
+    success: function (data) {
+      let resp = JSON.parse(data);
+      console.log(resp.recordsTotal);
+      if (resp.recordsTotal > 0) {
+        $('#uploadFiles').attr('disabled', true);
+        $('#uploadFiles').html('You have pending manuscripts!');
+      }
+    },
+  });
+});

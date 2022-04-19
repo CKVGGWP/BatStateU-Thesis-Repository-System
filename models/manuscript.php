@@ -202,7 +202,7 @@ class Manuscript extends Database
         return json_encode($json_data);  // send data as json format
     }
 
-    public function getPendingManuscriptTable()
+    public function getPendingManuscriptTable($srCode = '')
     {
         $sql = "SELECT 
                 m.id,
@@ -217,6 +217,10 @@ class Manuscript extends Database
                 lEFT JOIN department d ON m.department = d.id
                 WHERE m.status = 0";
 
+        if ($srCode != '') {
+            $sql .= " AND m.srCode = '" . $srCode . "'";
+        }
+        
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();

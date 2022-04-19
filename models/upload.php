@@ -152,9 +152,8 @@ class Upload extends Database
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $groupNumber = $row['groupNumber'] + 1;
-            }
+            $row = $result->fetch_assoc();
+            $groupNumber = $row['groupNumber'] + 1;
         } else {
             $groupNumber = 1;
         }

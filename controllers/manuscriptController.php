@@ -25,7 +25,8 @@ if (isset($_POST['getRequestAdmin'])) {
 }
 
 if (isset($_POST['pendingManuscript'])) {
-    echo $manuscript->getPendingManuscriptTable();
+    $srCode = $_SESSION['srCode'];
+    echo $manuscript->getPendingManuscriptTable($srCode);
 }
 
 if (isset($_POST['requestManuscript'])) {
