@@ -201,17 +201,18 @@ class Manuscript extends Database
 
     public function getPendingManuscriptTable()
     {
-        $sql = "SELECT m.id,
-                       m.manuscriptTitle,
-                       m.author,
-                       m.yearPub,
-                       m.dateUploaded,
-                       c.campusName,
-                       d.departmentName
-                       FROM manuscript m
-                       LEFT JOIN campus c ON m.campus = c.id
-                       lEFT JOIN department d ON m.department = d.id
-                       WHERE m.status = 0";
+        $sql = "SELECT 
+                m.id,
+                m.manuscriptTitle,
+                m.author,
+                m.yearPub,
+                m.dateUploaded,
+                c.campusName,
+                d.departmentName
+                FROM manuscript m
+                LEFT JOIN campus c ON m.campus = c.id
+                lEFT JOIN department d ON m.department = d.id
+                WHERE m.status = 0";
 
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
@@ -476,7 +477,7 @@ class Manuscript extends Database
         }
     }
 
-    private function insertNotification($manuscriptId, $status = "", $request = "", $reason = "")
+    private function insertNotification($manuscriptId, $status = "", $request = "", $reason = "", $id = "")
     {
         $title = $this->getManuscriptTitle($manuscriptId);
 
@@ -535,6 +536,59 @@ class Manuscript extends Database
         return json_encode($data);
     }
 
+    private function insertRequestNotification($manuscriptData, $status, $reason)
+    {
+
+        $title = $this->getManuscriptTitle($manuscriptData[0]['manuscriptID']);
+
+        if ($manuscriptData[0]['groupID'] == 0) {
+            $id = $manuscriptData[0]['userID'];
+        } else {
+            $id = $this->getIdByGroupNumber($manuscriptData[0]['groupID']);
+        }
+
+        $type = ($status == "Approved") ? $this->typeID[5] : $this->typeID[6];
+
+        $message = $title;
+
+        $message .= ($status == "Approved") ? $this->messages[5] : $this->messages[6] . $reason;
+
+        $redirect = $this->redirect[4];
+
+        $dateNow = dateTimeNow();
+
+        if (is_array($id)) {
+            foreach ($id as $key => $value) {
+                $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
+                    . " VALUES (?, ?, ?, ?, ?)";
+                $stmt = $this->connect()->prepare($sql);
+                $stmt->bind_param("issss", $value, $type, $message, $redirect, $dateNow);
+                $stmt->execute();
+            }
+        } else {
+            $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
+                . " VALUES (?, ?, ?, ?, ?)";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param("issss", $id, $type, $message, $redirect, $dateNow);
+            $stmt->execute();
+        }
+
+        if ($stmt->affected_rows > 0) {
+            $data = array(
+                "success" => true,
+                "title" => $title,
+            );
+        } else {
+            $data = array(
+                "success" => false,
+                "title" => $title,
+                "error" => mysqli_errno($this->connect()),
+            );
+        }
+
+        return json_encode($data);
+    }
+
     private function getManuscriptTitle($manuscriptID)
     {
         $sql = "SELECT manuscriptTitle FROM manuscript WHERE id = ?";
@@ -546,15 +600,17 @@ class Manuscript extends Database
         return $row['manuscriptTitle'];
     }
 
-    public function updateManuscriptRequest($id, $status, $request)
+    public function updateManuscriptRequest($id, $status, $reason)
     {
         $sql = "UPDATE manuscript_token SET status = ?, dateApproved = now() WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("ii", $status, $id);
         $stmt->execute();
 
+        $manuscriptData = $this->getManuscriptTokenData($id);
+
         if ($stmt->affected_rows > 0) {
-            return $this->insertNotification($id, $status = ($status == 1) ? "Approved" : "Declined", $request);
+            return $this->insertRequestNotification($manuscriptData, $status = ($status == 1) ? "Approved" : "Declined", $reason);
         } else {
             return 0;
         }
@@ -578,6 +634,27 @@ class Manuscript extends Database
         }
 
         return json_encode($button);
+    }
+
+    private function getManuscriptTokenData($id)
+    {
+        $sql = "SELECT 
+                groupID,
+                userID,
+                manuscriptID
+                FROM manuscript_token
+                WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $data = [];
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        return $data;
     }
 
     private function getManuscriptFiles($id)

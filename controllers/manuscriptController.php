@@ -73,8 +73,8 @@ if (isset($_POST['getUserManuscript'])) {
 if (isset($_POST['manuscriptRequest'])) {
     $id = $_POST['id'];
     $status = $_POST['status'];
-    $reason = $_POST['reason'];
-    echo $manuscript->updateManuscriptRequest($id, $status, "request", $reason);
+    $reason = isset($_POST['reason']) ? $_POST['reason'] : '';
+    echo $manuscript->updateManuscriptRequest($id, $status, $reason);
 }
 
 if (isset($_POST['getPendingManuscript'])) {

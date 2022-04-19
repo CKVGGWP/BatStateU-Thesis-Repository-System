@@ -23,6 +23,7 @@ class Database
         '1' => 'dashboard.php?title=View Request',
         '2' => 'dashboard.php?title=Dashboard',
         '3' => 'dashboard.php?title=Pending Manuscripts',
+        '4' => 'dashboard.php?title=Browse%20Manuscript',
     );
 
     protected $messages = array(
