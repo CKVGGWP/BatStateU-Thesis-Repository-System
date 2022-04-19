@@ -247,6 +247,24 @@ $(document).ready(function () {
   );
 });
 
+$(document).ready(function () {
+  function updateTokenValidity() {
+    $.ajax({
+      url: "controllers/manuscriptController.php",
+      type: "POST",
+      data: { updateTokenValidity: true },
+      success: function (data) {
+        console.log(data);
+      },
+      error: function (data) {
+        console.log(data);
+      },
+    });
+  }
+
+  updateTokenValidity();
+});
+
 $(document).on("click", ".delete", function () {
   let manuscriptId = $(this).data("id");
   Swal.fire({

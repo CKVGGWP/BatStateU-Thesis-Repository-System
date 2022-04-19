@@ -706,11 +706,6 @@ class Manuscript extends Database
     {
         $userID = $this->getID($id);
 
-        if ($this->checkSessionTime($password, $userID) != false) {
-            return 1;
-            exit();
-        }
-
         $sql = "SELECT manuscriptID, time FROM manuscript_token WHERE token = ? AND userID = ? AND isValid = '0'";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("si", $password, $userID);
@@ -725,6 +720,24 @@ class Manuscript extends Database
         }
     }
 
+    public function updateTokenValidity($srCode)
+    {
+        $id = $this->getID($srCode);
+
+        $sql = "SELECT token FROM manuscript_token WHERE userID = ? AND isValid = '0' AND time > 0";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        if ($stmt->affected_rows > 0) {
+            return $this->checkSessionTime($row['token'], $id);
+        } else {
+            return "Hello";
+        }
+    }
+
     private function checkSessionTime($password, $id)
     {
         $date = time() - $_SESSION['time'];
@@ -735,9 +748,9 @@ class Manuscript extends Database
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
-                return 2;
+                return "Expired";
             } else {
-                return false;
+                return "Hi";
             }
         } else {
             $_SESSION['time'] = time();
