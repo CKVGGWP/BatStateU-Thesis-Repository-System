@@ -189,14 +189,19 @@ class Database
 
     protected function deleteFiles($files)
     {
-        if (is_array($files)) {
-            foreach ($files as $file) {
-                unlink($this->directory . $file);
-            }
-        } else {
-            unlink($this->directory . $files);
-        }
+        $abstract = array_column($files, 'abstract')[0];
+        $journal = array_column($files, 'journal')[0];
+        
+        unlink($this->directory . $abstract);
+        unlink($this->directory . $journal);
 
+        // if (is_array($files)) {
+        //     foreach ($files as $file) {
+        //         unlink($this->directory . $file);
+        //     }
+        // } else {
+        //     unlink($this->directory . $files);
+        // }
         return true;
     }
 
