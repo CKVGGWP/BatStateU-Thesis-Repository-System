@@ -67,4 +67,28 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="reasonModal" tabindex="-1" role="dialog" aria-labelledby="reasonModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <h5 class="modal-title">Reason for Manuscript Disapproval</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" id="manuscriptDisapproval">
+          <div class="modal-body">
+            <div class="form-group row">
+              <textarea class="form-control" name="reasonForManuscriptDisapproval" id="reasonForManuscriptDisapproval" placeholder="Please state the reason why you are declining this manuscript"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-danger decline-pending">Decline Manuscript</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </main><!-- End #main -->

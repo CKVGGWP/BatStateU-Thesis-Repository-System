@@ -4,13 +4,6 @@ $(function () {
   });
 });
 
-$('.btnNext').on('click', function () {
-  $('#manuscriptPane').removeClass('active show');
-  $('#fileUploadPane').addClass('active show');
-  $('#manuscriptPanes').removeClass('active');
-  $('#fileUploadPanes').addClass('active');
-});
-
 $('#campus').on('change', function () {
   let campus = $(this).val();
 
@@ -79,6 +72,23 @@ $('#editAccountCampus').on('change', function () {
     dataType: 'json',
     success: function (data) {
       $('#editDepartment').html(data);
+    },
+  });
+});
+
+$('#editDepartment').on('change', function () {
+  let department = $(this).val();
+
+  $.ajax({
+    url: 'controllers/newInformationController.php',
+    method: 'POST',
+    data: {
+      department: department,
+      getDepartment: true,
+    },
+    dataType: 'json',
+    success: function (data) {
+      $('#editProgram').html(data);
     },
   });
 });

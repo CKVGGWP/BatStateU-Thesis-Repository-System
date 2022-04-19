@@ -7,7 +7,7 @@ class Upload extends Database
     {
         $type = ['journal', 'abstract'];
         foreach ($type as $key => $value) {
-            $path = "../assets/uploads/";
+            $path = $this->directory;
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
@@ -167,11 +167,11 @@ class Upload extends Database
         $stmt->execute();
         $result = $stmt->get_result();
         $id = [];
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $id[] = $row['id'];
-            }
+
+        while ($row = $result->fetch_assoc()) {
+            $id[] = $row['id'];
         }
+
         return $id;
     }
 
@@ -180,10 +180,12 @@ class Upload extends Database
         $userID = $this->getAdmin();
         $message = $title . $this->messages[1];
         $dateNow = date("Y-m-d H:i:s");
-        $sql = "INSERT INTO notification(userID, type, notifMessage, redirect, dateReceived) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('issss', $userID, $this->typeID[1], $message, $this->redirect[3], $dateNow);
-        $stmt->execute();
+        foreach ($userID as $key => $value) {
+            $sql = "INSERT INTO notification(userID, type, notifMessage, redirect, dateReceived) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param('issss', $value, $this->typeID[1], $message, $this->redirect[3], $dateNow);
+            $stmt->execute();
+        }
         $stmt->close();
     }
 }

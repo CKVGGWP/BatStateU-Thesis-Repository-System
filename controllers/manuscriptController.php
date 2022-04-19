@@ -12,7 +12,8 @@ if (isset($_POST['getManuscript'])) {
 }
 
 if (isset($_POST['browseManuscript'])) {
-    echo $manuscript->getBrowseManuscriptTable();
+    $srCode = $_SESSION['srCode'];
+    echo $manuscript->getBrowseManuscriptTable($srCode);
 }
 
 if (isset($_POST['getRequestAdmin'])) {
@@ -56,7 +57,8 @@ if (isset($_POST['updatePendingManuscript'])) {
     $manuscriptId = $_POST['manuscriptId'];
     $status = $_POST['status'];
     $date = date('Y-m-d H:i:s');
-    echo $manuscript->updatePendingManuscript($manuscriptId, $status, $date);
+    $reason = isset($_POST['reason']) ? $_POST['reason'] : '';
+    echo $manuscript->updatePendingManuscript($manuscriptId, $status, $date, $reason);
 }
 
 
@@ -68,7 +70,8 @@ if (isset($_POST['getUserManuscript'])) {
 if (isset($_POST['manuscriptRequest'])) {
     $id = $_POST['id'];
     $status = $_POST['status'];
-    echo $manuscript->updateManuscriptRequest($id, $status, "request");
+    $reason = $_POST['reason'];
+    echo $manuscript->updateManuscriptRequest($id, $status, "request", $reason);
 }
 
 if (isset($_POST['getPendingManuscript'])) {

@@ -47,7 +47,6 @@ class Information extends Database
             return $prog;
         }
     }
-
     public function getDeptByCampus($id, $purpose = '')
     {
         $sql = "SELECT * FROM department WHERE campusID = ? ORDER BY departmentName ASC";
