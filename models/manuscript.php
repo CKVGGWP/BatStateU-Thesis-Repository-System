@@ -109,6 +109,27 @@ class Manuscript extends Database
     {
         $userId = $this->getID($srCode);
 
+         //EXPIRED MANUSCRIPTS
+         $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '3' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
+         $stmt = $this->connect()->prepare($sql);
+         $stmt->bind_param('i', $userId);
+         $stmt->execute();
+         $result = $stmt->get_result();
+         while ($row = $result->fetch_assoc()) {
+             extract($row);
+             $totalData++;
+             $data[] = [
+                 $totalData,
+                 "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                 str_replace(",", "<br>", $author) ?? $author,
+                 $yearPub,
+                 '<button disabled type="button" class="btn btn-dark btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">EXPIRED</button>
+                 ',
+                 $tags,
+ 
+             ];
+         }
+
         //REQUESTED MANUSCRIPT
         $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
         $stmt = $this->connect()->prepare($sql);
