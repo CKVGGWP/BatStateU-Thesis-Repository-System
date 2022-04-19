@@ -447,41 +447,42 @@ class Information extends Database
 
     public function getAllManuscripts()
     {
-        $sql = "SELECT COUNT(CASE WHEN department = 1 THEN 1 END) AS 'CABEIHM', 
-                COUNT(CASE WHEN department = 2 THEN 1 END) AS 'CAS', 
-                COUNT(CASE WHEN department = 3 THEN 1 END) AS 'CICS', 
-                COUNT(CASE WHEN department = 4 THEN 1 END) AS 'CIT', 
-                COUNT(CASE WHEN department = 5 THEN 1 END) AS 'COE', 
-                COUNT(CASE WHEN department = 6 THEN 1 END) AS 'CTE' 
-                FROM `manuscript`";
+        $sql = "SELECT * FROM department WHERE campusID = 3";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = [];
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $data[] = $row;['CABEIHM'];
-                $data[] = $row['CAS'];
-                $data[] = $row['CICS'];
-                $data[] = $row['CIT'];
-                $data[] = $row['COE'];
-                $data[] = $row['CTE'];
-                // extract($row);
-                // $data[] = [
-                //     $cabeihm,
-                //     $cas,
-                //     $cics,
-                //     $cit,
-                //     $coe,
-                //     $cte,
-                // ];
+                $departmentId[] = $row['id'];
+                $departmentName[] = $row['departmentName'];
             }
-            // return $data;
-            return json_encode($data);
-        } else {
-            return false;
         }
+        $deptCount = count($departmentId);
+        $count = array();
+
+        for ($n = 0; $n < $deptCount; $n++){
+            $sql = "SELECT 
+                    d.departmentName, 
+                    COUNT(m.id) AS count 
+                    FROM manuscript m 
+                    LEFT JOIN department d ON m.department = d.id
+                    LEFT JOIN campus c ON m.campus = c.id
+                    WHERE m.campus = 3 AND m.department = ?";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param('i', $departmentId[$n]);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                array_push($count, $row['count']);
+            } else {
+                array_push($count, 0);
+            }
+        }
+        $data = array($departmentName, $count);
+        return json_encode($data);
     }
 
     public function getUserByCampus($deptID, $progID)
