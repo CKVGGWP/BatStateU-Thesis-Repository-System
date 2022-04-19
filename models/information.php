@@ -445,6 +445,45 @@ class Information extends Database
         }
     }
 
+    public function getAllManuscripts()
+    {
+        $sql = "SELECT COUNT(CASE WHEN department = 1 THEN 1 END) AS 'CABEIHM', 
+                COUNT(CASE WHEN department = 2 THEN 1 END) AS 'CAS', 
+                COUNT(CASE WHEN department = 3 THEN 1 END) AS 'CICS', 
+                COUNT(CASE WHEN department = 4 THEN 1 END) AS 'CIT', 
+                COUNT(CASE WHEN department = 5 THEN 1 END) AS 'COE', 
+                COUNT(CASE WHEN department = 6 THEN 1 END) AS 'CTE' 
+                FROM `manuscript`";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;['CABEIHM'];
+                $data[] = $row['CAS'];
+                $data[] = $row['CICS'];
+                $data[] = $row['CIT'];
+                $data[] = $row['COE'];
+                $data[] = $row['CTE'];
+                // extract($row);
+                // $data[] = [
+                //     $cabeihm,
+                //     $cas,
+                //     $cics,
+                //     $cit,
+                //     $coe,
+                //     $cte,
+                // ];
+            }
+            // return $data;
+            return json_encode($data);
+        } else {
+            return false;
+        }
+    }
+
     public function getUserByCampus($deptID, $progID)
     {
         $sql = "SELECT 

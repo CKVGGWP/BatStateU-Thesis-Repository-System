@@ -168,10 +168,12 @@ function getUsers(value) {
 
 //Total Manuscripts Bar Graph
 var options2 = {
-  series: getManuscripts(2),
+  series: [{
+    data: getManuscripts(),
+  }],
   
   xaxis: {
-    categories: ["CAS", "CABEIHM", "CICS", "CIT", "COE", "CTE"],
+    categories: ["CABEIHM", "CAS", "CICS", "CIT", "COE", "CTE"],
   },
   chart: {
     type: "bar",
@@ -224,4 +226,25 @@ var chart2 = new ApexCharts(
   options2
 );
 chart2.render();
+
+function getManuscripts() {
+  let allManuscripts = "";
+  let resp = [];
+  $.ajax({
+    async: false,
+    url: 'controllers/newInformationController.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      getAllManuscripts: true,
+    },
+    success: function (data) {
+      // resp = JSON.parse(data);
+      console.log(data[0]);
+      return data[0];
+    },
+  });
+  
+
+}
 

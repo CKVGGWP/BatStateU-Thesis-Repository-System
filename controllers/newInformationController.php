@@ -66,6 +66,10 @@ if (isset($_POST['getAllUsers'])) {
     echo $info->getAllUsers();
 }
 
+if (isset($_POST['getAllManuscripts'])) {
+    echo $info->getAllManuscripts();
+}
+
 if (isset($_POST['getIP'])) {
     $ip = $_POST['ip'];
 
