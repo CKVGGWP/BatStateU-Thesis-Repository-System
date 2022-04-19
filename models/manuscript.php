@@ -746,7 +746,7 @@ class Manuscript extends Database
     {
         $date = time() - $_SESSION['time'];
         if ($date > 300) {
-            $sql = "UPDATE manuscript_token SET isValid = '1' WHERE token = ? AND userID = ?";
+            $sql = "UPDATE manuscript_token SET isValid = '1', status = '3' WHERE token = ? AND userID = ?";
             $stmt = $this->connect()->prepare($sql);
             $stmt->bind_param("si", $password, $id);
             $stmt->execute();
