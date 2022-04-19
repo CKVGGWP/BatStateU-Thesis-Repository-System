@@ -114,7 +114,7 @@
                       <h5><a href="#abstractPreviewModal" id="abstractView" data-bs-toggle="modal" hidden>View file</a></h5>
                     </div>
                     <div class="col-md-6">
-                      <label for="inputNumber" class="col-sm-2 col-form-label"><?php echo $checkStatus ?></label>
+                      <label for="inputNumber" class="col-sm-2 col-form-label">Journal</label>
                       <div class="col-md-12">
                         <input class="form-control mb-2" type="file" id="journal" accept="application/pdf">
                       </div>

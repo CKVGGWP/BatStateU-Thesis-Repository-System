@@ -471,7 +471,7 @@ class Manuscript extends Database
 
     public function requestManuscript($srCode, $manuscriptId)
     {
-        $token = $this->createToken();
+        $token = $this->createOTP();
         $id = $this->getID($srCode);
         $sql = "INSERT INTO manuscript_token(id, manuscriptID, userID, status, token, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, 0, 0)";
         $stmt = $this->connect()->prepare($sql);
@@ -596,7 +596,7 @@ class Manuscript extends Database
             $id = $this->getIdByGroupNumber($manuscriptData[0]['groupID']);
         }
 
-        $token = $this->getToken($manuscriptData[0]['manuscriptID']);
+        $token = $manuscriptData[0]['token'];
 
         $type = ($status == "Approved") ? $this->typeID[5] : $this->typeID[6];
 
@@ -690,7 +690,8 @@ class Manuscript extends Database
         $sql = "SELECT 
                 groupID,
                 userID,
-                manuscriptID
+                manuscriptID,
+                token
                 FROM manuscript_token
                 WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
@@ -769,7 +770,7 @@ class Manuscript extends Database
             $mail->Subject = 'Manuscript Request - BatStateU-Malvar Thesis Repository and Management System';
             $email_header = "<h3>Hi " . "<b>" . $details[0]['name'] . "</b>" . ',</h3>';
             $email_text = "<span>This is to inform you that your request for the manuscript titled " . $title . " has been approved!</span><br><br>";
-            $email_text2 = "<span>Your token key password is " . $token . " .This is only available for 5 minutes. <a href='" . $this->url . "/dashboard.php?title=Browse Manuscript'>Click here</a> to view your requested manuscript.</span><br><br>";
+            $email_text2 = "<span>Your password is " . $token . " .This is only available for 5 minutes. <a href='" . $this->url . "dashboard.php?title=Browse Manuscript'>Click here</a> to view your requested manuscript.</span><br><br>";
             $email_footer = "This is a system generated message. Please do not reply.";
             $email_template = $email_header . $email_text . $email_text2 .  $email_footer;
             $mail->Body = $email_template;
@@ -779,12 +780,19 @@ class Manuscript extends Database
                     "success" => true,
                     "title" => $title,
                 );
-                return json_encode($data);
             } else {
-                return $mail->ErrorInfo;
+                $data = array(
+                    "success" => false,
+                    "error" => $mail->ErrorInfo,
+                );
             }
         } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            $data = array(
+                "success" => false,
+                "error" => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"
+            );
         }
+
+        return json_encode($data);
     }
 }
