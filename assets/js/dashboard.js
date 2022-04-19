@@ -164,3 +164,64 @@ function getUsers(value) {
     return total;
   }
 }
+
+
+//Total Manuscripts Bar Graph
+var options2 = {
+  series: getManuscripts(2),
+  
+  xaxis: {
+    categories: ["CAS", "CABEIHM", "CICS", "CIT", "COE", "CTE"],
+  },
+  chart: {
+    type: "bar",
+    width: "100%",
+    height: "300px",
+    fontFamily: "Poppins",
+  },
+
+  plotOptions: {
+    bar: {
+        distributed: true
+    }
+  },
+  
+  legend: {
+    show: false,
+    position: "bottom",
+    horizontalAlign: "center",
+    fontSize: "12px",
+    fontFamily: "Poppins",
+    fontWeight: 400,
+    offsetX: -25,
+    offsetY: 0,
+
+    onItemClick: {
+      toggleDataSeries: true,
+    },
+    onItemHover: {
+      highlightDataSeries: true,
+    },
+  },
+
+  noData: {
+    text: "Loading...",
+  },
+  responsive: [
+    {
+      breakpoint: 250,
+      options: {
+        chart: {
+          width: 300,
+        },
+      },
+    },
+  ],
+};
+
+var chart2 = new ApexCharts(
+  document.querySelector("#totalManuscriptsBarGraph"),
+  options2
+);
+chart2.render();
+

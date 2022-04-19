@@ -167,6 +167,31 @@ class Database
         return $id;
     }
 
+    protected function getUserDetails($id)
+    {
+        $sql = "SELECT 
+                concat_ws(' ', firstName, lastName) as name,
+                email
+                FROM user_details";
+
+        if (is_array($id)) {
+            $sql .= " WHERE id IN (" . implode(',', $id) . ")";
+        } else {
+            $sql .= " WHERE id = " . $id;
+        }
+
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        return $data;
+    }
+
     protected function lastManuscriptID()
     {
         $sql = "SELECT id FROM manuscript ORDER BY id DESC LIMIT 1";
