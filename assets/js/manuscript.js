@@ -21,7 +21,13 @@ $(document).ready(function () {
       },
     },
     createdRow: function (row, data, index) {},
-    columnDefs: [],
+    columnDefs: [
+      {
+        targets: 8,
+        searchable: true,
+        visible: false,
+      },
+    ],
     fixedColumns: false,
     deferRender: true,
     // scrollY: 500,
