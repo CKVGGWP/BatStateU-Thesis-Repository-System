@@ -28,6 +28,7 @@
                   <th scope="col">Department</th>
                   <th scope="col">Date Uploaded</th>
                   <th scope="col">Actions</th>
+                  <th scope="col">Tags</th>
                 </tr>
               </thead>
             </table>

@@ -40,7 +40,8 @@ class Manuscript extends Database
                 m.dateUploaded,
                 m.actionDate,
                 c.campusName,
-                d.departmentName
+                d.departmentName,
+                m.tags
                 FROM manuscript m
                 LEFT JOIN campus c ON m.campus = c.id
                 lEFT JOIN department d ON m.department = d.id
@@ -64,6 +65,7 @@ class Manuscript extends Database
                     "<a href='#viewJournalModal' class='view-journal' data-id='" . $id . "' data-bs-toggle='modal' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                     str_replace(",", "<br>", $author),
                     $actionDate = ((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate)))) / 60 / 60 / 24) == 0 ? 'Today' : (((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate)))) / 60 / 60 / 24) == 1 ? 'Yesterday' : ((strtotime($now) - strtotime(date('Y-m-d', strtotime($actionDate)))) / 60 / 60 / 24) . ' days ago'),
+                    
 
                 ];
             } else {
@@ -78,6 +80,7 @@ class Manuscript extends Database
                     '   <button type="button" class="btn btn-warning btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#editManuscriptModal">EDIT</button>
                         <button type="button" class="btn btn-danger btn-sm delete" data-id="' . $id . '">DELETE</button>
                     ',
+                    $tags,
                 ];
             }
 
@@ -259,10 +262,12 @@ class Manuscript extends Database
                 m.manuscriptTitle,
                 m.author,
                 t.status,
+                g.reason,
                 CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name
                 FROM manuscript_token t
                 LEFT JOIN manuscript m ON t.manuscriptID = m.id
-                LEFT JOIN user_details u ON t.userID = u.id";
+                LEFT JOIN user_details u ON t.userID = u.id
+                LEFT JOIN groupings g ON t.manuscriptID = g.manuscriptID";
 
         if ($srCode == '') {
             $sql .= " WHERE t.status = 0";
@@ -299,6 +304,7 @@ class Manuscript extends Database
                     $manuscriptTitle,
                     str_replace(",", "<br>", $author) ?? $author,
                     $status = ($status == 0) ? '<span class="badge bg-warning">PENDING</span>' : (($status == 1) ? '<span class="badge bg-success">APPROVED</span>' : '<span class="badge bg-danger">DECLINED</span>'),
+                    $reason,
                 ];
             }
         }
@@ -327,7 +333,7 @@ class Manuscript extends Database
                 CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name
                 FROM manuscript_token t
                 LEFT JOIN manuscript m ON t.manuscriptID = m.id
-                LEFT JOIN user_details u ON t.userID = u.srCode
+                LEFT JOIN user_details u ON t.userID = u.id
                 WHERE t.status != 0";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
