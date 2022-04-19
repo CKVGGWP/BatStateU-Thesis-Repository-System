@@ -169,7 +169,8 @@ class Database
 
     protected function getUserDetails($id)
     {
-        $sql = "SELECT 
+        $sql = "SELECT
+                id, 
                 concat_ws(' ', firstName, lastName) as name,
                 email
                 FROM user_details";
@@ -220,13 +221,6 @@ class Database
         unlink($this->directory . $abstract);
         unlink($this->directory . $journal);
 
-        // if (is_array($files)) {
-        //     foreach ($files as $file) {
-        //         unlink($this->directory . $file);
-        //     }
-        // } else {
-        //     unlink($this->directory . $files);
-        // }
         return true;
     }
 

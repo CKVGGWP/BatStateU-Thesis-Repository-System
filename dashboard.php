@@ -16,6 +16,8 @@
 
         <?php if ($_GET['title'] == "Dashboard") : ?>
 
+            <?= print_r($_SESSION); ?>
+
             <?php if ($_SESSION['role'] == '1') : ?>
 
                 <?php include "views/dashboard/dashboardAdmin.php"; ?>

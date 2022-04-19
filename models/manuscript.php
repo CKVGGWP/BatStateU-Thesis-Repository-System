@@ -611,6 +611,8 @@ class Manuscript extends Database
 
         $details = $this->getUserDetails($id);
 
+        $this->updateTime($token);
+
         if (is_array($id)) {
             foreach ($id as $key => $value) {
                 $sql = "INSERT INTO notification (userID, type, notifMessage, redirect, dateReceived)"
@@ -636,6 +638,21 @@ class Manuscript extends Database
                 "error" => mysqli_errno($this->connect()),
             );
             return json_encode($data);
+        }
+    }
+
+    private function updateTime($token)
+    {
+        // 5 minute time
+        $sql = "UPDATE manuscript_token SET time = 500 WHERE token = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -689,7 +706,13 @@ class Manuscript extends Database
     public function checkPassword($password, $id)
     {
         $userID = $this->getID($id);
-        $sql = "SELECT manuscriptID FROM manuscript_token WHERE token = ? AND userID = ? AND isValid = '0'";
+
+        if ($this->checkSessionTime($password, $userID) != false) {
+            return 1;
+            exit();
+        }
+
+        $sql = "SELECT manuscriptID, time FROM manuscript_token WHERE token = ? AND userID = ? AND isValid = '0'";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("si", $password, $userID);
         $stmt->execute();
@@ -700,6 +723,22 @@ class Manuscript extends Database
             return $this->updateToken($row['manuscriptID'], $password, $userID);
         } else {
             return 0;
+        }
+    }
+
+    private function checkSessionTime($password, $id)
+    {
+        if ($_SESSION['time'] > 300) {
+            $sql = "UPDATE manuscript_token SET isValid = '1' WHERE token = ? AND userID = ?";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param("si", $password, $id);
+            $stmt->execute();
+
+            if ($stmt->affected_rows > 0) {
+                return 2;
+            } else {
+                return false;
+            }
         }
     }
 

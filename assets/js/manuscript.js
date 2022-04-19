@@ -311,6 +311,12 @@ $(document).on("submit", "#manuscriptPassword", function (e) {
             "Password is not correct or is not valid.",
             "error"
           );
+        } else if (data == 1) {
+          Swal.fire({
+            title: "Password has Expired",
+            text: "Please renew your manuscript password.",
+            icon: "warning",
+          });
         } else {
           Swal.fire({
             title: "Success! Please download your manuscript journal below!",
