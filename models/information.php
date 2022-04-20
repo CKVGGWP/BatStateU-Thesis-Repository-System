@@ -488,14 +488,30 @@ class Information extends Database
         return json_encode($data);
     }
 
-    public function getUserByCampus($deptID, $progID)
+    public function getUserByCampus($deptID, $progID, $id)
     {
-        $sql = "SELECT 
+        $userId = $this->getID($id);
+        $groupNumber = $this->getGroupNumberByUserID($userId);
+        $usersId = $this->getUserIdByGroupNumber($groupNumber);
+        if ($usersId != 0) {
+            foreach ($usersId as $user) {
+                $sql = "SELECT 
+                concat_ws(' ', firstName, lastName) AS fullName               
+                FROM user_details
+                WHERE departmentID = ?
+                AND programID = ?
+                AND role != '1'
+                AND id in ('" . implode("','", $usersId) . "')";
+            }
+        } else {
+            $sql = "SELECT 
                 concat_ws(' ', firstName, lastName) AS fullName               
                 FROM user_details
                 WHERE departmentID = ?
                 AND programID = ?
                 AND role != '1'";
+        }
+
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('ii', $deptID, $progID);
         $stmt->execute();

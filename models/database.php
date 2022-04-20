@@ -77,6 +77,25 @@ class Database
         }
     }
 
+    protected function getUserIdByGroupNumber($groupNumber)
+    {
+        $sql = "SELECT userID FROM groupings WHERE groupNumber = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $groupNumber);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $userID = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $userID[] = $row['userID'];
+            }
+            return $userID;
+        } else {
+            return 0;
+        }
+    }
+
     protected function getIdByGroupNumber($groupNumber)
     {
         $sql = "SELECT id FROM groupings WHERE groupNumber = ?";

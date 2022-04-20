@@ -31,7 +31,7 @@ if ($id != '') {
 
     $campusNotIncluded = $info->getCampuses($campID);
 
-    $userByCampus = $info->getUserByCampus($deptID, $programID);
+    $userByCampus = $info->getUserByCampus($deptID, $programID, $id);
 
     $checkStatus = $info->checkManuscript($id);
 }
