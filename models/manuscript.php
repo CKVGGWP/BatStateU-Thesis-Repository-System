@@ -108,12 +108,24 @@ class Manuscript extends Database
     public function getBrowseManuscriptTable($srCode)
     {
         $userId = $this->getID($srCode);
-        $groupId = $this->getIdByGroupNumber($userId);
+        $groupNumber = $this->getGroupNumberByUserID($userId);
+        $groupId = $this->getIdByGroupNumber($groupNumber);
         $totalData = 0;
         $data = [];
 
         //OWN MANUSCRIPTS
-        $sql = "SELECT *, m.id AS excludeID FROM manuscript m JOIN groupings g ON g.manuscriptID = m.id WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE m.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?) GROUP BY m.id";
+        $sql = "SELECT *, m.id AS excludeID 
+        FROM manuscript m 
+        JOIN groupings g ON g.manuscriptID = m.id 
+        WHERE status = 1 AND g.groupNumber = ? AND
+        NOT EXISTS 
+            (SELECT * FROM manuscript_token 
+             WHERE m.id = manuscript_token.manuscriptID 
+             AND manuscript_token.status = '1' 
+             AND manuscript_token.isValid ='0' 
+        
+             ) 
+             GROUP BY m.id";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $groupId);
         $stmt->execute();
