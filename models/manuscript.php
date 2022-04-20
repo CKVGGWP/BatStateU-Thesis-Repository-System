@@ -112,18 +112,35 @@ class Manuscript extends Database
         $totalData = 0;
         $data = [];
 
-        //EXPIRED MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript m
-                JOIN groupings g ON g.manuscriptID = m.id 
-                WHERE g.groupNumber = ? AND m.status = 1 
-                AND EXISTS (SELECT * FROM manuscript_token 
-                WHERE m.id = manuscript_token.manuscriptID 
-                AND manuscript_token.status = '3' 
-                AND manuscript_token.isValid ='0')
-                GROUP BY m.id";
-
+        //OWN MANUSCRIPTS
+        $sql = "SELECT * FROM manuscript m JOIN groupings g ON g.manuscriptID = m.id WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE m.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?) GROUP BY m.id";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $groupId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            extract($row);
+            $id;
+            $totalData++;
+            $data[] = [
+                $totalData,
+                "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                str_replace(",", "<br>", $author) ?? $author,
+                $yearPub,
+                '<button disabled type="button" class="btn btn-success btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">DOWNLOAD</button>
+                 ',
+                $tags,
+
+            ];
+        }
+
+        //Transfer ID to Exclude Own ID
+        $excludedManuscriptId = $id;
+
+        //EXPIRED MANUSCRIPTS
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND (NOT id=? ) AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '3' AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?);";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('ii', $excludedManuscriptId, $groupId);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -141,47 +158,10 @@ class Manuscript extends Database
             ];
         }
 
-        //OWN MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript m
-                JOIN groupings g ON g.manuscriptID = m.id 
-                WHERE g.groupNumber = ? AND m.status = 1 AND 
-                NOT EXISTS (SELECT * FROM manuscript_token 
-                WHERE m.id = manuscript_token.manuscriptID 
-                AND manuscript_token.status = '1' 
-                AND manuscript_token.isValid ='0') 
-                GROUP BY m.id";
-                
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $groupId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
-            extract($row);
-            $totalData++;
-            $data[] = [
-                $totalData,
-                "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
-                str_replace(",", "<br>", $author) ?? $author,
-                $yearPub,
-                '<button type="button" class="btn btn-primary btn-sm edit download" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#passwordModal">DOWNlOAD</button>
-                ',
-                $tags,
-
-            ];
-        }
-
         //REQUESTED MANUSCRIPT
-        $sql = "SELECT * FROM manuscript m
-                JOIN groupings g ON g.manuscriptID = m.id 
-                WHERE g.groupNumber = ? AND m.status = 1 AND 
-                EXISTS (SELECT * FROM manuscript_token 
-                WHERE m.id = manuscript_token.manuscriptID 
-                AND manuscript_token.status = '1' 
-                AND manuscript_token.isValid ='0')
-                GROUP BY m.id";
-
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND (NOT id=? ) AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?);";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $groupId);
+        $stmt->bind_param('ii', $excludedManuscriptId, $groupId);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -192,24 +172,16 @@ class Manuscript extends Database
                 "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 str_replace(",", "<br>", $author) ?? $author,
                 $yearPub,
-                '<button type="button" class="btn btn-primary btn-sm edit download" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#passwordModal">DOWNlOAD</button>
+                '<button type="button" class="btn btn-success btn-sm edit download" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#passwordModal">DOWNLOAD</button>
                 ',
                 $tags,
             ];
         }
 
         //PENDING MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript m
-                JOIN groupings g ON g.manuscriptID = m.id 
-                WHERE g.groupNumber = ? AND m.status = 1 AND 
-                EXISTS (SELECT * FROM manuscript_token 
-                WHERE m.id = manuscript_token.manuscriptID 
-                AND manuscript_token.status = '0' 
-                AND manuscript_token.isValid ='0')
-                GROUP BY m.id";
-
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND (NOT id=? ) AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '0' AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?);";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $groupId);
+        $stmt->bind_param('ii', $excludedManuscriptId, $groupId);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -228,16 +200,9 @@ class Manuscript extends Database
         }
 
         //DECLINED MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript m
-                JOIN groupings g ON g.manuscriptID = m.id 
-                WHERE g.groupNumber = ? AND m.status = 2 AND 
-                EXISTS (SELECT * FROM manuscript_token 
-                WHERE m.id = manuscript_token.manuscriptID 
-                AND manuscript_token.status = '0' 
-                AND manuscript_token.isValid ='0')
-                GROUP BY m.id";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND (NOT id=? ) AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '2' AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?);";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $groupId);
+        $stmt->bind_param('ii', $excludedManuscriptId, $groupId);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -257,16 +222,9 @@ class Manuscript extends Database
         }
 
         //NOT REQUESTED MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript m
-                JOIN groupings g ON g.manuscriptID = m.id 
-                WHERE (NOT g.groupNumber = ?) AND m.status = 1 AND
-                NOT EXISTS (SELECT * FROM manuscript_token 
-                WHERE m.id = manuscript_token.manuscriptID 
-                AND manuscript_token.isValid ='0')
-                GROUP BY m.id";
-
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND (NOT id=? ) AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?);";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $groupId);
+        $stmt->bind_param('ii', $excludedManuscriptId, $groupId);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
