@@ -63,7 +63,6 @@ class Upload extends Database
         $yearPub = $values['yearPub'];
         $authors = $values['authors'];
         $tags = $values['tags'];
-        $status = 0;
 
         $dateNow = date("Y-m-d H:i:s");
 
@@ -76,6 +75,7 @@ class Upload extends Database
                 LEFT JOIN department d ON d.id = u.departmentID
                 LEFT JOIN program p ON p.id = u.programID
                 WHERE u.srCode = ?";
+        
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $srCode);
         $stmt->execute();
@@ -88,19 +88,63 @@ class Upload extends Database
                 $campus = $row['campID'];
             }
         }
-
-        $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , '0')";
+        
+        $newSrCodes = $this->checkUserExistingManuscript($srCode);
+        if (!empty($newSrCodes)) {
+            $sql = "UPDATE manuscript SET
+                    manuscriptTitle = ?, 
+                    abstract = ?, 
+                    journal = ?, 
+                    yearPub = ?, 
+                    author = ?, 
+                    department = ?, 
+                    campus = ?, 
+                    program = ?, 
+                    dateUploaded = ?, 
+                    srCode = ?, 
+                    tags = ?, 
+                    status = 0 
+                    WHERE srCode = '" . implode("','", $newSrCodes) . "'";
+        } else {
+            $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , '0')";
+        }
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('sssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags);
         $stmt->execute();
         $stmt->close();
-
+        
         if ($this->insertGroup($this->lastManuscriptID())) {
             return $this->insertNotification($title);
         } else {
             return false;
         }
         // return print_r($values);
+    }
+
+    public function checkUserExistingManuscript($srCode){
+
+        $ids = $this->getUserIdByGroupNumber($this->getGroupNumberBySrCode($srCode));
+        $srCodes = $this->getSRCodes($ids);
+        $implodedSrCode = implode("','", $srCodes);
+
+        $sql = "SELECT 
+                DISTINCT
+                m.srCode
+                FROM manuscript m
+                LEFT JOIN user_details u ON m.srCode = u.srCode
+                LEFT JOIN groupings g ON u.id = g.userID
+                WHERE m.srCode IN ('" . $implodedSrCode . "')";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) { 
+                $data[] = $row['srCode'];
+            }
+        }
+        return $data;
     }
 
     private function insertGroup($lastID)

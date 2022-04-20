@@ -77,9 +77,29 @@ class Database
         }
     }
 
+    protected function getGroupNumberBySrCode($srCode){
+        $sql = "SELECT 
+                g.groupNumber
+                FROM user_details u
+                LEFT JOIN groupings g ON u.id = g.userID
+                WHERE u.srCode = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('s', $srCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                return $row['groupNumber'];
+            }
+        } else {
+            return 0;
+        }
+    }
+
     protected function getUserIdByGroupNumber($groupNumber)
     {
-        $sql = "SELECT userID FROM groupings WHERE groupNumber = ?";
+        $sql = "SELECT DISTINCT userID FROM groupings WHERE groupNumber = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $groupNumber);
         $stmt->execute();
@@ -151,9 +171,9 @@ class Database
 
     protected function getSRCodes($id)
     {
-        $sql = "SELECT srCode FROM user_details WHERE id IN (?)";
+        $ids = implode("','", $id);
+        $sql = "SELECT srCode FROM user_details WHERE id IN ('".$ids."')";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', implode(',', $id));
         $stmt->execute();
 
         $result = $stmt->get_result();
