@@ -632,10 +632,10 @@ class Manuscript extends Database
         $id = $this->getID($srCode);
         $groupNumber = $this->getGroupNumberByUserID($id);
 
-        if ($this->selectCurrentRequest($id, $groupNumber, $manuscriptId)) {
-            return $this->updateCurrentRequest($id, $groupNumber, $manuscriptId);
-            exit();
-        }
+        // if ($this->selectCurrentRequest($id, $groupNumber, $manuscriptId)) {
+        //     return $this->updateCurrentRequest($id, $groupNumber, $manuscriptId);
+        //     exit();
+        // }
 
         if ($groupNumber != 0) {
             $sql = "INSERT INTO manuscript_token(id, manuscriptID, groupID, status, token, dateRequested, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, NOW(), 0, 0)";
@@ -764,7 +764,7 @@ class Manuscript extends Database
         if ($manuscriptData[0]['groupID'] == 0) {
             $id = $manuscriptData[0]['userID'];
         } else {
-            $id = $this->getIdByGroupNumber($manuscriptData[0]['groupID']);
+            $id = $this->getUserIdByGroupNumber($manuscriptData[0]['groupID']);
         }
 
         $token = $manuscriptData[0]['token'];
@@ -782,6 +782,7 @@ class Manuscript extends Database
         $details = $this->getUserDetails($id);
 
         $this->updateTime($token);
+
 
         if (is_array($id)) {
             foreach ($id as $key => $value) {

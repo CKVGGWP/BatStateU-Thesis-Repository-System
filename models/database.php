@@ -79,7 +79,7 @@ class Database
 
     protected function getUserIdByGroupNumber($groupNumber)
     {
-        $sql = "SELECT userID FROM groupings WHERE groupNumber = ?";
+        $sql = "SELECT DISTINCT userID FROM groupings WHERE groupNumber = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $groupNumber);
         $stmt->execute();
