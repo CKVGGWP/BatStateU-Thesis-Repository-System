@@ -349,8 +349,8 @@ $(document).on("submit", "#editAccountForm", function (e) {
       title: "Oops...",
       text: "Please enter your email address.",
     }).then((result) => {
-      email.focus();
-      email.addClass("is-invalid");
+      editEmail.focus();
+      editEmail.addClass("is-invalid");
     });
   } else if (emailValidation(editEmail) == false) {
     Swal.fire({
@@ -358,8 +358,8 @@ $(document).on("submit", "#editAccountForm", function (e) {
       title: "Oops...",
       text: "Please enter a valid email address.",
     }).then((result) => {
-      email.focus();
-      email.addClass("is-invalid");
+      editEmail.focus();
+      editEmail.addClass("is-invalid");
     });
   } else if (editFirstName == "") {
     Swal.fire({
@@ -367,8 +367,8 @@ $(document).on("submit", "#editAccountForm", function (e) {
       title: "Oops...",
       text: "Please enter your first name.",
     }).then((result) => {
-      firstName.focus();
-      firstName.addClass("is-invalid");
+      editFirstName.focus();
+      editFirstName.addClass("is-invalid");
     });
   } else if (editLastName == "") {
     Swal.fire({
@@ -376,8 +376,8 @@ $(document).on("submit", "#editAccountForm", function (e) {
       title: "Oops...",
       text: "Please enter your last name.",
     }).then((result) => {
-      lastName.focus();
-      lastName.addClass("is-invalid");
+      editLastName.focus();
+      editLastName.addClass("is-invalid");
     });
   } else if (editAccountCampus == "") {
     Swal.fire({
@@ -385,8 +385,8 @@ $(document).on("submit", "#editAccountForm", function (e) {
       title: "Oops...",
       text: "Please select your campus.",
     }).then((result) => {
-      userCampus.focus();
-      userCampus.addClass("is-invalid");
+      editAccountCampus.focus();
+      editAccountCampus.addClass("is-invalid");
     });
   } else if (editDepartment == "") {
     Swal.fire({
@@ -394,8 +394,8 @@ $(document).on("submit", "#editAccountForm", function (e) {
       title: "Oops...",
       text: "Please select your department.",
     }).then((result) => {
-      userDepartment.focus();
-      userDepartment.addClass("is-invalid");
+      editDepartment.focus();
+      editDepartment.addClass("is-invalid");
     });
   } else {
     $("#closeModal").attr("disabled", true);
@@ -541,8 +541,8 @@ $(document).on("submit", "#createAdmin", function (e) {
       title: "Oops...",
       text: "Please repeat your password.",
     }).then((result) => {
-      repeat.focus();
-      repeat.addClass("is-invalid");
+      createRepeat.focus();
+      createRepeat.addClass("is-invalid");
     });
   } else if (createPassword != createRepeat) {
     Swal.fire({

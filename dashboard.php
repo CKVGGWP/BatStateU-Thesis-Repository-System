@@ -69,10 +69,10 @@
 </body>
 
 <?php include "views/includes/footer.php"; ?>
-<script src="./assets/js/information.js"></script>
-<script src="./assets/js/accountManagementAdmin.js"></script>
-<script src="./assets/js/manuscript.js"></script>
-<script src="./assets/js/upload.js"></script>
-<script src="./assets/js/dashboard.js"></script>
+<script src="./assets/js/information.js" defer></script>
+<script src="./assets/js/accountManagementAdmin.js" defer></script>
+<script src="./assets/js/manuscript.js" defer></script>
+<script src="./assets/js/upload.js" defer></script>
+<script src="./assets/js/dashboard.js" defer></script>
 
 </html>

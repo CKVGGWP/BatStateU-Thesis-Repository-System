@@ -27,7 +27,7 @@
     <?php endif; ?>
 </body>
 <?php include "views/includes/footer.php"; ?>
-<script src="./assets/js/loginRegister.js"></script>
-<script src="./assets/js/information.js"></script>
+<script src="./assets/js/loginRegister.js" defer></script>
+<script src="./assets/js/information.js" defer></script>
 
 </html>
