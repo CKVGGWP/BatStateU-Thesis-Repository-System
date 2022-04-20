@@ -190,44 +190,47 @@ class Information extends Database
 
     public function checkManuscript($srCode)
     {
-        // return $this->getSRCodes($this->getIDByManuscript($this->getManuscript($srCode)));
-        return $srCode;
+        $id = $this->getID($srCode);
+        $manuscriptID = $this->getManuscript($id);
+        $status = $this->checkManuscriptStatus($manuscriptID);
+
+        return ($status == 0) ? 'Pending' : (($status == 1) ? 'Approved' : 'Rejected');
     }
 
-    private function getManuscript($srCode)
+    private function getManuscript($id)
     {
-        $sql = "SELECT m.id FROM manuscript m 
-                LEFT JOIN groupings g ON g.manuscriptID = m.id
-                WHERE m.srCode = ? AND m.status = '0'";
+        $sql = "SELECT 
+                g.manuscriptID 
+                FROM groupings g
+                LEFT JOIN manuscript m ON m.id = g.manuscriptID 
+                WHERE g.userID = ? AND m.status != '2'";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('s', $srCode);
+        $stmt->bind_param('i', $id);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            return $row['id'];
+            return $row['manuscriptID'];
         } else {
             return false;
         }
     }
 
-    private function getIDByManuscript($id)
+    private function checkManuscriptStatus($manuscriptID)
     {
-        $sql = "SELECT userID FROM groupings WHERE manuscriptID = ?";
+        $sql = "SELECT status FROM manuscript WHERE id = ?";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $id);
+        $stmt->bind_param('i', $manuscriptID);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = [];
 
         if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $data[] = $row['userID'];
-            }
+            $row = $result->fetch_assoc();
+            return $row['status'];
+        } else {
+            return 3;
         }
-
-        return $data;
     }
 
     private function insertAdminAccount($data)
@@ -461,7 +464,7 @@ class Information extends Database
         $deptCount = count($departmentId);
         $count = array();
 
-        for ($n = 0; $n < $deptCount; $n++){
+        for ($n = 0; $n < $deptCount; $n++) {
             $sql = "SELECT 
                     d.departmentName, 
                     COUNT(m.id) AS count 
@@ -473,7 +476,7 @@ class Information extends Database
             $stmt->bind_param('i', $departmentId[$n]);
             $stmt->execute();
             $result = $stmt->get_result();
-            
+
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 array_push($count, $row['count']);

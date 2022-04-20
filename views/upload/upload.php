@@ -122,8 +122,19 @@
                     </div>
                   </div>
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary w-25 mt-3 rounded-pill" id="uploadFiles">UPLOAD</button>
-                    <!-- <button class="btn btn-danger w-25 mt-3" disabled>You still have a pending manuscript</button> -->
+                    <?php if ($checkStatus == "Pending") : ?>
+
+                      <button class="btn btn-danger w-25 mt-3" disabled>You still have a pending manuscript</button>
+
+                    <?php elseif ($checkStatus == "Approved") : ?>
+
+                      <button class="btn btn-success w-25 mt-3" disabled>Your manuscript is already approved</button>
+
+                    <?php else : ?>
+
+                      <button type="submit" class="btn btn-primary w-25 mt-3 rounded-pill" id="uploadFiles">UPLOAD</button>
+
+                    <?php endif; ?>
                   </div>
                 </div>
               </div><!-- End Bordered Tabs -->

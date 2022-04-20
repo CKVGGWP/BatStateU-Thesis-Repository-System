@@ -890,17 +890,6 @@ class Manuscript extends Database
         return $data;
     }
 
-    private function getToken($id)
-    {
-        $sql = "SELECT token FROM manuscript_token WHERE id = ?";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        return $row['token'];
-    }
-
     private function getManuscriptFiles($id)
     {
         $sql = "SELECT abstract, journal FROM manuscript WHERE id = ?";

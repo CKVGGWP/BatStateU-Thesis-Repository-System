@@ -34,14 +34,4 @@ if ($id != '') {
     $userByCampus = $info->getUserByCampus($deptID, $programID);
 
     $checkStatus = $info->checkManuscript($id);
-
-    // if ($checkStatus != false) {
-    //     if (in_array($checkStatus, $id)) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // } else {
-    //     return false;
-    // }
 }
