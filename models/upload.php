@@ -113,8 +113,13 @@ class Upload extends Database
         // $groupNumber = $this->createGroupNumber();
         $id = $this->getSRCodeByNames($this->getAuthorByID($lastID));
 
+        if(is_array($id)) {
+            $groupNumber = $this->checkGroup($id, true);
+        } else {
+            $groupNumber = $this->checkGroup($id);
+        }
+
         foreach ($id as $key => $value) {
-            $groupNumber = $this->checkGroup($value);
             $sql = "INSERT INTO groupings(userID, groupNumber, manuscriptID) VALUES (? , ? , ?)";
             $stmt = $this->connect()->prepare($sql);
             $stmt->bind_param('iii', $value, $groupNumber, $lastID);
@@ -128,11 +133,19 @@ class Upload extends Database
         }
     }
 
-    private function checkGroup($id)
+    private function checkGroup($id, $array = false)
     {
-        $sql = "SELECT groupNumber FROM groupings WHERE userID = ? LIMIT 1";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('i', $id);
+        $sql = "SELECT groupNumber FROM groupings";
+
+        if($array) {
+            $sql .= " WHERE userID IN (" . implode(',', $id) . ")";
+            $stmt = $this->connect()->prepare($sql);
+        } else {
+            $sql .= " WHERE userID = ? LIMIT 1";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param('i', $id);
+        }
+
         $stmt->execute();
         $result = $stmt->get_result();
 
