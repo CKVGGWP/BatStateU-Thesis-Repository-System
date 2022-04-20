@@ -509,8 +509,12 @@ class Information extends Database
                     $sql .= " AND id = " . $usersId . "";
                 }
             } else {
-                if (!in_array($userId, $notIncluded)) {
-                    $sql .= " AND id NOT IN (" . implode(',', $notIncluded) . ")";
+                if (is_array($notIncluded)) {
+                    if (!in_array($userId, $notIncluded)) {
+                        $sql .= " AND id NOT IN (" . implode(',', $notIncluded) . ")";
+                    }
+                } else {
+                    $sql .= " AND id NOT IN (" . $notIncluded . ")";
                 }
             }
         }
