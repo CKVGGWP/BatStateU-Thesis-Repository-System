@@ -77,7 +77,8 @@ class Database
         }
     }
 
-    protected function getGroupNumberBySrCode($srCode){
+    protected function getGroupNumberBySrCode($srCode)
+    {
         $sql = "SELECT 
                 g.groupNumber
                 FROM user_details u
@@ -172,7 +173,7 @@ class Database
     protected function getSRCodes($id)
     {
         $ids = implode("','", $id);
-        $sql = "SELECT srCode FROM user_details WHERE id IN ('".$ids."')";
+        $sql = "SELECT srCode FROM user_details WHERE id IN ('" . $ids . "')";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
 
@@ -302,11 +303,17 @@ class Database
         return substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 6)), 0, 6);
     }
 
-    protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
+    // protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
+
+    protected $url = "http://www.bsumalvare-library.com/";
 
     protected $directory = "../assets/uploads/";
 
-    protected $host = "smtp.gmail.com";
+    // protected $host = "smtp.gmail.com";
+
+    protected $host = "smtp.hostinger.com";
+
+    protected $port = 587;
 
     protected $emailName = "BatStateU JPLPC-Malvar Thesis Repository and Management System";
 

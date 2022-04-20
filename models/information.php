@@ -666,7 +666,7 @@ class Information extends Database
             $mail->Username   = EMAIL;                     //SMTP username
             $mail->Password   = PASSWORD;                               //SMTP password
             $mail->SMTPSecure = "tls";            //Enable implicit TLS encryption
-            $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->Port       = $this->port;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
             $mail->setFrom(EMAIL, $this->emailName);
