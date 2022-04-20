@@ -13,7 +13,11 @@
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Upload</h5>
+            <?php if ($role == "Admin") : ?>
+              <h5 class="card-title">Upload Old Manuscript</h5>
+            <?php else : ?>
+              <h5 class="card-title">Upload</h5>
+            <?php endif ?>
             <ul class="nav nav-tabs nav-tabs-bordered">
               <li class="nav-item">
                 <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#manuscriptPane" id="manuscriptPanes">Manuscript Details</button>
@@ -56,9 +60,10 @@
 
                     <div class="row my-2">
                       <div class="col-md-5 mb-sm-0 mb-2">
-                        <select class="form-control" id="registeredAuthors" placeholder="Authors" multiple>
-
-                        </select>
+                        <div class="form-floating">
+                          <textarea class="form-control" id="textAreaAuthors" placeholder="Author(s)" data-toggle="tooltip" title="Please use a comma (,) if you are going to input multiple authors. Don't add spaces after the comma."></textarea>
+                          <label for="textAreaAuthors">Author(s)</label>
+                        </div>
                       </div>
                       <div class="col-md-4 mb-sm-0 mb-2">
                         <select class="form-control" id="tags" placeholder="Tags" multiple>
