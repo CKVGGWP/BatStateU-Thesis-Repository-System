@@ -321,20 +321,20 @@ class Manuscript extends Database
                 DISTINCT
                 t.id,
                 t.manuscriptID,
-                t.userID,
                 t.dateRequested,
                 t.time,
                 t.status,
                 m.manuscriptTitle,
                 m.author,
                 t.status,
-                g.reason,
+                g2.reason,
                 CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name
                 FROM manuscript_token t
                 LEFT JOIN manuscript m ON t.manuscriptID = m.id
-                LEFT JOIN user_details u ON t.userID = u.id
-                LEFT JOIN groupings g ON t.manuscriptID = g.manuscriptID";
-
+                LEFT JOIN user_details u ON m.srCode = u.srCode
+                LEFT JOIN groupings g ON u.id = g.userID
+                LEFT JOIN groupings g2 ON t.id = g2.manuscriptID";
+                
         if ($srCode == '') {
             $sql .= " WHERE t.status = 0";
             $stmt = $this->connect()->prepare($sql);
