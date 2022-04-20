@@ -21,7 +21,7 @@ $("#campus").on("change", function () {
   }
 
   $.ajax({
-    url: "controllers/newInformationController.php",
+    url: "controllers/newController.php",
     method: "POST",
     data: {
       campus: campus,
@@ -36,7 +36,7 @@ $("#campus").on("change", function () {
 
 $("#department").on("change", function () {
   $.ajax({
-    url: "controllers/newInformationController.php",
+    url: "controllers/newController.php",
     method: "POST",
     data: {
       department: $(this).val(),
@@ -52,7 +52,7 @@ $("#department").on("change", function () {
 if ($("#program").length > 0) {
   $("#program").on("change", function () {
     $.ajax({
-      url: "controllers/newInformationController.php",
+      url: "controllers/newController.php",
       method: "POST",
       data: {
         program: $(this).val(),
@@ -74,7 +74,7 @@ $("#userCampus").on("change", function () {
   let campus = $(this).val();
 
   $.ajax({
-    url: "controllers/newInformationController.php",
+    url: "controllers/newController.php",
     method: "POST",
     data: {
       campus: campus,
@@ -91,7 +91,7 @@ $("#editAccountCampus").on("change", function () {
   let campus = $(this).val();
 
   $.ajax({
-    url: "controllers/newInformationController.php",
+    url: "controllers/newController.php",
     method: "POST",
     data: {
       campus: campus,
@@ -108,7 +108,7 @@ $("#editDepartment").on("change", function () {
   let department = $(this).val();
 
   $.ajax({
-    url: "controllers/newInformationController.php",
+    url: "controllers/newController.php",
     method: "POST",
     data: {
       department: department,
@@ -194,7 +194,7 @@ $("#saveInfo").on("submit", function (e) {
       '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
     );
     $.ajax({
-      url: "controllers/newInformationController.php",
+      url: "controllers/newController.php",
       method: "POST",
       data: {
         srCode: srCode,
@@ -293,7 +293,7 @@ $("#changePassForm").on("submit", function (e) {
       '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Changing...'
     );
     $.ajax({
-      url: "controllers/newInformationController.php",
+      url: "controllers/newController.php",
       method: "POST",
       data: {
         currentPassword: currentPassword,
@@ -405,7 +405,7 @@ $(document).on("submit", "#editAccountForm", function (e) {
       '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
     );
     $.ajax({
-      url: "controllers/newInformationController.php",
+      url: "controllers/newController.php",
       method: "POST",
       data: {
         srCode: editAccountID,
@@ -561,7 +561,7 @@ $(document).on("submit", "#createAdmin", function (e) {
       '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating...'
     );
     $.ajax({
-      url: "controllers/newInformationController.php",
+      url: "controllers/newController.php",
       method: "POST",
       data: {
         createID: createID,
@@ -616,7 +616,7 @@ $(document).on("submit", "#createAdmin", function (e) {
 if ($("#notifications").length > 0) {
   function loadNotifications(view = "") {
     $.ajax({
-      url: "controllers/newInformationController.php",
+      url: "controllers/newController.php",
       method: "POST",
       data: { view: view },
       dataType: "json",
@@ -646,7 +646,7 @@ if ($("#notifications").length > 0) {
     e.preventDefault();
 
     $.ajax({
-      url: "controllers/newInformationController.php",
+      url: "controllers/newController.php",
       method: "POST",
       data: { markAll: true },
       success: function (response) {
@@ -666,7 +666,7 @@ $(document).ready(function () {
       getParameterByName("title") != "Forgot Password"
     ) {
       $.ajax({
-        url: "controllers/newInformationController.php",
+        url: "controllers/newController.php",
         method: "POST",
         data: {
           getIP: true,

@@ -603,7 +603,7 @@ $("#manuscriptCampus").on("change", function () {
   let campus = $(this).val();
 
   $.ajax({
-    url: "controllers/newInformationController.php",
+    url: "controllers/newController.php",
     method: "POST",
     data: {
       campus: campus,
