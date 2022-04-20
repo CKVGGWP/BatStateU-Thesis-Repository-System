@@ -594,9 +594,18 @@ class Manuscript extends Database
     {
         $token = $this->createOTP();
         $id = $this->getID($srCode);
-        $sql = "INSERT INTO manuscript_token(id, manuscriptID, userID, status, token, dateRequested, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, NOW(), 0, 0)";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("iis", $manuscriptId, $id, $token);
+        $groupNumber = $this->getGroupNumberByUserID($id);
+
+        if ($groupNumber != 0) {
+            $sql = "INSERT INTO manuscript_token(id, manuscriptID, groupID, status, token, dateRequested, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, NOW(), 0, 0)";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param("iis", $manuscriptId, $groupNumber, $token);
+        } else {
+            $sql = "INSERT INTO manuscript_token(id, manuscriptID, userID, status, token, dateRequested, dateApproved, time) VALUES (NULL, ?, 0, 0, ?, NOW(), 0, 0)";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param("iis", $manuscriptId, $id, $token);
+        }
+
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
