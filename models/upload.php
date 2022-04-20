@@ -105,18 +105,30 @@ class Upload extends Database
                     tags = ?, 
                     status = 0 
                     WHERE srCode = '" . implode("','", $newSrCodes) . "'";
+
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param('sssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags);
+            $stmt->execute();
+            $stmt->close();
+
+            if ($stmt->affected_rows > 0) {
+                return $this->insertNotification($title);
+            } else {
+                return false;
+            }
+            
         } else {
             $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , '0')";
-        }
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param('sssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags);
-        $stmt->execute();
-        $stmt->close();
-        
-        if ($this->insertGroup($this->lastManuscriptID())) {
-            return $this->insertNotification($title);
-        } else {
-            return false;
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bind_param('sssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags);
+            $stmt->execute();
+            $stmt->close();
+
+            if ($this->insertGroup($this->lastManuscriptID())) {
+                return $this->insertNotification($title);
+            } else {
+                return false;
+            }
         }
         // return print_r($values);
     }
