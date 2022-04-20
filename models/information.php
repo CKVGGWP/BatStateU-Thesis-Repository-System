@@ -493,23 +493,26 @@ class Information extends Database
         $userId = $this->getID($id);
         $groupNumber = $this->getGroupNumberByUserID($userId);
         $usersId = $this->getUserIdByGroupNumber($groupNumber);
-        if ($usersId != 0) {
-            foreach ($usersId as $user) {
-                $sql = "SELECT 
-                concat_ws(' ', firstName, lastName) AS fullName               
-                FROM user_details
-                WHERE departmentID = ?
-                AND programID = ?
-                AND role != '1'
-                AND id in ('" . implode("','", $usersId) . "')";
-            }
-        } else {
-            $sql = "SELECT 
+        $notIncluded = $this->getUserIdFromGroupings();
+        $role = $this->getRole($userId);
+        $sql = "SELECT 
                 concat_ws(' ', firstName, lastName) AS fullName               
                 FROM user_details
                 WHERE departmentID = ?
                 AND programID = ?
                 AND role != '1'";
+        if ($role != 1) {
+            if ($usersId != 0) {
+                if (is_array($usersId)) {
+                    $sql .= " AND id IN (" . implode(',', $usersId) . ")";
+                } else {
+                    $sql .= " AND id = " . $usersId . "";
+                }
+            } else {
+                if (!in_array($userId, $notIncluded)) {
+                    $sql .= " AND id NOT IN (" . implode(',', $notIncluded) . ")";
+                }
+            }
         }
 
         $stmt = $this->connect()->prepare($sql);
@@ -654,7 +657,7 @@ class Information extends Database
             //Server settings
             $mail->SMTPDebug = 0; //SMTP::DEBUG_SERVER;                      //Enable verbose debug output
             $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->Host       = $this->host;                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
             $mail->Username   = EMAIL;                     //SMTP username
             $mail->Password   = PASSWORD;                               //SMTP password
@@ -662,7 +665,7 @@ class Information extends Database
             $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom(EMAIL, 'BatStateU JPLPC-Malvar Thesis Repository and Management System');
+            $mail->setFrom(EMAIL, $this->emailName);
             $mail->addAddress($email);     //Add a recipient
 
             //Content

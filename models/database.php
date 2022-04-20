@@ -96,6 +96,40 @@ class Database
         }
     }
 
+    protected function getUserIdFromGroupings()
+    {
+        $sql = "SELECT userID FROM groupings";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $userID = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $userID[] = $row['userID'];
+            }
+            return $userID;
+        } else {
+            return 0;
+        }
+    }
+
+    protected function getRole($id)
+    {
+        $sql = "SELECT role FROM user_details WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['role'];
+        } else {
+            return 0;
+        }
+    }
+
     protected function getIdByGroupNumber($groupNumber)
     {
         $sql = "SELECT id FROM groupings WHERE groupNumber = ?";
@@ -251,6 +285,10 @@ class Database
     protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
 
     protected $directory = "../assets/uploads/";
+
+    protected $host = "smtp.gmail.com";
+
+    protected $emailName = "BatStateU JPLPC-Malvar Thesis Repository and Management System";
 
     protected function connect()
     {
