@@ -163,8 +163,10 @@ class Manuscript extends Database
                 "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 str_replace(",", "<br>", $author) ?? $author,
                 $yearPub,
-                '<button disabled type="button" class="btn btn-dark btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">EXPIRED</button>
-                 ',
+                '<div class="btn-group-vertical">
+                <button disabled type="button" class="btn btn-dark btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">EXPIRED</button>                
+                <button type="button" class="btn btn-danger btn-sm edit request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">REQUEST</button>
+                </div>',
                 $tags,
 
             ];
