@@ -929,7 +929,7 @@ class Manuscript extends Database
         $groupNumber = $this->getGroupNumberByUserID($id);
         $nums = 0;
 
-        $sql = "SELECT token FROM manuscript_token WHERE isValid = '0' AND time > 0";
+        $sql = "SELECT token FROM manuscript_token WHERE isValid = '0' AND status = 1 AND time > 0";
 
         if ($groupNumber != 0) {
             $sql .= " AND groupID = ?";
