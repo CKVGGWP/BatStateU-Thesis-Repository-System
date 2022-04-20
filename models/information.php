@@ -471,7 +471,7 @@ class Information extends Database
                     FROM manuscript m 
                     LEFT JOIN department d ON m.department = d.id
                     LEFT JOIN campus c ON m.campus = c.id
-                    WHERE m.campus = 3 AND m.department = ?";
+                    WHERE m.campus = 3 AND m.status = 1 AND m.department = ?";
             $stmt = $this->connect()->prepare($sql);
             $stmt->bind_param('i', $departmentId[$n]);
             $stmt->execute();
