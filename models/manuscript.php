@@ -189,7 +189,7 @@ class Manuscript extends Database
                 $yearPub,
                 '<div class="btn-group-vertical">
                 <button disabled type="button" class="btn btn-dark btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">DECLINED</button>
-                <button type="button" class="btn btn-danger btn-sm edit request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">REQUEST</button>
+                
                 </div>',
                 $tags,
             ];
