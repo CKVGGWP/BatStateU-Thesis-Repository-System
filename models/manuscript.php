@@ -613,7 +613,7 @@ class Manuscript extends Database
 
     private function selectCurrentRequest($id, $groupNumber, $manuscriptID)
     {
-        $sql = "SELECT * FROM manuscript_token WHERE manuscriptID = ? AND status = 1 OR status = 3 AND (groupID = ? OR userID = ?)";
+        $sql = "SELECT * FROM manuscript_token WHERE manuscriptID = ? AND (status = 1 OR status = 3) AND (groupID = ? OR userID = ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("iii", $id, $groupNumber, $manuscriptID);
         $stmt->execute();
