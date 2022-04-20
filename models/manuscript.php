@@ -257,7 +257,7 @@ class Manuscript extends Database
     public function getRequestAdminTable($srCode = '')
     {
         $sql = "SELECT
-                DISTINCT 
+                DISTINCT
                 t.id,
                 t.manuscriptID,
                 t.userID,
@@ -430,7 +430,29 @@ class Manuscript extends Database
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         extract($row);
-        return $this->getPendingManuscriptByGroup($groupNumber);
+        $pending = $this->getPendingManuscriptByGroup($groupNumber);
+        $apprrove = $this->getApproveManuscriptByGroup($groupNumber);
+        
+        if ($pending > 0) {
+            $data = [
+                "pending" => $pending,
+                "approve" => false,
+                "message" => "You have pending manuscript!"
+            ];
+        } else if ($apprrove > 0) {
+            $data = [
+                "pending" => false,
+                "approve" => $apprrove,
+                "message" => "Your manuscript is already approved!"
+            ];
+        } else {
+            $data = [
+                "pending" => false,
+                "approve" => false,
+                "message" => "Please upload your manuscript."
+            ];
+        }
+        return json_encode($data);
     }
 
     public function getPendingManuscriptByGroup($groupNumber)
@@ -444,25 +466,57 @@ class Manuscript extends Database
         $stmt->bind_param("i", $groupNumber);
         $stmt->execute();
         $result = $stmt->get_result();
-        $totalData = 0;
-        while ($row = $result->fetch_assoc()) {
-            extract($row);
-            $totalData++;
-        }
 
-        $json_data = array(
-            "draw"            => 1,   // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw. 
-            "recordsTotal"    => intval($totalData),  // total number of records
-            "recordsFiltered" => intval($totalData), // total number of records after searching, if there is no searching then totalFiltered = totalData
-        );
-
-        return json_encode($json_data);  // send data as json format
+        return $result->num_rows;
     }
+
+     public function getApproveManuscriptByGroup($groupNumber)
+    {
+        $sql = "SELECT 
+                m.id
+                FROM groupings g 
+                LEFT JOIN manuscript m ON g.manuscriptID = m.id
+                WHERE m.status = 1 AND g.groupNumber = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $groupNumber);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        return $result->num_rows;
+    }
+
 
     public function deleteManuscript($manuscriptId)
     {
         $this->deleteFiles($this->getManuscriptFiles($manuscriptId));
         $sql = "DELETE FROM manuscript WHERE id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $manuscriptId);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $this->deleteManuscriptToken($manuscriptId);
+            $this->deleteManuscriptFromGroupings($manuscriptId);
+        } else {
+            return 0;
+        }
+    }
+
+    private function deleteManuscriptToken($manuscriptId) {
+        $sql = "DELETE FROM manuscript_token WHERE manuscriptID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $manuscriptId);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private function deleteManuscriptFromGroupings($manuscriptId) {
+        $sql = "DELETE FROM groupings WHERE manuscriptID = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("i", $manuscriptId);
         $stmt->execute();

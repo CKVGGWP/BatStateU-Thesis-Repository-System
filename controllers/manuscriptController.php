@@ -14,8 +14,7 @@ if (isset($_POST['getManuscript'])) {
 }
 
 if (isset($_POST['browseManuscript'])) {
-    $srCode = $_SESSION['srCode'];
-    echo $manuscript->getBrowseManuscriptTable($srCode);
+    echo $manuscript->getBrowseManuscriptTable($usersID);
 }
 
 if (isset($_POST['getRequestHistory'])) {
@@ -27,14 +26,12 @@ if (isset($_POST['getRequestAdmin'])) {
 }
 
 if (isset($_POST['pendingManuscript'])) {
-    $srCode = $_SESSION['srCode'];
-    echo $manuscript->getPendingManuscriptTable($srCode);
+    echo $manuscript->getPendingManuscriptTable($usersID);
 }
 
 if (isset($_POST['requestManuscript'])) {
-    $srCode = $_SESSION['srCode'];
     $manuscriptId = $_POST['manuscriptId'];
-    echo $manuscript->requestManuscript($srCode, $manuscriptId);
+    echo $manuscript->requestManuscript($usersID, $manuscriptId);
 }
 
 if (isset($_POST['manuscriptDetails'])) {
@@ -69,8 +66,7 @@ if (isset($_POST['updatePendingManuscript'])) {
 }
 
 if (isset($_POST['getUserManuscript'])) {
-    $srCode = $_SESSION['srCode'];
-    echo $manuscript->getManuscriptBySrCode($srCode);
+    echo $manuscript->getManuscriptBySrCode($usersID);
 }
 
 if (isset($_POST['manuscriptRequest'])) {
@@ -90,18 +86,15 @@ if (isset($_POST['getRecentAddedManuscript'])) {
 }
 
 if (isset($_POST['userManuscriptRequestStatus'])) {
-    $srCode = $_SESSION['srCode'];
-    echo $manuscript->getRequestAdminTable($srCode);
+    echo $manuscript->getRequestAdminTable($usersID);
 }
 
 if (isset($_POST['getPendingByGroup'])) {
-    $srCode = $_SESSION['srCode'];
-    echo $manuscript->getGroupNumber($srCode);
+    echo $manuscript->getGroupNumber($usersID);
 }
 
 if (isset($_POST['checkManuscriptPassword'])) {
     $pass = $_POST['password'];
-
     echo $manuscript->checkPassword($pass, $usersID);
 }
 
