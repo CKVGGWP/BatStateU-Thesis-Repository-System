@@ -493,23 +493,26 @@ class Information extends Database
         $userId = $this->getID($id);
         $groupNumber = $this->getGroupNumberByUserID($userId);
         $usersId = $this->getUserIdByGroupNumber($groupNumber);
-        if ($usersId != 0) {
-            foreach ($usersId as $user) {
-                $sql = "SELECT 
-                concat_ws(' ', firstName, lastName) AS fullName               
-                FROM user_details
-                WHERE departmentID = ?
-                AND programID = ?
-                AND role != '1'
-                AND id in ('" . implode("','", $usersId) . "')";
-            }
-        } else {
-            $sql = "SELECT 
+        $notIncluded = $this->getUserIdFromGroupings();
+        $role = $this->getRole($userId);
+        $sql = "SELECT 
                 concat_ws(' ', firstName, lastName) AS fullName               
                 FROM user_details
                 WHERE departmentID = ?
                 AND programID = ?
                 AND role != '1'";
+        if ($role != 1) {
+            if ($usersId != 0) {
+                if (is_array($usersId)) {
+                    $sql .= " AND id IN (" . implode(',', $usersId) . ")";
+                } else {
+                    $sql .= " AND id = " . $usersId . "";
+                }
+            } else {
+                if (!in_array($userId, $notIncluded)) {
+                    $sql .= " AND id NOT IN (" . implode(',', $notIncluded) . ")";
+                }
+            }
         }
 
         $stmt = $this->connect()->prepare($sql);
