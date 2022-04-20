@@ -165,7 +165,7 @@ class Manuscript extends Database
                 $yearPub,
                 '<div class="btn-group-vertical">
                 <button disabled type="button" class="btn btn-dark btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">EXPIRED</button>                
-                <button type="button" class="btn btn-danger btn-sm edit request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">REQUEST</button>
+                <button type="button" class="btn btn-danger btn-sm edit exRequest" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">REQUEST</button>
                 </div>',
                 $tags,
 
@@ -632,10 +632,10 @@ class Manuscript extends Database
         $id = $this->getID($srCode);
         $groupNumber = $this->getGroupNumberByUserID($id);
 
-        if ($this->selectCurrentRequest($id, $groupNumber, $manuscriptId)) {
-            return $this->updateCurrentRequest($id, $groupNumber, $manuscriptId);
-            exit();
-        }
+        // if ($this->selectCurrentRequest($id, $groupNumber, $manuscriptId)) {
+        //     return $this->updateCurrentRequest($id, $groupNumber, $manuscriptId);
+        //     exit();
+        // }
 
         if ($groupNumber != 0) {
             $sql = "INSERT INTO manuscript_token(id, manuscriptID, groupID, status, token, dateRequested, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, NOW(), 0, 0)";
@@ -651,6 +651,27 @@ class Manuscript extends Database
 
         if ($stmt->affected_rows > 0) {
             return $this->insertNotification($manuscriptId, "Pending", "request");
+        } else {
+            $data = [
+                "success" => false,
+                "message" => "Error inserting",
+                "error" => "Something went wrong! Error: " . $stmt->error
+            ];
+            return json_encode($data);
+        }
+    }
+
+    public function exRequestManuscript($srCode, $manuscriptId)
+    {
+
+        $sql = "UPDATE manuscript_token SET isValid=1 WHERE manuscriptID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $manuscriptId);
+
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return $this->requestManuscript($srCode, $manuscriptId);
         } else {
             $data = [
                 "success" => false,
@@ -764,7 +785,7 @@ class Manuscript extends Database
         if ($manuscriptData[0]['groupID'] == 0) {
             $id = $manuscriptData[0]['userID'];
         } else {
-            $id = $this->getIdByGroupNumber($manuscriptData[0]['groupID']);
+            $id = $this->getUserIdByGroupNumber($manuscriptData[0]['groupID']);
         }
 
         $token = $manuscriptData[0]['token'];
@@ -782,6 +803,7 @@ class Manuscript extends Database
         $details = $this->getUserDetails($id);
 
         $this->updateTime($token);
+
 
         if (is_array($id)) {
             foreach ($id as $key => $value) {
@@ -907,7 +929,7 @@ class Manuscript extends Database
         $groupNumber = $this->getGroupNumberByUserID($id);
         $nums = 0;
 
-        $sql = "SELECT token FROM manuscript_token WHERE isValid = '0' AND time > 0";
+        $sql = "SELECT token FROM manuscript_token WHERE isValid = '0' AND status = 1 AND time > 0";
 
         if ($groupNumber != 0) {
             $sql .= " AND groupID = ?";
@@ -945,8 +967,7 @@ class Manuscript extends Database
                 return "Hi";
             }
         } else {
-            $_SESSION['time'] = time();
-            return "Not yet!";
+            return $date;
         }
     }
 
