@@ -793,6 +793,51 @@ $(document).on("click", ".request", function () {
   });
 });
 
+$(document).on("click", ".exRequest", function () {
+  let manuscriptId = $(this).data("id");
+  Swal.fire({
+    title: "Manuscript Request",
+    text: "You are about to request for this manuscript.",
+    icon: "info",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#dc3545",
+    confirmButtonText: "Request",
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: "controllers/manuscriptController.php",
+        method: "POST",
+        data: {
+          manuscriptId: manuscriptId,
+          exRequestManuscript: true,
+        },
+        dataType: "json",
+        success: function (data) {
+          console.log(data);
+          if (data.success == true) {
+            Swal.fire({
+              title: "Success!",
+              text:
+                data.title +
+                " has been requested! Please wait for the admin to approve your request.",
+              icon: "success",
+            }).then((result) => {
+              location.reload();
+            });
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: "Something went wrong. Error: " + data.error,
+              icon: "error",
+            });
+          }
+        },
+      });
+    }
+  });
+});
+
 // $("#manuscriptAuthors").select2({
 //   placeholder: "Select/Input Author(s)",
 //   allowClear: true,

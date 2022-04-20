@@ -34,6 +34,11 @@ if (isset($_POST['requestManuscript'])) {
     echo $manuscript->requestManuscript($usersID, $manuscriptId);
 }
 
+if (isset($_POST['exRequestManuscript'])) {
+    $manuscriptId = $_POST['manuscriptId'];
+    echo $manuscript->exRequestManuscript($usersID, $manuscriptId);
+}
+
 if (isset($_POST['manuscriptDetails'])) {
     $manuscriptId = $_POST['manuscriptId'];
     echo $manuscript->getManuscriptDetails($manuscriptId);

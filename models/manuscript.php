@@ -165,7 +165,7 @@ class Manuscript extends Database
                 $yearPub,
                 '<div class="btn-group-vertical">
                 <button disabled type="button" class="btn btn-dark btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">EXPIRED</button>                
-                <button type="button" class="btn btn-danger btn-sm edit request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">REQUEST</button>
+                <button type="button" class="btn btn-danger btn-sm edit exRequest" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">REQUEST</button>
                 </div>',
                 $tags,
 
@@ -651,6 +651,27 @@ class Manuscript extends Database
 
         if ($stmt->affected_rows > 0) {
             return $this->insertNotification($manuscriptId, "Pending", "request");
+        } else {
+            $data = [
+                "success" => false,
+                "message" => "Error inserting",
+                "error" => "Something went wrong! Error: " . $stmt->error
+            ];
+            return json_encode($data);
+        }
+    }
+
+    public function exRequestManuscript($srCode, $manuscriptId)
+    {
+        
+        $sql = "UPDATE manuscript_token SET isValid=1 WHERE manuscriptID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $manuscriptId);
+
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return $this->requestManuscript($srCode, $manuscriptId);
         } else {
             $data = [
                 "success" => false,
