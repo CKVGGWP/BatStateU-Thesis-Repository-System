@@ -113,14 +113,14 @@ class Manuscript extends Database
         $data = [];
 
         //OWN MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript m JOIN groupings g ON g.manuscriptID = m.id WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE m.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?) GROUP BY m.id";
+        $sql = "SELECT *, m.id AS excludeID FROM manuscript m JOIN groupings g ON g.manuscriptID = m.id WHERE status = 1 AND NOT EXISTS (SELECT * FROM manuscript_token WHERE m.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?) GROUP BY m.id";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $groupId);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
             extract($row);
-            $id;
+            $excludeID;
             $totalData++;
             $data[] = [
                 $totalData,
@@ -135,7 +135,7 @@ class Manuscript extends Database
         }
 
         //Transfer ID to Exclude Own ID
-        $excludedManuscriptId = isset($id) ? $id : 0;
+        $excludedManuscriptId = isset($excludeID) ? $excludeID : 0;
 
         //EXPIRED MANUSCRIPTS
         $sql = "SELECT * FROM manuscript WHERE status = 1 AND (NOT id=? ) AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '3' AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?);";
@@ -222,7 +222,7 @@ class Manuscript extends Database
         }
 
         //NOT REQUESTED MANUSCRIPTS
-        $sql = "SELECT * FROM manuscript WHERE status = 1 AND (NOT id=? ) AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?)";
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND NOT id=?  AND NOT EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('ii', $excludedManuscriptId, $groupId);
         $stmt->execute();
