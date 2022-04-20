@@ -664,7 +664,7 @@ class Manuscript extends Database
     public function exRequestManuscript($srCode, $manuscriptId)
     {
         
-        $sql = "UPDATE manuscript_token SET isValid= WHERE manuscriptID = ?";
+        $sql = "UPDATE manuscript_token SET isValid=1 WHERE manuscriptID = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("i", $manuscriptId);
 
