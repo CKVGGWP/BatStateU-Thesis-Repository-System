@@ -594,7 +594,7 @@ class Manuscript extends Database
     {
         $token = $this->createOTP();
         $id = $this->getID($srCode);
-        $groupNumber = $this->getGroupNumberByUserID($srCode);
+        $groupNumber = $this->getGroupNumberByUserID($id);
 
         if ($groupNumber != 0) {
             $sql = "INSERT INTO manuscript_token(id, manuscriptID, groupID, status, token, dateRequested, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, NOW(), 0, 0)";
