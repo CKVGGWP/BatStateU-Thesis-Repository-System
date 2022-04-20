@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  let recentlyAddedManuscript = $('#recentlyAddedManuscript').DataTable({
+  let recentlyAddedManuscript = $("#recentlyAddedManuscript").DataTable({
     lengthChange: false,
     // searching: false,
     processing: true,
@@ -7,8 +7,8 @@ $(document).ready(function () {
     // serverSide: true,
     bInfo: false,
     ajax: {
-      url: 'controllers/manuscriptController.php', // json datasource
-      type: 'POST', // method  , by default get
+      url: "controllers/manuscriptController.php", // json datasource
+      type: "POST", // method  , by default get
       data: {
         getRecentAddedManuscript: true,
         recent: 1,
@@ -36,27 +36,27 @@ $(document).ready(function () {
   });
   //   countPendingApproval
   $.ajax({
-    url: 'controllers/manuscriptController.php',
-    type: 'POST',
+    url: "controllers/manuscriptController.php",
+    type: "POST",
     data: {
       pendingManuscript: 1,
     },
     success: function (data) {
       let resp = JSON.parse(data);
-      $('#pendingManuscriptAdminDash').html(resp.recordsTotal);
+      $("#pendingManuscriptAdminDash").html(resp.recordsTotal);
     },
   });
 
   //   countPendingRequest
   $.ajax({
-    url: 'controllers/manuscriptController.php',
-    type: 'POST',
+    url: "controllers/manuscriptController.php",
+    type: "POST",
     data: {
       getRequestAdmin: 1,
     },
     success: function (data) {
       let resp = JSON.parse(data);
-      $('#requestManusriptAdminDash').html(resp.recordsTotal);
+      $("#requestManusriptAdminDash").html(resp.recordsTotal);
     },
   });
 });
@@ -64,13 +64,13 @@ $(document).ready(function () {
 // IP Address
 
 $.ajax({
-  url: 'controllers/newInformationController.php',
-  type: 'POST',
+  url: "controllers/newController.php",
+  type: "POST",
   data: {
     ipChart: 1,
   },
   success: function (data) {
-    $('#pageVisitor').html(data);
+    $("#pageVisitor").html(data);
   },
 });
 
@@ -81,31 +81,31 @@ var options = {
 
   labels: getUsers(2),
   chart: {
-    type: 'donut',
-    width: '100%',
-    height: '300px',
-    fontFamily: 'Poppins',
+    type: "donut",
+    width: "100%",
+    height: "300px",
+    fontFamily: "Poppins",
   },
   title: {
-    text: 'TOTAL: ' + getUsers(3),
-    align: 'middle',
+    text: "TOTAL: " + getUsers(3),
+    align: "middle",
     margin: 10,
     offsetX: 0,
     offsetY: 143,
     floating: true,
     style: {
-      fontSize: '15px',
-      fontWeight: 'bold',
-      fontFamily: 'Poppins',
-      color: '#263238',
+      fontSize: "15px",
+      fontWeight: "bold",
+      fontFamily: "Poppins",
+      color: "#263238",
     },
   },
   legend: {
     show: true,
-    position: 'top',
-    horizontalAlign: 'center',
-    fontSize: '12px',
-    fontFamily: 'Poppins',
+    position: "top",
+    horizontalAlign: "center",
+    fontSize: "12px",
+    fontFamily: "Poppins",
     fontWeight: 400,
     offsetX: -25,
     offsetY: 0,
@@ -118,7 +118,7 @@ var options = {
     },
   },
   noData: {
-    text: 'Loading...',
+    text: "Loading...",
   },
   responsive: [
     {
@@ -133,7 +133,7 @@ var options = {
 };
 
 var chart = new ApexCharts(
-  document.querySelector('#totalUsersPieGraph'),
+  document.querySelector("#totalUsersPieGraph"),
   options
 );
 chart.render();
@@ -144,8 +144,8 @@ function getUsers(value) {
   let total = null;
   $.ajax({
     async: false,
-    url: 'controllers/newInformationController.php',
-    type: 'POST',
+    url: "controllers/newController.php",
+    type: "POST",
     data: {
       getAllUsers: 1,
     },
@@ -169,19 +169,19 @@ function getUsers(value) {
 var options2 = {
   series: [
     {
-      name: 'Total Manuscripts',
+      name: "Total Manuscripts",
       data: getManuscripts(2),
     },
   ],
 
   xaxis: {
-    categories: ['CABEIHM', 'CAS', 'CICS', 'CIT', 'COE', 'CTE'],
+    categories: ["CABEIHM", "CAS", "CICS", "CIT", "COE", "CTE"],
   },
   chart: {
-    type: 'bar',
-    width: '100%',
-    height: '300px',
-    fontFamily: 'Poppins',
+    type: "bar",
+    width: "100%",
+    height: "300px",
+    fontFamily: "Poppins",
   },
 
   plotOptions: {
@@ -205,10 +205,10 @@ var options2 = {
   },
   legend: {
     show: false,
-    position: 'bottom',
-    horizontalAlign: 'center',
-    fontSize: '12px',
-    fontFamily: 'Poppins',
+    position: "bottom",
+    horizontalAlign: "center",
+    fontSize: "12px",
+    fontFamily: "Poppins",
     fontWeight: 400,
     offsetX: -25,
     offsetY: 0,
@@ -222,7 +222,7 @@ var options2 = {
   },
 
   noData: {
-    text: 'Loading...',
+    text: "Loading...",
   },
   responsive: [
     {
@@ -237,7 +237,7 @@ var options2 = {
 };
 
 var chart2 = new ApexCharts(
-  document.querySelector('#totalManuscriptsBarGraph'),
+  document.querySelector("#totalManuscriptsBarGraph"),
   options2
 );
 chart2.render();
@@ -247,8 +247,8 @@ function getManuscripts(value) {
   let count = null;
   $.ajax({
     async: false,
-    url: 'controllers/newInformationController.php',
-    type: 'POST',
+    url: "controllers/newController.php",
+    type: "POST",
     // dataType: 'json',
     data: {
       getAllManuscripts: 1,
