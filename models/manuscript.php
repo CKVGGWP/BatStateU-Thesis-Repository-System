@@ -109,26 +109,26 @@ class Manuscript extends Database
     {
         $userId = $this->getID($srCode);
 
-         //EXPIRED MANUSCRIPTS
-         $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '3' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
-         $stmt = $this->connect()->prepare($sql);
-         $stmt->bind_param('i', $userId);
-         $stmt->execute();
-         $result = $stmt->get_result();
-         while ($row = $result->fetch_assoc()) {
-             extract($row);
-             $totalData++;
-             $data[] = [
-                 $totalData,
-                 "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
-                 str_replace(",", "<br>", $author) ?? $author,
-                 $yearPub,
-                 '<button disabled type="button" class="btn btn-dark btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">EXPIRED</button>
+        //EXPIRED MANUSCRIPTS
+        $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '3' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            extract($row);
+            $totalData++;
+            $data[] = [
+                $totalData,
+                "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                str_replace(",", "<br>", $author) ?? $author,
+                $yearPub,
+                '<button disabled type="button" class="btn btn-dark btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">EXPIRED</button>
                  ',
-                 $tags,
- 
-             ];
-         }
+                $tags,
+
+            ];
+        }
 
         //REQUESTED MANUSCRIPT
         $sql = "SELECT * FROM manuscript WHERE status = 1 AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '1' AND manuscript_token.isValid ='0' AND manuscript_token.userID = ?)";
@@ -453,7 +453,7 @@ class Manuscript extends Database
         extract($row);
         $pending = $this->getPendingManuscriptByGroup($groupNumber);
         $apprrove = $this->getApproveManuscriptByGroup($groupNumber);
-        
+
         if ($pending > 0) {
             $data = [
                 "pending" => $pending,
@@ -491,7 +491,7 @@ class Manuscript extends Database
         return $result->num_rows;
     }
 
-     public function getApproveManuscriptByGroup($groupNumber)
+    public function getApproveManuscriptByGroup($groupNumber)
     {
         $sql = "SELECT 
                 m.id
@@ -502,7 +502,7 @@ class Manuscript extends Database
         $stmt->bind_param("i", $groupNumber);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         return $result->num_rows;
     }
 
@@ -518,12 +518,14 @@ class Manuscript extends Database
         if ($stmt->affected_rows > 0) {
             $this->deleteManuscriptToken($manuscriptId);
             $this->deleteManuscriptFromGroupings($manuscriptId);
+            return 1;
         } else {
             return 0;
         }
     }
 
-    private function deleteManuscriptToken($manuscriptId) {
+    private function deleteManuscriptToken($manuscriptId)
+    {
         $sql = "DELETE FROM manuscript_token WHERE manuscriptID = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("i", $manuscriptId);
@@ -536,7 +538,8 @@ class Manuscript extends Database
         }
     }
 
-    private function deleteManuscriptFromGroupings($manuscriptId) {
+    private function deleteManuscriptFromGroupings($manuscriptId)
+    {
         $sql = "DELETE FROM groupings WHERE manuscriptID = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("i", $manuscriptId);
