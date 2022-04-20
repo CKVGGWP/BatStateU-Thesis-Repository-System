@@ -592,11 +592,50 @@ class Manuscript extends Database
         }
     }
 
+    private function updateCurrentRequest($id, $groupNumber, $manuscriptID)
+    {
+        $sql = "UPDATE manuscript_token SET status = 0 WHERE manuscriptID = ? AND (groupID = ? OR userID = ?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("iii", $id, $groupNumber, $manuscriptID);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            return $this->insertNotification($manuscriptID, "Pending", "request");
+        } else {
+            $data = [
+                "success" => false,
+                "message" => "Error inserting",
+                "error" => "Something went wrong! Error: " . $stmt->error
+            ];
+            return json_encode($data);
+        }
+    }
+
+    private function selectCurrentRequest($id, $groupNumber, $manuscriptID)
+    {
+        $sql = "SELECT * FROM manuscript_token WHERE manuscriptID = ? AND (status = 1 OR status = 3) AND (groupID = ? OR userID = ?)";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("iii", $id, $groupNumber, $manuscriptID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function requestManuscript($srCode, $manuscriptId)
     {
         $token = $this->createOTP();
         $id = $this->getID($srCode);
         $groupNumber = $this->getGroupNumberByUserID($id);
+
+        if ($this->selectCurrentRequest($id, $groupNumber, $manuscriptId)) {
+            return $this->updateCurrentRequest($id, $groupNumber, $manuscriptId);
+            exit();
+        }
 
         if ($groupNumber != 0) {
             $sql = "INSERT INTO manuscript_token(id, manuscriptID, groupID, status, token, dateRequested, dateApproved, time) VALUES (NULL, ?, ?, 0, ?, NOW(), 0, 0)";
@@ -897,7 +936,7 @@ class Manuscript extends Database
         if ($date > 300) {
             $sql = "UPDATE manuscript_token SET isValid = '1', status = '3' WHERE token = ? AND (userID = ? OR groupID = ?)";
             $stmt = $this->connect()->prepare($sql);
-            $stmt->bind_param("si", $password, $id, $id);
+            $stmt->bind_param("sii", $password, $id, $id);
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
@@ -915,7 +954,7 @@ class Manuscript extends Database
     {
         $sql = "UPDATE manuscript_token SET isValid = '1' WHERE token = ? AND (userID = ? OR groupID = ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("si", $password, $id, $id);
+        $stmt->bind_param("sii", $password, $id, $id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
