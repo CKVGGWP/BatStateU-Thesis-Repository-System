@@ -834,16 +834,27 @@ class Manuscript extends Database
     public function checkPassword($password, $id)
     {
         $userID = $this->getID($id);
+        $groupNumber = $this->getGroupNumberByUserID($userID);
+        $nums = 0;
 
-        $sql = "SELECT manuscriptID, time FROM manuscript_token WHERE token = ? AND userID = ? AND isValid = '0'";
+        $sql = "SELECT manuscriptID, time FROM manuscript_token WHERE token = ? AND isValid = '0'";
+
+        if ($groupNumber != 0) {
+            $sql .= " AND groupID = ?";
+            $nums .= $groupNumber;
+        } else {
+            $sql .= " AND userID = ?";
+            $nums .= $userID;
+        }
+
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("si", $password, $userID);
+        $stmt->bind_param("si", $password, $nums);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            return $this->updateToken($row['manuscriptID'], $password, $userID);
+            return $this->updateToken($row['manuscriptID'], $password, $nums);
         } else {
             return 0;
         }
@@ -852,16 +863,27 @@ class Manuscript extends Database
     public function updateTokenValidity($srCode)
     {
         $id = $this->getID($srCode);
+        $groupNumber = $this->getGroupNumberByUserID($id);
+        $nums = 0;
 
-        $sql = "SELECT token FROM manuscript_token WHERE userID = ? AND isValid = '0' AND time > 0";
+        $sql = "SELECT token FROM manuscript_token WHERE isValid = '0' AND time > 0";
+
+        if ($groupNumber != 0) {
+            $sql .= " AND groupID = ?";
+            $nums .= $groupNumber;
+        } else {
+            $sql .= " AND userID = ?";
+            $nums .= $id;
+        }
+
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("i", $nums);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
         if ($stmt->affected_rows > 0) {
-            return $this->checkSessionTime($row['token'], $id);
+            return $this->checkSessionTime($row['token'], $nums);
         } else {
             return "Hello";
         }
@@ -871,9 +893,9 @@ class Manuscript extends Database
     {
         $date = time() - $_SESSION['time'];
         if ($date > 300) {
-            $sql = "UPDATE manuscript_token SET isValid = '1', status = '3' WHERE token = ? AND userID = ?";
+            $sql = "UPDATE manuscript_token SET isValid = '1', status = '3' WHERE token = ? AND userID = ? OR groupID = ?";
             $stmt = $this->connect()->prepare($sql);
-            $stmt->bind_param("si", $password, $id);
+            $stmt->bind_param("si", $password, $id, $id);
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
@@ -889,9 +911,9 @@ class Manuscript extends Database
 
     private function updateToken($manuscriptID, $password, $id)
     {
-        $sql = "UPDATE manuscript_token SET isValid = '1' WHERE token = ? AND userID = ?";
+        $sql = "UPDATE manuscript_token SET isValid = '1' WHERE token = ? AND userID = ? OR groupID = ?";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("si", $password, $id);
+        $stmt->bind_param("si", $password, $id, $id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
