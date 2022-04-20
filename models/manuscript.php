@@ -897,7 +897,7 @@ class Manuscript extends Database
         if ($date > 300) {
             $sql = "UPDATE manuscript_token SET isValid = '1', status = '3' WHERE token = ? AND (userID = ? OR groupID = ?)";
             $stmt = $this->connect()->prepare($sql);
-            $stmt->bind_param("si", $password, $id, $id);
+            $stmt->bind_param("sii", $password, $id, $id);
             $stmt->execute();
 
             if ($stmt->affected_rows > 0) {
@@ -915,7 +915,7 @@ class Manuscript extends Database
     {
         $sql = "UPDATE manuscript_token SET isValid = '1' WHERE token = ? AND (userID = ? OR groupID = ?)";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bind_param("si", $password, $id, $id);
+        $stmt->bind_param("sii", $password, $id, $id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
