@@ -61,9 +61,9 @@ class Database
         }
     }
 
-    protected function getGroupNumber($id)
+    protected function getGroupNumberByUserID($id)
     {
-        $sql = "SELECT groupNumber FROM groupings WHERE id = ?";
+        $sql = "SELECT groupNumber FROM groupings WHERE userID = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $id);
         $stmt->execute();
