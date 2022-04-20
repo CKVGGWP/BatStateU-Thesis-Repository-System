@@ -150,7 +150,7 @@ class Manuscript extends Database
                 AND manuscript_token.status = '1' 
                 AND manuscript_token.isValid ='0') 
                 GROUP BY m.id";
-                
+
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('i', $groupId);
         $stmt->execute();
@@ -997,7 +997,7 @@ class Manuscript extends Database
             //Server settings
             $mail->SMTPDebug = 0; //SMTP::DEBUG_SERVER;                      //Enable verbose debug output
             $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->Host       = $this->host;                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
             $mail->Username   = EMAIL;                     //SMTP username
             $mail->Password   = PASSWORD;                               //SMTP password
@@ -1005,7 +1005,7 @@ class Manuscript extends Database
             $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom(EMAIL, 'BatStateU JPLPC-Malvar Thesis Repository and Management System');
+            $mail->setFrom(EMAIL, $this->emailName);
             $mail->addAddress($details[0]['email']);     //Add a recipient
 
             //Content
