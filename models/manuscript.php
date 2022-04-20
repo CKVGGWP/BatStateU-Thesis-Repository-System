@@ -135,7 +135,7 @@ class Manuscript extends Database
         }
 
         //Transfer ID to Exclude Own ID
-        $excludedManuscriptId = $id;
+        $excludedManuscriptId = isset($id) ? $id : 0;
 
         //EXPIRED MANUSCRIPTS
         $sql = "SELECT * FROM manuscript WHERE status = 1 AND (NOT id=? ) AND EXISTS (SELECT * FROM manuscript_token WHERE manuscript.id = manuscript_token.manuscriptID AND manuscript_token.status = '3' AND manuscript_token.isValid ='0' AND manuscript_token.groupID = ?);";
