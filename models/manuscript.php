@@ -663,7 +663,7 @@ class Manuscript extends Database
 
     public function exRequestManuscript($srCode, $manuscriptId)
     {
-        
+
         $sql = "UPDATE manuscript_token SET isValid=1 WHERE manuscriptID = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param("i", $manuscriptId);
@@ -967,8 +967,7 @@ class Manuscript extends Database
                 return "Hi";
             }
         } else {
-            $_SESSION['time'] = time();
-            return "Not yet!";
+            return $date;
         }
     }
 
