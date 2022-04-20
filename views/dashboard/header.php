@@ -19,7 +19,7 @@
                     <span class="badge bg-danger badge-number" id="notifbadge"></span>
                 </a><!-- End Notification Icon -->
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style="overflow-y: auto; max-height: 500px">
                     <li class="dropdown-header" id="countHeader">
                         <!-- You have 4 new notifications
                         <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a> -->
