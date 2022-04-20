@@ -127,7 +127,7 @@ class Manuscript extends Database
                 "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 str_replace(",", "<br>", $author) ?? $author,
                 $yearPub,
-                '<button disabled type="button" class="btn btn-success btn-sm edit" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="#">DOWNLOAD</button>
+                '<a href="' . $this->url . "assets/uploads/" . $journal . '" class="btn btn-success btn-sm" data-id="' . $id . '" download>DOWNLOAD</a>
                  ',
                 $tags,
 
