@@ -286,6 +286,10 @@ class Database
 
     protected $directory = "../assets/uploads/";
 
+    protected $host = "smtp.gmail.com";
+
+    protected $emailName = "BatStateU JPLPC-Malvar Thesis Repository and Management System";
+
     protected function connect()
     {
         $this->conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
