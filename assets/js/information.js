@@ -660,29 +660,29 @@ $(document).ready(function () {
   // Get the IP address of the user
   $.getJSON("https://api.ipify.org?format=json", function (data) {
     //   console.log(data.ip);
-    
-      $.ajax({
-        url: "controllers/newController.php",
-        method: "POST",
-        data: {
-          getIP: true,
-          ip: data.ip,
-        },
-        success: function (response) {
-          console.log(response);
-        },
-      });
+
+    $.ajax({
+      url: "controllers/newController.php",
+      method: "POST",
+      data: {
+        getIP: true,
+        ip: data.ip,
+      },
+      success: function (response) {
+        console.log(response);
+      },
+    });
   });
 
   $("#registeredAuthors").select2({
     placeholder: "Select/Input Author(s)",
-    allowClear: true,
     tags: true,
     tokenSeparators: [","],
     closeOnSelect: false,
     containerCssClass: ":all:",
     dropdownCssClass: ":all:",
     width: "100%",
+    minimumInputLength: 0,
   });
 
   $("#tags").select2({

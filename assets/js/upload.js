@@ -116,7 +116,7 @@ $("#adminUpload").on("submit", function (e) {
         formData.append("abstract", abstract);
         formData.append("journal", journal);
         formData.append("uploadAdmin", true);
-        
+
         console.log(formData);
 
         $.ajax({
@@ -131,15 +131,35 @@ $("#adminUpload").on("submit", function (e) {
 
             $("#uploadFiles").html("UPLOAD");
             $("#uploadFiles").attr("disabled", false);
-            console.log(data);
-            Swal.fire({
-              icon: "success",
-              title: title + " has been uploaded successfully!",
-              showConfirmButton: false,
-              timer: 1500,
-            }).then((result) => {
-            //   location.reload();
-            });
+
+            if (data == 1) {
+              Swal.fire({
+                icon: "success",
+                title: title + " has been uploaded successfully!",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then((result) => {
+                //   location.reload();
+              });
+            } else if (data == 3) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "You have an author that has an existing group!",
+              });
+            } else if (data == 0) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "There was an error uploading your thesis/capstone!",
+              });
+            } else if (data == 4) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "You cannot add an admin to the list of authors!",
+              });
+            }
           },
           error: function (data) {
             console.log(data);

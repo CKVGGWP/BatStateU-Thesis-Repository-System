@@ -34,4 +34,6 @@ if ($id != '') {
     $userByCampus = $info->getUserByCampus($deptID, $programID, $id);
 
     $checkStatus = $info->checkManuscript($id);
+
+    $hasGroup = $info->checkUserGroup($id);
 }

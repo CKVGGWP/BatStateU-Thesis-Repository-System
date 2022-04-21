@@ -488,6 +488,23 @@ class Information extends Database
         return json_encode($data);
     }
 
+    public function checkUserGroup($id)
+    {
+        $userID = $this->getID($id);
+
+        $sql = "SELECT * FROM groupings WHERE userID = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param('i', $userID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function getUserByCampus($deptID, $progID, $id)
     {
         $userId = $this->getID($id);
@@ -508,6 +525,7 @@ class Information extends Database
                 } else {
                     $sql .= " AND id = " . $usersId . "";
                 }
+                $sql .= " AND id NOT IN (" . $userId . ")";
             } else {
                 if (is_array($notIncluded)) {
                     if (!in_array($userId, $notIncluded)) {
@@ -516,6 +534,7 @@ class Information extends Database
                 } else {
                     $sql .= " AND id NOT IN (" . $notIncluded . ")";
                 }
+                $sql .= " AND id != " . $userId . "";
             }
         }
 

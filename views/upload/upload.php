@@ -81,11 +81,21 @@
 
                     <div class="row my-2">
                       <div class="col-md-5 mb-sm-0 mb-2">
-                        <select class="form-control" id="registeredAuthors" placeholder="Authors" multiple>
-                          <?php foreach ($userByCampus as $key => $row) : ?>
-                            <option value="<?= $row['fullName'] ?>"><?= $row['fullName']; ?></option>
-                          <?php endforeach; ?>
-                        </select>
+                        <?php if ($hasGroup) : ?>
+                          <select class="form-control" id="registeredAuthors" placeholder="Authors" multiple disabled>
+                            <option value="<?php echo $firstName . ' ' . $lastName ?>" selected><?php echo $firstName . ' ' . $lastName ?></option>
+                            <?php foreach ($userByCampus as $key => $row) : ?>
+                              <option value="<?= $row['fullName'] ?>" selected><?= $row['fullName']; ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        <?php else : ?>
+                          <select class="form-control" id="registeredAuthors" placeholder="Authors" multiple>
+                            <option value="<?php echo $firstName . ' ' . $lastName ?>" selected><?php echo $firstName . ' ' . $lastName ?></option>
+                            <?php foreach ($userByCampus as $key => $row) : ?>
+                              <option value="<?= $row['fullName'] ?>"><?= $row['fullName']; ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        <?php endif; ?>
                       </div>
                       <div class="col-md-4 mb-sm-0 mb-2">
                         <select class="form-control" id="tags" placeholder="Tags" multiple>
