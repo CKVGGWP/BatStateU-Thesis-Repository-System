@@ -340,7 +340,7 @@ $(document).on("submit", "#manuscriptPassword", function (e) {
             html:
               '<a href="' +
               data +
-              '" class="btn btn-primary" download>Download</a>',
+              '" class="btn btn-primary" download target="_blank">Download</a>',
           }).then((result) => {
             location.reload();
           });
@@ -371,11 +371,11 @@ $(document).on("click", "#userManuscript", function () {
 $(".toggle-manuscript").change(function () {
   if ($(".radio-journal").is(":checked")) {
     $("#modalJournal").prop("hidden", false);
-    $("#modalAbstract").prop("hidden", true);
+    $("#modalAbstract, .modalAbstract").prop("hidden", true);
     $("#viewJournalModalTitle").html("Journal");
   } else {
     $("#modalJournal").prop("hidden", true);
-    $("#modalAbstract").prop("hidden", false);
+    $("#modalAbstract, .modalAbstract").prop("hidden", false);
     $("#viewJournalModalTitle").html("Abstract");
   }
 });
@@ -390,7 +390,7 @@ function manuscriptDetails(manuscriptId) {
     },
     success: function (response) {
       var resp = JSON.parse(response);
-      console.log(resp);
+    //   console.log(response);
 
       let authors = resp.author;
 
@@ -424,7 +424,7 @@ function manuscriptDetails(manuscriptId) {
       $("#viewJournalModal .modal-body").html(
         '<iframe id="modalJournal" src="./assets/uploads/' +
           resp.journal +
-          '" type="application/pdf" style="height:600px;width:100%"></iframe><iframe hidden id="modalAbstract" src="./assets/uploads/' +
+          '" type="application/pdf" style="height:600px;width:100%"></iframe><iframe hidden id="modalAbstract" class="modalAbstract" src="./assets/uploads/' +
           resp.abstract +
           '" type="application/pdf" style="height:600px;width:100%"></iframe>'
       );
@@ -440,11 +440,6 @@ function manuscriptDetails(manuscriptId) {
 
 $("#updateManuscript").click(function (e) {
   e.preventDefault();
-
-  $("#updateManuscript").attr("disabled", true);
-  $("#updateManuscript").html(
-    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
-  );
 
   let manuscriptId = $("#manuscriptId").val();
   let manuscriptTitle = $("#manuscriptTitle").val();
@@ -471,33 +466,55 @@ $("#updateManuscript").click(function (e) {
     manuscriptAuthors = manuscriptAuthors.replace("@", ",");
   }
 
-  $.ajax({
-    url: "controllers/manuscriptController.php",
-    type: "POST",
-    data: {
-      updateManuscript: 1,
-      manuscriptId: manuscriptId,
-      manuscriptTitle: manuscriptTitle,
-      manuscriptAuthors: manuscriptAuthors,
-      manuscriptYearPub: manuscriptYearPub,
-      manuscriptCampus: manuscriptCampus,
-      manuscriptDept: manuscriptDept,
-    },
-    dataType: "json",
-    success: function (data) {
-      if (data.success == true) {
-        Swal.fire("Updated!", data.message, "success").then((result) => {
-          location.reload();
-        });
-      } else {
-        Swal.fire("Error!", data.message, "error");
-      }
+  if (manuscriptTitle == "") {
+    Swal.fire("Error!", "Manuscript Title cannot be blank!", "error");
+    $("#updateManuscript").attr("disabled", false);
+  } else if (manuscriptAuthors == "") {
+    Swal.fire("Error!", "Authors cannot be blank!", "error");
+    $("#updateManuscript").attr("disabled", false);
+  } else if (manuscriptYearPub == "") {
+    Swal.fire("Error!", "Year of Publication cannot be blank!", "error");
+    $("#updateManuscript").attr("disabled", false);
+  } else if (manuscriptYearPub > new Date().getFullYear()) {
+    Swal.fire(
+      "Error!",
+      "Year of publication cannot be greater than the year today.",
+      "error"
+    );
+    $("#updateManuscript").attr("disabled", false);
+  } else {
+    $("#updateManuscript").attr("disabled", true);
+    $("#updateManuscript").html(
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...'
+    );
+    $.ajax({
+      url: "controllers/manuscriptController.php",
+      type: "POST",
+      data: {
+        updateManuscript: 1,
+        manuscriptId: manuscriptId,
+        manuscriptTitle: manuscriptTitle,
+        manuscriptAuthors: manuscriptAuthors,
+        manuscriptYearPub: manuscriptYearPub,
+        manuscriptCampus: manuscriptCampus,
+        manuscriptDept: manuscriptDept,
+      },
+      dataType: "json",
+      success: function (data) {
+        if (data.success == true) {
+          Swal.fire("Updated!", data.message, "success").then((result) => {
+            location.reload();
+          });
+        } else {
+          Swal.fire("Error!", data.message, "error");
+        }
 
-      $("#updateManuscript").attr("disabled", false);
-      $("#updateManuscript").html("Save changes");
-      $("#manuscriptTable").DataTable().ajax.reload();
-    },
-  });
+        $("#updateManuscript").attr("disabled", false);
+        $("#updateManuscript").html("Save changes");
+        $("#manuscriptTable").DataTable().ajax.reload();
+      },
+    });
+  }
 });
 
 $(document).on("click", ".approved-pending", function () {
@@ -691,7 +708,7 @@ $(document).on("submit", "#requestDisapproval", function (e) {
   } else {
     Swal.fire({
       title: "Decline Request",
-      text: "Are you sure that you want to decline this request? The user will not be able to request this manuscript again.",
+      text: "Are you sure that you want to decline this request? This user/group will not be able to request this manuscript again.",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -838,14 +855,6 @@ $(document).on("click", ".exRequest", function () {
   });
 });
 
-// $("#manuscriptAuthors").select2({
-//   placeholder: "Select/Input Author(s)",
-//   allowClear: true,
-//   tags: true,
-//   tokenSeparators: [","],
-//   closeOnSelect: false,
-//   containerCssClass: ":all:",
-//   dropdownCssClass: ":all:",
-//   width: "100%",
-//   dropdownParent: $("#editManuscriptModal"),
-// });
+$('#viewJournalModal, #viewAbstractModal').on('hidden.bs.modal', function () {
+  $('#viewJournalModal .modal-body, #viewAbstractModal .modal-body ').html(' <div class="d-flex justify-content-center"><div class="spinner-border" role="status"></div></div>');
+});

@@ -204,7 +204,7 @@ $("#register").on("submit", function (e) {
           Swal.fire({
             icon: "success",
             title: "Registration Successful!",
-            text: "We've sent you a verification email to your email address!",
+            text: "We've sent you a verification email to your email address! If you did not receive an email confirmation within a few minutes, please check your spam folder",
           }).then((result) => {
             window.location.href = "index.php";
           });
@@ -278,7 +278,7 @@ $("#forgotPassForm").on("submit", function (e) {
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: "We've sent you a password reset email to your email address!",
+            text: "We've sent you a password reset email to your email address! If you did not receive an email confirmation within a few minutes, please check your spam folder",
           }).then((result) => {
             window.location.href = "index.php";
           });

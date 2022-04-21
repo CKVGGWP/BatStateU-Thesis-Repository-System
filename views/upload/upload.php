@@ -71,7 +71,7 @@
                       </div>
                       <div class="col-md-3">
                         <div class="form-floating">
-                          <input type="text" class="form-control" id="yearPub" placeholder="Year of Publication">
+                          <input type="number" class="form-control" id="yearPub" placeholder="Year of Publication">
                           <label for="yearPub">Year of Publication</label>
                         </div>
                       </div>
@@ -93,7 +93,7 @@
                       </div>
                       <div class="col-md-3">
                         <div class="form-floating">
-                          <input type="text" class="form-control" id="yearPub" placeholder="Year of Publication">
+                          <input type="number" class="form-control" id="yearPub" placeholder="Year of Publication">
                           <label for="yearPub">Year of Publication</label>
                         </div>
                       </div>
@@ -129,7 +129,7 @@
                   <div class="text-center">
                     <?php if ($checkStatus == "Pending") : ?>
 
-                      <button class="btn btn-danger w-25 mt-3" disabled>You still have a pending manuscript</button>
+                      <button class="btn btn-warning w-25 mt-3" disabled>You still have a pending manuscript</button>
 
                     <?php elseif ($checkStatus == "Approved") : ?>
 
@@ -137,7 +137,7 @@
 
                     <?php else : ?>
 
-                      <button type="submit" class="btn btn-primary w-25 mt-3 rounded-pill" id="uploadFiles">UPLOAD</button>
+                      <button type="submit" class="btn btn-danger w-25 mt-3 rounded-pill" id="uploadFiles">UPLOAD</button>
 
                     <?php endif; ?>
                   </div>

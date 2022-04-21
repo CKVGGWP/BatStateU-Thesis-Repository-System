@@ -90,8 +90,8 @@
 
                                     <div class="col-md-12 col-12 mt-2">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="email" placeholder="Email" pattern=".+@g\.batstate-u\.edu\.ph" required>
-                                            <label for="email">Email</label>
+                                            <input type="text" class="form-control" id="email" placeholder="GSuite Email" pattern=".+@g\.batstate-u\.edu\.ph" required>
+                                            <label for="email">GSuite Email Address</label>
                                             <div class="invalid-feedback">Please enter your valid Email address!</div>
                                         </div>
 

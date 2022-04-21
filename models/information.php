@@ -395,7 +395,7 @@ class Information extends Database
             exit();
         }
 
-        $sql = "INSERT INTO websiteTraffic (ipAddress) VALUES (?)";
+        $sql = "INSERT INTO websitetraffic (ipAddress) VALUES (?)";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $ip);
         $stmt->execute();
@@ -409,7 +409,7 @@ class Information extends Database
 
     public function getIPChart()
     {
-        $sql = "SELECT COUNT(ipAddress) AS nums FROM websiteTraffic";
+        $sql = "SELECT COUNT(ipAddress) AS nums FROM websitetraffic";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -534,7 +534,7 @@ class Information extends Database
 
     private function checkIPExists($ip)
     {
-        $sql = "SELECT * FROM websiteTraffic WHERE ipAddress = ?";
+        $sql = "SELECT * FROM websitetraffic WHERE ipAddress = ?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bind_param('s', $ip);
         $stmt->execute();
@@ -666,7 +666,7 @@ class Information extends Database
             $mail->Username   = EMAIL;                     //SMTP username
             $mail->Password   = PASSWORD;                               //SMTP password
             $mail->SMTPSecure = "tls";            //Enable implicit TLS encryption
-            $mail->Port       = $this->port;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
             $mail->setFrom(EMAIL, $this->emailName);

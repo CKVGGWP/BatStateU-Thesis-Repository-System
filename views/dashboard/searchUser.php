@@ -15,7 +15,7 @@
           <div class="card-body">
             <h5 class="card-title">Search Manuscript</h5>
             <!-- Table with stripped rows -->
-            <table class="table table-hover dt-responsive nowrap text-center" width="100%" id="browseManuscriptTable">
+            <table class="table table-hover dt-responsive wrap text-center" width="100%" id="browseManuscriptTable">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -35,18 +35,52 @@
       </div>
     </div>
   </section>
-  <div class="modal fade" id="viewAbstractModal" tabindex="-1" role="dialog" aria-labelledby="editAccount" aria-hidden="true">
+  <div class="modal fade" id="viewAbstractModal" tabindex="-1" role="dialog" aria-labelledby="viewAbstractModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editAccount">Abstract</h5>
+          <h5 class="modal-title">Abstract</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>ABSTRACT HERE</p>
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+              </div>
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="viewJournalModal" tabindex="-1" role="dialog" aria-labelledby="viewJournalModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <div class="col-4">
+              <h5 class="modal-title" id="viewJournalModalTitle">Journal</h5>
+            </div>
+            <div class="col-8">
+              <input type="radio" class="btn-check toggle-manuscript radio-journal" name="options-outlined" id="success-outlined" autocomplete="off" checked>
+              <label class="btn btn-outline-success btn-sm" for="success-outlined">Journal</label>
+              <input type="radio" class="btn-check toggle-manuscript" name="options-outlined" id="danger-outlined" autocomplete="off">
+              <label class="btn btn-outline-danger btn-sm" for="danger-outlined">Abstract</label>
+            </div>
+          </div>
+
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

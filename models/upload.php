@@ -90,7 +90,7 @@ class Upload extends Database
         }
         
         $newSrCodes = $this->checkUserExistingManuscript($srCode);
-        if (!empty($newSrCodes)) {
+        if ($newSrCodes != false) {
             $sql = "UPDATE manuscript SET
                     manuscriptTitle = ?, 
                     abstract = ?, 
@@ -105,31 +105,39 @@ class Upload extends Database
                     tags = ?, 
                     status = 0 
                     WHERE srCode = '" . implode("','", $newSrCodes) . "'";
-
+                    
             $stmt = $this->connect()->prepare($sql);
             $stmt->bind_param('sssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags);
             $stmt->execute();
-            $stmt->close();
-
+        
             if ($stmt->affected_rows > 0) {
+                $groupNumber = $this->getGroupNumberBySrCode($srCode);
+                $sql = "UPDATE groupings SET reason = '' WHERE groupNumber = ?";
+                $stmt = $this->connect()->prepare($sql);
+                $stmt->bind_param('i', $groupNumber);
+                $stmt->execute();
+                
                 return $this->insertNotification($title);
+                
             } else {
                 return false;
             }
-            
+        
         } else {
             $sql = "INSERT INTO manuscript(manuscriptTitle, abstract, journal, yearPub, author, department, campus, program, dateUploaded, srCode, tags, status) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , '0')";
+            
             $stmt = $this->connect()->prepare($sql);
             $stmt->bind_param('sssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $campus, $program, $dateNow, $srCode, $tags);
             $stmt->execute();
-            $stmt->close();
-
+            
             if ($this->insertGroup($this->lastManuscriptID())) {
                 return $this->insertNotification($title);
             } else {
                 return false;
             }
         }
+        
+       
         // return print_r($values);
     }
 
@@ -137,15 +145,21 @@ class Upload extends Database
 
         $ids = $this->getUserIdByGroupNumber($this->getGroupNumberBySrCode($srCode));
         $srCodes = $this->getSRCodes($ids);
-        $implodedSrCode = implode("','", $srCodes);
 
         $sql = "SELECT 
                 DISTINCT
                 m.srCode
                 FROM manuscript m
                 LEFT JOIN user_details u ON m.srCode = u.srCode
-                LEFT JOIN groupings g ON u.id = g.userID
-                WHERE m.srCode IN ('" . $implodedSrCode . "')";
+                LEFT JOIN groupings g ON u.id = g.userID";
+                
+        if(is_array($srCodes)){
+            $implodedSrCode = implode("','", $srCodes);
+            $sql .= " WHERE m.srCode IN ('" . $implodedSrCode . "')";
+        } else {
+            $sql .= " WHERE m.srCode = '$srCodes'";
+        }
+        
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -155,8 +169,10 @@ class Upload extends Database
             while ($row = $result->fetch_assoc()) { 
                 $data[] = $row['srCode'];
             }
+            return $data;
+        } else {
+            return false;
         }
-        return $data;
     }
 
     private function insertGroup($lastID)

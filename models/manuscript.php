@@ -108,8 +108,8 @@ class Manuscript extends Database
     public function getBrowseManuscriptTable($srCode)
     {
         $userId = $this->getID($srCode);
-        $groupNumber = $this->getGroupNumberByUserID($userId);
-        $groupId = $this->getIdByGroupNumber($groupNumber);
+        $groupId = $this->getGroupNumberByUserID($userId);
+        // $groupId = $this->getIdByGroupNumber($groupNumber);
         $totalData = 0;
         $data = [];
 
@@ -136,10 +136,10 @@ class Manuscript extends Database
             $totalData++;
             $data[] = [
                 $totalData,
-                "<a href='#viewAbstractModal' id='viewAbstractUser' data-bs-toggle='modal' data-id='" . $id . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
+                "<a href='#viewJournalModal' class='view-journal' data-bs-toggle='modal' data-id='" . $excludeID . "' data title='Click to view: " . $manuscriptTitle . "'>" . $manuscriptTitle . "</a>",
                 str_replace(",", "<br>", $author) ?? $author,
                 $yearPub,
-                '<a href="' . $this->url . "assets/uploads/" . $journal . '" class="btn btn-success btn-sm" data-id="' . $id . '" download>DOWNLOAD</a>
+                '<a href="' . $this->url . "assets/uploads/" . $journal . '" class="btn btn-success btn-sm" data-id="' . $id . '" download target="_blank">DOWNLOAD</a>
                  ',
                 $tags,
 
@@ -321,20 +321,20 @@ class Manuscript extends Database
                 DISTINCT
                 t.id,
                 t.manuscriptID,
+                t.userID,
                 t.dateRequested,
                 t.time,
                 t.status,
                 m.manuscriptTitle,
                 m.author,
                 t.status,
-                g2.reason,
+                g.reason,
                 CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name
                 FROM manuscript_token t
                 LEFT JOIN manuscript m ON t.manuscriptID = m.id
-                LEFT JOIN user_details u ON m.srCode = u.srCode
-                LEFT JOIN groupings g ON u.id = g.userID
-                LEFT JOIN groupings g2 ON t.id = g2.manuscriptID";
-                
+                LEFT JOIN user_details u ON t.userID = u.id
+                LEFT JOIN groupings g ON t.manuscriptID = g.manuscriptID";
+
         if ($srCode == '') {
             $sql .= " WHERE t.status = 0";
             $stmt = $this->connect()->prepare($sql);
@@ -1065,7 +1065,7 @@ class Manuscript extends Database
             $mail->Username   = EMAIL;                     //SMTP username
             $mail->Password   = PASSWORD;                               //SMTP password
             $mail->SMTPSecure = "tls";            //Enable implicit TLS encryption
-            $mail->Port       = $this->port;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->Port       = 587;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
             $mail->setFrom(EMAIL, $this->emailName);

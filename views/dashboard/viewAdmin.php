@@ -88,7 +88,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>PDF HERE</p>
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+              </div>
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
@@ -128,7 +131,7 @@
               </div>
               <div class="form-group col-md-6 col-12">
                 <div class="form-floating">
-                  <input type="text" class="form-control" id="manuscriptYearPub" placeholder="Year Published">
+                  <input type="number" class="form-control" id="manuscriptYearPub" placeholder="Year Published">
                   <label for="manuscriptYearPub">Year Published</label>
                   <div class="invalid-feedback">Please enter a valid Year.</div>
                 </div>

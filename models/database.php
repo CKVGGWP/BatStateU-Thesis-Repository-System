@@ -172,13 +172,18 @@ class Database
 
     protected function getSRCodes($id)
     {
-        $ids = implode("','", $id);
-        $sql = "SELECT srCode FROM user_details WHERE id IN ('" . $ids . "')";
+
+        $sql = "SELECT srCode FROM user_details";
+        if (is_array($id)) {
+            $ids = implode("','", $id);
+            $sql .= " WHERE id IN ('" . $ids . "')";
+        } else {
+            $sql .= " WHERE id = '$id'";
+        }
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
 
         $result = $stmt->get_result();
-
         if ($result->num_rows > 0) {
             $data = [];
             while ($row = $result->fetch_assoc()) {
@@ -303,15 +308,15 @@ class Database
         return substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 6)), 0, 6);
     }
 
-    // protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
+    protected $url = "http://localhost/BatStateU-Malvar%20Thesis%20Repository%20System/";
 
-    protected $url = "http://www.bsumalvare-library.com/";
+    // protected $url = "http://www.bsumalvare-library.com/";
 
     protected $directory = "../assets/uploads/";
 
     // protected $host = "smtp.gmail.com";
 
-    protected $host = "smtp.hostinger.com";
+    protected $host = "smtp.gmail.com";
 
     protected $port = 587;
 

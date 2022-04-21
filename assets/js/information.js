@@ -233,7 +233,7 @@ $("#saveInfo").on("submit", function (e) {
           Swal.fire({
             icon: "success",
             title: "Success",
-            text: "Information Updated Successfully! Please verify your new email address.",
+            text: "Information Updated Successfully! Please verify your new email address. If you did not receive an email confirmation within a few minutes, please check your spam folder",
           }).then((result) => {
             window.location.href = "controllers/signoutController.php";
           });
@@ -450,7 +450,7 @@ $(document).on("submit", "#editAccountForm", function (e) {
             text:
               "Information Updated Successfully! We've sent a verification email to " +
               editEmail +
-              ".",
+              ". If you did not receive an email confirmation within a few minutes, please check your spam folder.",
           }).then((result) => {
             location.reload();
           });
@@ -603,7 +603,7 @@ $(document).on("submit", "#createAdmin", function (e) {
             text:
               "Admin Account Created Successfully! We've sent a verification email to " +
               createEmail +
-              ".",
+              ". If you did not receive an email confirmation within a few minutes, please check your spam folder",
           }).then((result) => {
             location.reload();
           });
@@ -659,12 +659,8 @@ if ($("#notifications").length > 0) {
 $(document).ready(function () {
   // Get the IP address of the user
   $.getJSON("https://api.ipify.org?format=json", function (data) {
-    if (
-      getParameterByName("title") != "" &&
-      getParameterByName("title") != "Create Account" &&
-      getParameterByName("title") != "Verify Account" &&
-      getParameterByName("title") != "Forgot Password"
-    ) {
+    //   console.log(data.ip);
+    
       $.ajax({
         url: "controllers/newController.php",
         method: "POST",
@@ -676,7 +672,6 @@ $(document).ready(function () {
           console.log(response);
         },
       });
-    }
   });
 
   $("#registeredAuthors").select2({

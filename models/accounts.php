@@ -33,7 +33,7 @@ class Accounts extends Database
                         $name,
                         $campusName,
                         ($programName == null) ? '-' : $programName,
-                        ($departmentName == 0) ? 'Library' : $departmentName,
+                        ($departmentName == NULL) ? 'Library' : $departmentName,
                         $email,
                         $role == 1 ? 'Admin' : 'User',
                         '<div class="btn-group-vertical">
