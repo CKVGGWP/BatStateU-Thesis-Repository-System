@@ -123,6 +123,7 @@ $("#adminUpload").on("submit", function (e) {
           url: "controllers/uploadController.php",
           type: "POST",
           data: formData,
+          // dataType: "json",
           contentType: false,
           cache: false,
           processData: false,
@@ -139,7 +140,7 @@ $("#adminUpload").on("submit", function (e) {
                 showConfirmButton: false,
                 timer: 1500,
               }).then((result) => {
-                //   location.reload();
+                location.reload();
               });
             } else if (data == 3) {
               Swal.fire({
@@ -160,15 +161,6 @@ $("#adminUpload").on("submit", function (e) {
                 text: "You cannot add an admin to the list of authors!",
               });
             }
-          },
-          error: function (data) {
-            console.log(data);
-            Swal.fire({
-              icon: "error",
-              title: "Upload Failed",
-              showConfirmButton: false,
-              timer: 1500,
-            });
           },
         });
       }

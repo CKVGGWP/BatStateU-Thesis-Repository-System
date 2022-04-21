@@ -28,12 +28,10 @@ class Upload extends Database
         }
 
         if ($values['department']) {
-            $insert = $this->insertToDBAdmin($values, $file_name_new, $srCode);
+            return $this->insertToDBAdmin($values, $file_name_new, $srCode);
         } else {
-            $insert = $this->insertToDBUser($values, $file_name_new, $srCode);
+            return $this->insertToDBUser($values, $file_name_new, $srCode);
         }
-
-        return $insert;
     }
     public function insertToDBAdmin($values, $file_name_new, $srCode)
     {
@@ -53,6 +51,8 @@ class Upload extends Database
         $stmt->bind_param('sssssssssss', $title, $abstract, $journal, $yearPub, $authors, $department, $program, $dateNow, $dateNow, $srCode, $tags);
         $stmt->execute();
         $stmt->close();
+
+        return 1;
     }
 
     public function insertToDBUser($values, $file_name_new, $srCode)
