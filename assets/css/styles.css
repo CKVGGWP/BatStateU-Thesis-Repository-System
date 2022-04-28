@@ -36,6 +36,23 @@ h6 {
   opacity: 1;
 }
 
+#login-main, #register-main{
+    background: url(../img/login_background2.png) no-repeat center center fixed #f6f9ff; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#undo {
+    font-size: 23px;
+}
+
+#undo:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
 .select2-search__field {
   height: 45px !important;
 }

@@ -33,7 +33,7 @@ class Manuscript extends Database
     }
 
     // MANUSCRIPT TABLE
-    public function getManuscriptTable($recent = '')
+    public function getManuscriptTable($campus = '', $dept = '', $year = '', $recent = '')
     {
         $sql = "SELECT
                 m.id,
@@ -47,12 +47,25 @@ class Manuscript extends Database
                 m.tags
                 FROM manuscript m
                 LEFT JOIN campus c ON m.campus = c.id
-                lEFT JOIN department d ON m.department = d.id
+                LEFT JOIN department d ON m.department = d.id
                 WHERE m.status = 1";
 
         if ($recent != '') {
             $sql .= " AND actionDate >= NOW() - INTERVAL 7 DAY";
         }
+
+        if ($campus != '') {
+            $sql .= " AND campus = '$campus'";
+        }
+
+        if ($dept != '') {
+            $sql .= " AND department = '$dept'";
+        }
+
+        if ($year != '') {
+            $sql .= " AND yearPub = '$year'";
+        }
+
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -101,7 +114,7 @@ class Manuscript extends Database
 
         );
 
-        return json_encode($json_data);  // send data as json format
+        return json_encode($json_data);
     }
 
 
@@ -317,6 +330,8 @@ class Manuscript extends Database
 
     public function getRequestAdminTable($srCode = '')
     {
+        $group = $this->getGroupNumberBySrCode($srCode);
+
         $sql = "SELECT
                 DISTINCT
                 t.id,
@@ -328,18 +343,32 @@ class Manuscript extends Database
                 m.manuscriptTitle,
                 m.author,
                 t.status,
-                g.reason,
-                CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name
-                FROM manuscript_token t
-                LEFT JOIN manuscript m ON t.manuscriptID = m.id
-                LEFT JOIN user_details u ON t.userID = u.id
-                LEFT JOIN groupings g ON t.manuscriptID = g.manuscriptID";
+                t.groupID,
+                CONCAT(u.firstName, ' ' , u.middleName , ' ' , u.lastName) AS name";
 
         if ($srCode == '') {
-            $sql .= " WHERE t.status = 0";
+            $sql .= " , g.reason
+                      FROM manuscript_token t
+                      LEFT JOIN manuscript m ON t.manuscriptID = m.id
+                      LEFT JOIN groupings g ON t.manuscriptID = g.manuscriptID 
+                      LEFT JOIN user_details u ON t.userID = u.id 
+                      WHERE t.status = 0";
             $stmt = $this->connect()->prepare($sql);
         } else {
-            $sql .= " WHERE u.srCode = ?";
+
+            if ($group == 0) {
+                $sql .= " FROM manuscript_token t
+                          LEFT JOIN manuscript m ON t.manuscriptID = m.id
+                          LEFT JOIN user_details u ON t.userID = u.id 
+                          WHERE u.srCode = ?";
+            } else {
+                $sql .= " , g.reason
+                          FROM manuscript_token t
+                          LEFT JOIN manuscript m ON t.manuscriptID = m.id
+                          LEFT JOIN groupings g ON t.groupID = g.groupNumber 
+                          LEFT JOIN user_details u ON g.userID = u.id 
+                          WHERE u.srCode = ?";
+            }
             $stmt = $this->connect()->prepare($sql);
             $stmt->bind_param("s", $srCode);
         }
@@ -353,12 +382,16 @@ class Manuscript extends Database
             $totalData++;
 
             if ($srCode == '') {
+
+                $userDetails = $this->getUserDetails($this->getUserIdByGroupNumber($groupID));
+                $requester = implode(',', array_column($userDetails, 'name'));
+
                 $data[] = [
                     $totalData,
                     $dateRequested = (new DateTime($dateRequested))->format('F d, Y - h:i A'),
                     $manuscriptTitle,
                     str_replace(",", "<br>", $author) ?? $author,
-                    $name,
+                    $name = (empty($userDetails)) ? $name : str_replace(",", "<br>", $requester) ?? $requester,
                     '
                         <button type="button" class="btn btn-success btn-sm approve-request" data-id="' . $id . '" data-bs-toggle="modal" data-bs-target="">APPROVE</button>
                         <button type="button" data-bs-target="#reasonRequestModal" data-bs-toggle="modal" class="btn btn-danger btn-sm">DECLINE</button>
@@ -370,7 +403,7 @@ class Manuscript extends Database
                     $manuscriptTitle,
                     str_replace(",", "<br>", $author) ?? $author,
                     $status = ($status == 0) ? '<span class="badge bg-warning">PENDING</span>' : (($status == 1) ? '<span class="badge bg-success">APPROVED</span>' : '<span class="badge bg-danger">DECLINED</span>'),
-                    $reason,
+                    $reason = ($group == '') ? "" : $reason,
                 ];
             }
         }
@@ -1100,5 +1133,22 @@ class Manuscript extends Database
         }
 
         return json_encode($data);
+    }
+
+    public function getYearByDept($id)
+    {
+        $sql = "SELECT DISTINCT yearPub FROM manuscript WHERE department = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $option = '';
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $option .= '<option value="' . $row['yearPub'] . '">' . $row['yearPub'] . '</option>';
+            }
+        }
+        return $option;
     }
 }

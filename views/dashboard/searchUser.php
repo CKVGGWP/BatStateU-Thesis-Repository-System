@@ -14,8 +14,31 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Search Manuscript</h5>
+
+            <!--<div class="row g-1 mb-3">-->
+            <!--                <label class="col-sm-1 col-form-label">Filter:</label>-->
+            <!--                <div class="col-sm-2 col-3">-->
+            <!--                    <select class="form-control" id="filterByCampus">-->
+            <!--                        <option value selected>Campus</option>-->
+            <!--                    </select>-->
+            <!--                </div>-->
+            <!--                <div class="col-sm-5 col-3">-->
+            <!--                    <select class="form-control" id="filterByDept" disabled>-->
+            <!--                        <option value selected>Select Department</option>-->
+            <!--                    </select>-->
+            <!--                </div>-->
+            <!--                <div class="col-sm-2 col-3">-->
+            <!--                    <select class="form-control" id="filterByYear" disabled>-->
+            <!--                        <option value selected>Year Published</option>-->
+            <!--                    </select>-->
+            <!--                </div>-->
+            <!--                <div class="col-2">-->
+            <!--                    <i class="fas fa-undo pt-2" id="undo" title="Undo" hidden></i>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
             <!-- Table with stripped rows -->
-            <table class="table table-hover dt-responsive wrap text-center" width="100%" id="browseManuscriptTable">
+            <table class="table table-hover dt-responsive nowrap text-center" width="100%" id="browseManuscriptTable">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -43,10 +66,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <div class="d-flex justify-content-center">
-              <div class="spinner-border" role="status">
-              </div>
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
             </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
@@ -54,7 +77,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="modal fade" id="viewJournalModal" tabindex="-1" role="dialog" aria-labelledby="viewJournalModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -74,10 +97,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <div class="d-flex justify-content-center">
-              <div class="spinner-border" role="status">
-              </div>
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
             </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>

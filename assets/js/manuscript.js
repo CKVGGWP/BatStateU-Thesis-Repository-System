@@ -1,19 +1,17 @@
 $(document).ready(function () {
   let manuscriptTable = $("#manuscriptTable").DataTable({
-    // lengthChange: false,
-    // searching: false,
     processing: true,
-    // ordering: false,
-    // serverSide: true,
     bInfo: false,
     ajax: {
       url: "controllers/manuscriptController.php", // json datasource
       type: "POST", // method  , by default get
-      data: { getManuscript: true },
+      data: {
+        getManuscript: true,
+      },
 
-      // success: function (row, data, index) {
-      // console.log(row);
-      // },
+      //   success: function (row, data, index) {
+      //   console.log(row);
+      //   },
 
       error: function (data) {
         console.log(data);
@@ -27,14 +25,10 @@ $(document).ready(function () {
         searchable: true,
         visible: false,
       },
+      { className: "text-wrap", targets: [1] },
     ],
     fixedColumns: false,
     deferRender: true,
-    // scrollY: 500,
-    // scrollX: false,
-    // scroller: {
-    //   loadingIndicator: true,
-    // },
     stateSave: false,
   });
 
@@ -66,6 +60,7 @@ $(document).ready(function () {
         searchable: true,
         visible: false,
       },
+      { className: "text-wrap", targets: [1] },
     ],
     fixedColumns: false,
     deferRender: true,
@@ -99,7 +94,7 @@ $(document).ready(function () {
       },
     },
     createdRow: function (row, data, index) {},
-    columnDefs: [],
+    columnDefs: [{ className: "text-wrap", targets: [2] }],
     fixedColumns: false,
     deferRender: true,
     // scrollY: 500,
@@ -132,7 +127,7 @@ $(document).ready(function () {
       },
     },
     createdRow: function (row, data, index) {},
-    columnDefs: [],
+    columnDefs: [{ className: "text-wrap", targets: [2] }],
     fixedColumns: false,
     deferRender: true,
     // scrollY: 500,
@@ -165,7 +160,7 @@ $(document).ready(function () {
       },
     },
     createdRow: function (row, data, index) {},
-    columnDefs: [],
+    columnDefs: [{ className: "text-wrap", targets: [1] }],
     fixedColumns: false,
     deferRender: true,
     // scrollY: 500,
@@ -199,7 +194,7 @@ $(document).ready(function () {
       },
     },
     createdRow: function (row, data, index) {},
-    columnDefs: [],
+    columnDefs: [{ className: "text-wrap", targets: [0] }],
     fixedColumns: false,
     deferRender: true,
     // scrollY: 500,
@@ -234,7 +229,7 @@ $(document).ready(function () {
         },
       },
       createdRow: function (row, data, index) {},
-      columnDefs: [],
+      columnDefs: [{ className: "text-wrap", targets: [0] }],
       fixedColumns: false,
       deferRender: true,
       // scrollY: 500,
@@ -245,7 +240,128 @@ $(document).ready(function () {
       stateSave: false,
     }
   );
+  getCampus();
+  function getCampus() {
+    $.ajax({
+      url: "controllers/newController.php",
+      data: { getAllCampus: 1 },
+      type: "POST",
+      success: function (response) {
+        $("#filterByCampus").append(response);
+        // console.log(response);
+      },
+    });
+  }
+
+  let campusId = "";
+  let deptId = "";
+  let year = "";
+
+  $(document).on("click", "#undo", function () {
+    $("#filterByYear").prop("disabled", true);
+    $("#filterByDept").prop("disabled", true);
+    $("#filterByCampus").html("<option value selected>Campus</option>");
+    $("#filterByDept").html("<option value selected>Department</option>");
+    $("#filterByYear").html("<option value selected>Year Published</option>");
+    getCampus();
+    $(this).prop("hidden", true);
+    $("#manuscriptTable").DataTable().clear();
+    $("#manuscriptTable").DataTable().destroy();
+    drawManuscriptTable();
+  });
+
+  $(document).on("change", "#filterByCampus", function () {
+    $("#undo").prop("hidden", false);
+    $("#filterByDept").html("<option value selected>Department</option>");
+    $("#filterByDept").prop("disabled", false);
+    $("#filterByYear").html("<option value selected>Year Published</option>");
+    $("#filterByYear").prop("disabled", true);
+
+    campusId = $(this).val();
+    $.ajax({
+      url: "controllers/newController.php",
+      data: {
+        getDeptByCampus: 1,
+        id: campusId,
+      },
+      type: "POST",
+      dataType: "json",
+      success: function (response) {
+        $("#filterByDept").append(response);
+        // console.log(response);
+      },
+    });
+    $("#manuscriptTable").DataTable().clear();
+    $("#manuscriptTable").DataTable().destroy();
+    drawManuscriptTable(campusId);
+  });
+
+  $(document).on("change", "#filterByDept", function () {
+    $("#filterByYear").html("<option value selected>Year Published</option>");
+    $("#filterByYear").prop("disabled", false);
+    deptId = $(this).val();
+    $.ajax({
+      url: "controllers/manuscriptController.php",
+      data: {
+        getYearByDept: 1,
+        id: deptId,
+      },
+      type: "POST",
+      success: function (response) {
+        $("#filterByYear").append(response);
+        // console.log(response);
+      },
+    });
+    $("#manuscriptTable").DataTable().clear();
+    $("#manuscriptTable").DataTable().destroy();
+    drawManuscriptTable(campusId, deptId);
+  });
+
+  $(document).on("change", "#filterByYear", function () {
+    year = $(this).val();
+    $("#manuscriptTable").DataTable().clear();
+    $("#manuscriptTable").DataTable().destroy();
+    drawManuscriptTable(campusId, deptId, year);
+  });
 });
+
+function drawManuscriptTable(campus = "", dept = "", year = "") {
+  let manuscriptTable = $("#manuscriptTable").DataTable({
+    processing: true,
+    bInfo: false,
+    ajax: {
+      url: "controllers/manuscriptController.php", // json datasource
+      type: "POST", // method  , by default get
+      data: {
+        filterManuscript: true,
+        campus: campus,
+        dept: dept,
+        year: year,
+      },
+
+      //   success: function (row, data, index) {
+      //   console.log(row);
+      //   },
+
+      error: function (data) {
+        console.log(data);
+        // error handling
+      },
+    },
+    createdRow: function (row, data, index) {},
+    columnDefs: [
+      {
+        targets: 8,
+        searchable: true,
+        visible: false,
+      },
+      { className: "text-wrap", targets: [1] },
+    ],
+    fixedColumns: false,
+    deferRender: true,
+    stateSave: false,
+  });
+}
 
 $(document).ready(function () {
   function updateTokenValidity() {
@@ -390,7 +506,7 @@ function manuscriptDetails(manuscriptId) {
     },
     success: function (response) {
       var resp = JSON.parse(response);
-    //   console.log(response);
+      //   console.log(response);
 
       let authors = resp.author;
 
@@ -855,6 +971,8 @@ $(document).on("click", ".exRequest", function () {
   });
 });
 
-$('#viewJournalModal, #viewAbstractModal').on('hidden.bs.modal', function () {
-  $('#viewJournalModal .modal-body, #viewAbstractModal .modal-body ').html(' <div class="d-flex justify-content-center"><div class="spinner-border" role="status"></div></div>');
+$("#viewJournalModal, #viewAbstractModal").on("hidden.bs.modal", function () {
+  $("#viewJournalModal .modal-body, #viewAbstractModal .modal-body ").html(
+    ' <div class="d-flex justify-content-center"><div class="spinner-border" role="status"></div></div>'
+  );
 });

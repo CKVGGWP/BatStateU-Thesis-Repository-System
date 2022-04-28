@@ -1,4 +1,4 @@
-<main>
+<main id="login-main">
     <div class="container">
         <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-2">
             <div class="container">
@@ -41,6 +41,12 @@
                                         </div>
                                         <div class="invalid-feedback">
                                             Please enter your password.
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="showPass">
+                                            <label class="form-check-label" for="showPass">
+                                                Show password
+                                            </label>
                                         </div>
                                     </div>
 

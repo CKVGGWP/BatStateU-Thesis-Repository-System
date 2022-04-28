@@ -24,7 +24,7 @@ $(document).ready(function () {
       },
     },
     createdRow: function (row, data, index) {},
-    columnDefs: [],
+    columnDefs: [{ className: "text-wrap", targets: [1] }],
     fixedColumns: false,
     deferRender: true,
     scrollY: 200,

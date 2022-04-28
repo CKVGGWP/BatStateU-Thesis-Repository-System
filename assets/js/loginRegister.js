@@ -1,5 +1,14 @@
 let pathname = window.location.pathname.split("/").pop();
 
+$("#showPass").on("click", function (e) {
+  let passwordShow = $("#password");
+  if (passwordShow.attr("type") === "password") {
+    passwordShow.attr("type", "text");
+  } else {
+    passwordShow.attr("type", "password");
+  }
+});
+
 $("#login").on("submit", function (e) {
   e.preventDefault();
   let email = $("#email").val();

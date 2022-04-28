@@ -676,6 +676,7 @@ $(document).ready(function () {
 
   $("#registeredAuthors").select2({
     placeholder: "Select/Input Author(s)",
+    allowClear: true,
     tags: true,
     tokenSeparators: [","],
     closeOnSelect: false,

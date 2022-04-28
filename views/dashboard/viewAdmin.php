@@ -13,9 +13,33 @@
 
         <div class="card">
           <div class="card-body">
+
             <div class="d-flex justify-content-between" id="pendingManuscriptButton">
 
             </div>
+
+            <div class="row g-1 mb-3">
+              <label class="col-sm-1 col-form-label">Filter:</label>
+              <div class="col-sm-2 col-3">
+                <select class="form-control" id="filterByCampus">
+                  <option value selected>Campus</option>
+                </select>
+              </div>
+              <div class="col-sm-5 col-3">
+                <select class="form-control" id="filterByDept" disabled>
+                  <option value selected>Select Department</option>
+                </select>
+              </div>
+              <div class="col-sm-2 col-3">
+                <select class="form-control" id="filterByYear" disabled>
+                  <option value selected>Year Published</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <i class="fas fa-undo pt-2" id="undo" title="Undo" hidden></i>
+              </div>
+            </div>
+
             <!-- Table with stripped rows -->
             <table class="table table-hover dt-responsive nowrap text-center" width="100%" id="manuscriptTable">
               <thead>
@@ -88,10 +112,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <div class="d-flex justify-content-center">
-              <div class="spinner-border" role="status">
-              </div>
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
             </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
@@ -143,7 +167,9 @@
                   <select class="form-control" name="manuscriptCampus" id="manuscriptCampus" readonly disabled>
                     <option value selected disabled>Please select a Campus</option>
                     <?php foreach ($campuses as $key => $row) : ?>
-                      <option value="<?php echo $row['id']; ?>"><?php echo $row['campusName']; ?></option>
+                      <option value="<?php echo $row['id']; ?>">
+                        <?php echo $row['campusName']; ?>
+                      </option>
                     <?php endforeach; ?>
                   </select>
                   <label for="campus" class="form-label">Campus</label>
