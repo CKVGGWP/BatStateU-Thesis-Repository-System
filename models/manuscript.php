@@ -33,7 +33,7 @@ class Manuscript extends Database
     }
 
     // MANUSCRIPT TABLE
-    public function getManuscriptTable($campus = '', $dept = '', $year = '', $recent = '')
+    public function getManuscriptTable($dept = '', $program = '', $year = '', $recent = '')
     {
         $sql = "SELECT
                 m.id,
@@ -54,12 +54,12 @@ class Manuscript extends Database
             $sql .= " AND actionDate >= NOW() - INTERVAL 7 DAY";
         }
 
-        if ($campus != '') {
-            $sql .= " AND campus = '$campus'";
-        }
-
         if ($dept != '') {
             $sql .= " AND department = '$dept'";
+        }
+
+        if ($program != '') {
+            $sql .= " AND program = '$program'";
         }
 
         if ($year != '') {

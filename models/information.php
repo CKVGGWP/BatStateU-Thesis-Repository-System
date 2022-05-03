@@ -722,4 +722,36 @@ class Information extends Database
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
     }
+
+    public function getAllDept()
+    {
+        $sql = "SELECT * FROM department WHERE campusID = 3";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $option = '';
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $option .= '<option value="' . $row['id'] . '">' . $row['departmentName'] . '</option>';
+            }
+        }
+        return $option;
+    }
+    public function getYearByProg($id)
+    {
+        $sql = "SELECT DISTINCT yearPub FROM manuscript WHERE program = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $option = '';
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $option .= '<option value="' . $row['yearPub'] . '">' . $row['yearPub'] . '</option>';
+            }
+        }
+        return $option;
+    }
 }

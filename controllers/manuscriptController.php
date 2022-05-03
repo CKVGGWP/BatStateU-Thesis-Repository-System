@@ -14,10 +14,10 @@ if (isset($_POST['getManuscript'])) {
 }
 
 if (isset($_POST['filterManuscript'])) {
-    $campus = $_POST['campus'];
     $dept = $_POST['dept'];
+    $program = $_POST['program'];
     $year = $_POST['year'];
-    echo $manuscript->getManuscriptTable($campus, $dept, $year);
+    echo $manuscript->getManuscriptTable($dept, $program, $year);
 }
 
 if (isset($_POST['browseManuscript'])) {
@@ -94,7 +94,7 @@ if (isset($_POST['getPendingManuscript'])) {
 
 if (isset($_POST['getRecentAddedManuscript'])) {
     $recent = $_POST['recent'];
-    echo $manuscript->getManuscriptTable($recent);
+    echo $manuscript->getManuscriptTable('', '', '', $recent);
 }
 
 if (isset($_POST['userManuscriptRequestStatus'])) {
@@ -112,9 +112,4 @@ if (isset($_POST['checkManuscriptPassword'])) {
 
 if (isset($_POST['updateTokenValidity'])) {
     echo $manuscript->updateTokenValidity($usersID);
-}
-
-if (isset($_POST['getYearByDept'])) {
-    $id = $_POST['id'];
-    echo $manuscript->getYearByDept($id);
 }

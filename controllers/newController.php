@@ -92,3 +92,21 @@ if (isset($_POST['getUsers'])) {
 
     echo $info->getUsersByDeptProgram($dept, $program);
 }
+
+if (isset($_POST['getAllDept'])) {
+    echo $info->getAllDept();
+}
+
+if (isset($_POST['getProgByDept'])) {
+    $id = $_POST['id'];
+    echo $info->getProgByDept($id, 'options');
+}
+
+if (isset($_POST['getYearByProg'])) {
+    $id = $_POST['id'];
+    echo $info->getYearByProg($id);
+}
+
+if (isset($_POST['getUserSession'])) {
+    echo json_encode($info->getUserBySession($srCode));
+}

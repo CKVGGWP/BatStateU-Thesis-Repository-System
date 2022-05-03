@@ -17,17 +17,19 @@
             <div class="d-flex justify-content-between" id="pendingManuscriptButton">
 
             </div>
-
+            <div class="d-flex justify-content-between">
+              <!--<button class="btn btn-sm btn-danger" title="Export as PDF" id="exportManuscript"><i class="fa-regular fa-file-pdf"></i> Export</button>-->
+            </div>
             <div class="row g-1 mb-3">
               <label class="col-sm-1 col-form-label">Filter:</label>
               <div class="col-sm-2 col-3">
-                <select class="form-control" id="filterByCampus">
-                  <option value selected>Campus</option>
+                <select class="form-control" id="filterByDept">
+                  <option value selected>Select Department</option>
                 </select>
               </div>
-              <div class="col-sm-5 col-3">
-                <select class="form-control" id="filterByDept" disabled>
-                  <option value selected>Select Department</option>
+              <div class="col-sm-4 col-3">
+                <select class="form-control" id="filterByProg" disabled>
+                  <option value selected>Select Program</option>
                 </select>
               </div>
               <div class="col-sm-2 col-3">
